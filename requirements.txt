@@ -4,5 +4,5 @@ numpy
 plotly
 requests
 scikit-learn
-pmdarima
 pydeck
+statsmodels
