@@ -1,23 +1,30 @@
-# app.py  — DSS Telecom CNMC (descarga, limpieza, persistencia y análisis)
-import io, zipfile, base64, datetime as dt
+# app.py — DSS Telecom CNMC (ETL + persistencia + MCDM + exploración)
+import io
+import zipfile
+import base64
+import datetime as dt
 import pandas as pd
 import numpy as np
 import plotly.express as px
 import requests
 import streamlit as st
 
-# --- utilidades del proyecto ---
+# Utils del proyecto
 from utils.mcdm import topsis_rank
 from utils.cnmc_ckan import fetch_resource
-from utils.data_prep import unify_columns_lower, clean_strings  # (puedes ampliar con normalizaciones)
+from utils.data_prep import (
+    unify_columns_lower, clean_strings, coerce_numeric,
+    build_period_column, drop_dupes_and_aggregate,
+    group_small_ops, normalize_minmax
+)
 
 # ------------------------------------------------------------
 # Config general
 # ------------------------------------------------------------
 st.set_page_config(page_title="DSS Telecomunicaciones – CNMC", layout="wide", page_icon="📶")
-st.title("📶 DSS Telecomunicaciones – CNMC (prototipo)")
+st.title("📶 DSS Telecomunicaciones – CNMC")
 
-# Recursos CKAN que vamos a “congelar” como CSV limpios
+# Recursos CKAN a “congelar” como CSV limpios
 RESOURCES = {
     "anual_datos_generales": "5e2d8f37-2385-4774-82ec-365cd83d65bd",
     "anual_mercados": "7afbf769-655d-4b43-b49f-95c2919ec1fe",
@@ -27,6 +34,7 @@ RESOURCES = {
     "infraestructuras": "baab2a5e-cc52-4704-a799-a28b19223a3b",
 }
 
+# Rutas de lectura de CSV “congelados” en el repo
 CSV_PATHS = {
     "Anual – Datos generales": "data/clean/anual_datos_generales_clean.csv",
     "Anual – Mercados": "data/clean/anual_mercados_clean.csv",
@@ -37,18 +45,30 @@ CSV_PATHS = {
 }
 
 # ------------------------------------------------------------
-# Funciones de ETL (Descargar → Limpiar → (Opcional) Normalizar)
+# ETL: limpieza robusta (misma lógica que el script)
 # ------------------------------------------------------------
-def basic_clean(df: pd.DataFrame) -> pd.DataFrame:
-    """Limpieza mínima común a todos los recursos."""
+TEXT_COLS_CANDIDATES = [
+    "operador","servicio","concepto","tipo_de_paquete","tipo_de_ingreso",
+    "provincia","ccaa","tecnologia_de_acceso","tipo_de_ba_mayorista",
+    "tipo_de_estaciones_base","unidades"
+]
+
+def basic_clean_pipeline(df: pd.DataFrame) -> pd.DataFrame:
+    """Estandariza columnas y texto, convierte a numérico, crea 'periodo',
+       colapsa duplicados por llaves típicas y agrupa operadores pequeños en 'Otros'."""
     df = unify_columns_lower(df)
-    text_cols = [
-        "servicio","concepto","operador","tipo_de_paquete","tipo_de_ingreso",
-        "provincia","ccaa","tecnología_de_acceso","tipo_de_ba_mayorista",
-        "tipo_de_estaciones_base","unidades"
-    ]
-    text_cols = [c for c in text_cols if c in df.columns]
-    df = clean_strings(df, text_cols)
+    df = clean_strings(df, [c for c in TEXT_COLS_CANDIDATES if c in df.columns])
+    df = coerce_numeric(df, prefer_comma_decimal=True)
+    df = build_period_column(df)
+
+    candidate_keys = ["periodo","operador","servicio","provincia","ccaa","tecnologia_de_acceso","concepto"]
+    keys = [k for k in candidate_keys if k in df.columns]
+    if keys:
+        df = drop_dupes_and_aggregate(df, keys=keys)
+
+    if "operador" in df.columns:
+        df = group_small_ops(df, top_n=5, col_op="operador")
+
     return df
 
 def download_and_clean_all() -> dict[str, bytes]:
@@ -56,16 +76,8 @@ def download_and_clean_all() -> dict[str, bytes]:
     out: dict[str, bytes] = {}
     for name, rid in RESOURCES.items():
         df = fetch_resource(rid)
-        dfc = basic_clean(df)
-
-        # --- Si quieres normalización 0–1 rápida descomenta: ---
-        # num_cols = [c for c in dfc.columns if pd.api.types.is_numeric_dtype(dfc[c])]
-        # if num_cols:
-        #     rng = (dfc[num_cols].max() - dfc[num_cols].min()).replace(0, 1)
-        #     dfc[num_cols] = (dfc[num_cols] - dfc[num_cols].min()) / rng
-
-        csv_bytes = dfc.to_csv(index=False).encode("utf-8")
-        out[f"{name}_clean.csv"] = csv_bytes
+        dfc = basic_clean_pipeline(df)
+        out[f"{name}_clean.csv"] = dfc.to_csv(index=False).encode("utf-8")
     return out
 
 def make_zip(files_dict: dict[str, bytes]) -> bytes:
@@ -76,7 +88,7 @@ def make_zip(files_dict: dict[str, bytes]) -> bytes:
     return buf.getvalue()
 
 # ------------------------------------------------------------
-# Guardado automático en GitHub (opcional, con secrets)
+# Guardado automático en GitHub (opcional, via secrets)
 # ------------------------------------------------------------
 def github_put_file(owner, repo, branch, path, content_bytes, token):
     """Crea/actualiza archivo en GitHub (PUT /repos/:owner/:repo/contents/:path)."""
@@ -100,7 +112,7 @@ def github_put_file(owner, repo, branch, path, content_bytes, token):
 
 def push_all_to_github(files_dict: dict[str, bytes], subdir: str = "data/clean/"):
     """Empuja todos los CSV a tu repo usando secretos en Streamlit Cloud."""
-    owner_repo = st.secrets["GITHUB_REPO"]           # ej: "usuario/DSS-TFM-"
+    owner_repo = st.secrets["GITHUB_REPO"]            # ej: "usuario/DSS-TFM-"
     branch     = st.secrets.get("GITHUB_BRANCH", "main")
     token      = st.secrets["GITHUB_TOKEN"]
     owner, repo = owner_repo.split("/", 1)
@@ -108,10 +120,10 @@ def push_all_to_github(files_dict: dict[str, bytes], subdir: str = "data/clean/"
         github_put_file(owner, repo, branch, f"{subdir}{fname}", content, token)
 
 # ------------------------------------------------------------
-# Sidebar: control de datos persistentes
+# Sidebar: persistencia y fuente de datos
 # ------------------------------------------------------------
 st.sidebar.header("Fuente de datos")
-modo = st.sidebar.radio("Selecciona", ["CSV (repositorio)", "A futuro: API CNMC"], index=0)
+modo = st.sidebar.radio("Selecciona", ["CSV (repositorio)", "Descargar ahora desde CNMC"], index=0)
 
 st.sidebar.subheader("Persistencia de datos (CNMC → CSV)")
 c1, c2 = st.sidebar.columns(2)
@@ -162,9 +174,35 @@ if modo.startswith("CSV"):
         df = load_csv(path)
         st.success(f"{dataset_name}: {df.shape[0]:,} filas × {df.shape[1]} columnas")
     except Exception as e:
-        st.error(f"No se pudo cargar {path}. Ejecuta la descarga y sube los CSV. Detalle: {e}")
+        st.error(f"No se pudo cargar {path}. Sube los CSV limpios a data/clean/. Detalle: {e}")
 else:
-    st.info("La carga directa por API se activará en la siguiente iteración.")
+    # Descarga on-the-fly: carga el dataframe del dict ya preparado (si lo hay)
+    if st.session_state["CNMC_FILES"]:
+        # usa el nombre mapeado
+        key_map = {
+            "Anual – Datos generales": "anual_datos_generales_clean.csv",
+            "Anual – Mercados": "anual_mercados_clean.csv",
+            "Mensual": "mensual_clean.csv",
+            "Provinciales": "provinciales_clean.csv",
+            "Trimestrales": "trimestrales_clean.csv",
+            "Infraestructuras": "infraestructuras_clean.csv",
+        }
+        k = key_map[dataset_name]
+        if k in st.session_state["CNMC_FILES"]:
+            df = pd.read_csv(io.BytesIO(st.session_state["CNMC_FILES"][k]))
+            st.success(f"(CNMC directo) {dataset_name}: {df.shape[0]:,} filas × {df.shape[1]} columnas")
+        else:
+            st.warning("Aún no has descargado ese dataset en esta sesión. Usa '⬇️ Descargar+limpiar'.")
+    else:
+        st.info("Pulsa '⬇️ Descargar+limpiar' para obtener datos desde CNMC en esta sesión.")
+
+# ------------------------------------------------------------
+# Opcional: agrupar “pequeños” en la UI (además del CSV)
+# ------------------------------------------------------------
+if df is not None and "operador" in df.columns:
+    agrupar_ui = st.sidebar.toggle("Agrupar operadores pequeños en 'Otros' (UI)", value=True)
+    if agrupar_ui:
+        df = group_small_ops(df, top_n=5, col_op="operador")
 
 # ------------------------------------------------------------
 # Vista previa + MCDM (TOPSIS) + exploración
@@ -173,21 +211,19 @@ if df is not None:
     with st.expander("Vista previa de datos"):
         st.dataframe(df.head(50), use_container_width=True)
 
-    st.header("⚖️ Multicriterio (TOPSIS)")
+    st.header("⚖️ Análisis multicriterio (TOPSIS)")
     num_cols = [c for c in df.columns if pd.api.types.is_numeric_dtype(df[c])]
-    crit = st.multiselect("Elige criterios numéricos", num_cols, default=num_cols[:3] if len(num_cols) >= 3 else num_cols)
+    default_crit = num_cols[:3] if len(num_cols) >= 3 else num_cols
+    crit = st.multiselect("Elige criterios numéricos", num_cols, default=default_crit)
 
     if crit:
         benefit_flags, weights = [], []
         st.subheader("Pesos y tipo de criterio")
         for c in crit:
             cols = st.columns([2, 1, 2])
-            with cols[0]:
-                st.write(f"**{c}**")
-            with cols[1]:
-                benefit_flags.append(st.toggle("Beneficio", True, key=f"b_{c}"))
-            with cols[2]:
-                weights.append(st.slider(f"Peso {c}", 0.0, 1.0, 1.0 / max(len(crit),1), 0.01, key=f"w_{c}"))
+            with cols[0]: st.write(f"**{c}**")
+            with cols[1]: benefit_flags.append(st.toggle("Beneficio", True, key=f"b_{c}"))
+            with cols[2]: weights.append(st.slider(f"Peso {c}", 0.0, 1.0, 1.0 / max(len(crit), 1), 0.01, key=f"w_{c}"))
         try:
             rank = topsis_rank(df, crit, weights, benefit_flags)
             st.subheader("Ranking TOPSIS")
@@ -198,10 +234,11 @@ if df is not None:
             st.warning(f"No se pudo calcular TOPSIS con las columnas seleccionadas: {e}")
 
     st.header("📈 Exploración rápida")
+    num_cols = [c for c in df.columns if pd.api.types.is_numeric_dtype(df[c])]
     if len(num_cols) >= 2:
         xcol = st.selectbox("Eje X", num_cols, index=0)
         ycol = st.selectbox("Eje Y", num_cols, index=1)
         fig = px.scatter(df, x=xcol, y=ycol, title=f"{ycol} vs {xcol}")
         st.plotly_chart(fig, use_container_width=True)
 
-st.caption("Prototipo base. Incluye: descarga/limpieza CNMC, ZIP y push opcional a GitHub; lectura de CSV persistentes; TOPSIS y exploración.")
+st.caption("Incluye: descarga/limpieza CNMC, ZIP y push opcional a GitHub; lectura de CSV persistentes; TOPSIS y exploración.")
