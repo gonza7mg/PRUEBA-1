@@ -1,0 +1,75 @@
+operador,servicio,tecnologia_de_acceso,concepto,id,mes,pais,segmento,contrato,terminal_de_telefonia_movil,linea_ba_movil,tipo_de_ba_mayorista,tipo_de_portabilidad,unidades,lineas,tasa_de_penetracion,portabilidades
+Otros,Banda Ancha móvil,N/A,Líneas,2301663,2016-01,España,N/A,Pospago,N/A,Líneas de voz y datos,N/A,N/A,Unidades,304061066.0,633.0,0.0
+Otros,Banda ancha fija minorista,FTTH,Líneas,931729,2018-09,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,62954647.0,130.3,0.0
+Otros,Telefonía fija,N/A,Líneas,934206,2018-09,España,Residencial,N/A,N/A,N/A,N/A,N/A,Unidades,20655016.0,42.7,0.0
+Otros,Telefonía móvil,N/A,Líneas,2306963,2016-01,España,N/A,Pospago,Sin tipo de terminal,N/A,N/A,N/A,Unidades,324530732.0,676.4,0.0
+Otros,Telefonía móvil,N/A,Portabilidades,2816634,2009-11,España,N/A,N/A,N/A,N/A,N/A,Importados,Unidades,0.0,0.0,7700438.0
+Otros,Banda ancha fija minorista,FTTH,Líneas,558124,2015-11,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,2942730.0,5.5,0.0
+Otros,Banda ancha fija minorista,HFC,Líneas,823763,2007-01,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,60637177.0,129.5,0.0
+Otros,Banda ancha fija minorista,Otros accesos banda ancha fija,Líneas,579416,2015-07,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,37841.0,0.0,0.0
+Otros,Banda ancha fija minorista,WIFI-WIMAX-LMDS,Líneas,567033,2014-01,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,172942.0,0.0,0.0
+Otros,Banda ancha fija minorista,xDSL,Líneas,661426,2014-01,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,1037421.0,0.0,0.0
+Otros,Telefonía fija,N/A,Líneas,1654309,2007-01,España,Negocios,N/A,N/A,N/A,N/A,N/A,Unidades,91252995.0,195.8,0.0
+Grupo MASMOVIL,Banda Ancha móvil,N/A,Líneas,1758314,2016-10,España,N/A,Pospago,N/A,Líneas de voz y datos,N/A,N/A,Unidades,611600500.0,1291.5,0.0
+Grupo MASMOVIL,Banda ancha fija minorista,FTTH,Líneas,877542,2016-10,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,135390367.0,284.3,0.0
+Grupo MASMOVIL,Banda ancha fija minorista,HFC,Líneas,383234,2021-08,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,12130581.0,25.4,0.0
+Grupo MASMOVIL,Banda ancha fija minorista,Otros accesos banda ancha fija,Líneas,383266,2021-08,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,64746.0,0.0,0.0
+Grupo MASMOVIL,Banda ancha fija minorista,xDSL,Líneas,877696,2016-10,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,14508666.0,31.1,0.0
+Grupo MASMOVIL,Telefonía fija,N/A,Líneas,1741389,2016-10,España,Residencial,N/A,N/A,N/A,N/A,N/A,Unidades,143448941.0,303.1,0.0
+Grupo MASMOVIL,Telefonía móvil,N/A,Líneas,1762554,2016-10,España,N/A,Pospago,Sin tipo de terminal,N/A,N/A,N/A,Unidades,775646980.0,1636.4,0.0
+Grupo MASMOVIL,Telefonía móvil,N/A,Portabilidades,1764766,2016-10,España,N/A,N/A,N/A,N/A,N/A,Exportados,Unidades,0.0,0.0,21438454.0
+Otros,Banda ancha fija minorista,FTTH,Líneas,91049,2013-12,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,2483859.0,5.4,0.0
+Otros,Banda ancha fija minorista,Otros accesos banda ancha fija,Líneas,62030,2014-07,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,6059.0,0.0,0.0
+Otros,Banda ancha fija minorista,xDSL,Líneas,87108,2014-01,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,26362482.0,56.8,0.0
+Otros,Telefonía fija,N/A,Líneas,501733,2007-01,España,Negocios,N/A,N/A,N/A,N/A,N/A,Unidades,102149828.0,221.0,0.0
+MASORANGE,Banda Ancha móvil,N/A,Líneas,437276,2024-04,España,N/A,Pospago,N/A,Líneas de voz y datos,N/A,N/A,Unidades,350123552.0,717.1999999999999,0.0
+MASORANGE,Banda ancha fija minorista,FTTH,Líneas,218366,2024-04,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,107250010.0,219.6,0.0
+MASORANGE,Banda ancha fija minorista,HFC,Líneas,218382,2024-04,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,2506439.0,5.1,0.0
+MASORANGE,Banda ancha fija minorista,Otros accesos banda ancha fija,Líneas,218398,2024-04,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,2461492.0,5.1,0.0
+MASORANGE,Banda ancha fija minorista,xDSL,Líneas,190217,2024-04,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,1094348.0,2.3000000000000003,0.0
+MASORANGE,Telefonía fija,N/A,Líneas,437552,2024-04,España,Negocios,N/A,N/A,N/A,N/A,N/A,Unidades,100268454.0,205.9,0.0
+MASORANGE,Telefonía móvil,N/A,Líneas,437904,2024-04,España,N/A,Pospago,Sin tipo de terminal,N/A,N/A,N/A,Unidades,410496357.0,840.9,0.0
+MASORANGE,Telefonía móvil,N/A,Portabilidades,438212,2024-04,España,N/A,N/A,N/A,N/A,N/A,Exportados,Unidades,0.0,0.0,6375935.0
+Movistar,Banda Ancha móvil,N/A,Líneas,2426443,2015-01,España,N/A,Pospago,N/A,Líneas de voz y datos,N/A,N/A,Unidades,1664359760.0,3515.4,0.0
+Movistar,Banda ancha fija minorista,FTTH,Líneas,1397747,2010-01,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,545238735.0,1149.3,0.0
+Movistar,Banda ancha fija minorista,Otros accesos banda ancha fija,Líneas,1263581,2014-01,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,25832340.0,52.5,0.0
+Movistar,Banda ancha fija minorista,WIFI-WIMAX-LMDS,Líneas,460931,2014-01,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,61876.0,0.0,0.0
+Movistar,Banda ancha fija minorista,xDSL,Líneas,1384293,2007-01,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,683925241.0,1474.0,0.0
+Movistar,Telefonía fija,N/A,Líneas,2861655,2007-01,España,Negocios,N/A,N/A,N/A,N/A,N/A,Unidades,2432183144.0,5214.8,0.0
+Movistar,Telefonía móvil,N/A,Líneas,2866537,2007-01,España,N/A,Pospago,Sin tipo de terminal,N/A,N/A,N/A,Unidades,3983488977.0,8522.8,0.0
+Movistar,Telefonía móvil,N/A,Portabilidades,2871961,2007-01,España,N/A,N/A,N/A,N/A,N/A,Exportados,Unidades,0.0,0.0,51223341.0
+Otros,Banda Ancha móvil,N/A,Líneas,1400488,2010-01,España,N/A,N/A,N/A,Líneas exclusivas de datos,N/A,N/A,Unidades,330362449.0,705.1,0.0
+Otros,Banda ancha fija mayorista,N/A,Líneas,11942660,2007-01,España,N/A,N/A,N/A,N/A,Bucle compartido,N/A,Unidades,906075031.0,0.0,0.0
+Otros,Telefonía fija,N/A,Portabilidades,1432492,2007-01,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,0.0,0.0,32290488.0
+Otros,Telefonía móvil,N/A,Líneas,1433603,2007-01,España,N/A,N/A,Asociados a máquinas,N/A,N/A,N/A,Unidades,1178736912.0,2485.8,0.0
+Otros,Banda Ancha móvil,N/A,Líneas,1360462,2015-01,España,N/A,Pospago,N/A,Líneas de voz y datos,N/A,N/A,Unidades,188224748.0,400.2,0.0
+Otros,Telefonía móvil,N/A,Líneas,1799348,2007-01,España,N/A,Pospago,Sin tipo de terminal,N/A,N/A,N/A,Unidades,569371598.0,1219.4,0.0
+Otros,Telefonía móvil,N/A,Portabilidades,2872607,2007-01,España,N/A,N/A,N/A,N/A,N/A,Importados,Unidades,0.0,0.0,19063697.0
+Otros,Banda ancha fija minorista,HFC,Líneas,187895,2007-01,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,126403331.0,272.2,0.0
+Otros,Banda ancha fija minorista,xDSL,Líneas,25101,2014-01,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,425599.0,1.2000000000000002,0.0
+Otros,Telefonía fija,N/A,Líneas,377772,2007-01,España,Negocios,N/A,N/A,N/A,N/A,N/A,Unidades,187593527.0,406.9,0.0
+Orange,Banda Ancha móvil,N/A,Líneas,1990085,2015-01,España,N/A,Pospago,N/A,Líneas de voz y datos,N/A,N/A,Unidades,1219504344.0,2590.1,0.0
+Orange,Banda ancha fija minorista,FTTH,Líneas,1024695,2014-06,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,286481854.0,605.4,0.0
+Orange,Banda ancha fija minorista,HFC,Líneas,825786,2017-06,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,1004314.0,2.0,0.0
+Orange,Banda ancha fija minorista,Otros accesos banda ancha fija,Líneas,958437,2015-08,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,1934152.0,4.3,0.0
+Orange,Banda ancha fija minorista,xDSL,Líneas,1045770,2014-01,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,152934148.0,328.1,0.0
+Orange,Telefonía fija,N/A,Líneas,2425227,2007-01,España,Negocios,N/A,N/A,N/A,N/A,N/A,Unidades,498846571.0,1061.4,0.0
+Orange,Telefonía móvil,N/A,Líneas,2430511,2007-01,España,N/A,Pospago,Sin tipo de terminal,N/A,N/A,N/A,Unidades,2513762989.0,5381.7,0.0
+Orange,Telefonía móvil,N/A,Portabilidades,2435335,2007-01,España,N/A,N/A,N/A,N/A,N/A,Exportados,Unidades,0.0,0.0,49364018.0
+Otros,Banda ancha fija minorista,FTTH,Líneas,1398815,2010-01,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,15668969.0,29.8,0.0
+Otros,Banda ancha fija minorista,HFC,Líneas,528232,2007-01,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,32137906.0,68.39999999999999,0.0
+Otros,Banda ancha fija minorista,Otros accesos banda ancha fija,Líneas,295288,2014-01,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,19595.0,0.0,0.0
+Otros,Banda ancha fija minorista,WIFI-WIMAX-LMDS,Líneas,257591,2024-01,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,1220733.0,1.9000000000000001,0.0
+Otros,Banda ancha fija minorista,xDSL,Líneas,1413506,2007-01,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,243337440.0,524.2,0.0
+Otros,Telefonía fija,N/A,Líneas,1299591,2007-01,España,Negocios,N/A,N/A,N/A,N/A,N/A,Unidades,48751933.0,104.5,0.0
+Vodafone,Banda Ancha móvil,N/A,Líneas,2427985,2015-01,España,N/A,Pospago,N/A,Líneas de voz y datos,N/A,N/A,Unidades,1411103301.0,2982.0,0.0
+Vodafone,Banda ancha fija minorista,FTTH,Líneas,1252464,2014-04,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,134887403.0,283.1,0.0
+Vodafone,Banda ancha fija minorista,HFC,Líneas,1239756,2014-07,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,209232404.0,444.5,0.0
+Vodafone,Banda ancha fija minorista,Otros accesos banda ancha fija,Líneas,407534,2023-01,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,2463114.0,5.9,0.0
+Vodafone,Banda ancha fija minorista,xDSL,Líneas,1250925,2014-01,España,N/A,N/A,N/A,N/A,N/A,N/A,Unidades,62694792.0,134.2,0.0
+Vodafone,Telefonía fija,N/A,Líneas,2864315,2007-01,España,Negocios,N/A,N/A,N/A,N/A,N/A,Unidades,625710457.0,1329.9,0.0
+Vodafone,Telefonía móvil,N/A,Líneas,2869423,2007-01,España,N/A,Pospago,Sin tipo de terminal,N/A,N/A,N/A,Unidades,2983369307.0,6378.4,0.0
+Vodafone,Telefonía móvil,N/A,Portabilidades,2874567,2007-01,España,N/A,N/A,N/A,N/A,N/A,Exportados,Unidades,0.0,0.0,55194467.0
+Otros,Banda Ancha móvil,N/A,Líneas,230807,2015-01,España,N/A,Pospago,N/A,Líneas de voz y datos,N/A,N/A,Unidades,63291820.0,136.1,0.0
+Otros,Telefonía móvil,N/A,Líneas,667761,2007-01,España,N/A,Pospago,Sin tipo de terminal,N/A,N/A,N/A,Unidades,261473773.0,561.6,0.0
+Otros,Telefonía móvil,N/A,Portabilidades,670164,2007-01,España,N/A,N/A,N/A,N/A,N/A,Importados,Unidades,0.0,0.0,8600343.0

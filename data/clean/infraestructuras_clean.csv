@@ -1,0 +1,57 @@
+operador,servicio,tecnologia_de_acceso,concepto,id,trimestre,tipo_de_trafico,tipo_de_contrato,frecuencia,lineas_o_accesos,estaciones_base,trafico_de_datos,nodos_radio
+Otros,Banda Ancha móvil,4G/4.5G,Líneas,6088,2022T3,N/A,Pospago,N/A,47149461.0,0.0,0.0,0.0
+Otros,Banda Ancha móvil,4G/4.5G,Tráfico - datos,3231,2022T3,Nacional,N/A,N/A,0.0,0.0,2108200.5300000003,0.0
+Otros,Banda Ancha móvil,5G,Líneas,4418,2024T1,N/A,Pospago,N/A,4092447.0,0.0,0.0,0.0
+Otros,Banda Ancha móvil,5G,Tráfico - datos,2289,2024T1,Nacional,N/A,N/A,0.0,0.0,196600.96000000002,0.0
+Otros,Banda Ancha móvil,Resto tecnologías,Tráfico - datos,3247,2022T3,Nacional,N/A,N/A,0.0,0.0,104945.75,0.0
+Grupo MASMOVIL,Banda Ancha móvil,4G/4.5G,Líneas,2394,2022T3,N/A,Pospago,N/A,73461592.0,0.0,0.0,0.0
+Grupo MASMOVIL,Banda Ancha móvil,4G/4.5G,Tráfico - datos,1319,2022T3,Nacional,N/A,N/A,0.0,0.0,2352506.19,0.0
+Grupo MASMOVIL,Banda Ancha móvil,5G,Líneas,2054,2022T3,N/A,Pospago,N/A,11471769.0,0.0,0.0,0.0
+Grupo MASMOVIL,Banda Ancha móvil,5G,Tráfico - datos,1326,2022T3,Nacional,N/A,N/A,0.0,0.0,116864.91,0.0
+Grupo MASMOVIL,Banda Ancha móvil,Resto tecnologías,Tráfico - datos,1333,2022T3,Nacional,N/A,N/A,0.0,0.0,281746.79,0.0
+Grupo MASMOVIL,Red de distribución,4G/4.5G,Estaciones Base,1417,2022T3,N/A,N/A,N/A,0.0,37174.0,0.0,0.0
+Grupo MASMOVIL,Red de distribución,5G,Estaciones Base,1424,2022T3,N/A,N/A,N/A,0.0,741.0,0.0,0.0
+Grupo MASMOVIL,Red de distribución,5G,Nodos,1506,2022T3,N/A,N/A,3.5 GHz,0.0,0.0,0.0,741.0
+Grupo MASMOVIL,Red de distribución,Resto tecnologías,Estaciones Base,1431,2022T3,N/A,N/A,N/A,0.0,34292.0,0.0,0.0
+MASORANGE,Banda Ancha móvil,4G/4.5G,Líneas,3764,2024T2,N/A,Pospago,N/A,87885647.0,0.0,0.0,0.0
+MASORANGE,Banda Ancha móvil,4G/4.5G,Tráfico - datos,1939,2024T2,Nacional,N/A,N/A,0.0,0.0,3198228.92,0.0
+MASORANGE,Banda Ancha móvil,5G,Líneas,3772,2024T2,N/A,Pospago,N/A,32456574.0,0.0,0.0,0.0
+MASORANGE,Banda Ancha móvil,5G,Tráfico - datos,1943,2024T2,Nacional,N/A,N/A,0.0,0.0,482957.06,0.0
+MASORANGE,Banda Ancha móvil,Resto tecnologías,Tráfico - datos,1947,2024T2,Nacional,N/A,N/A,0.0,0.0,144357.18,0.0
+MASORANGE,Red de distribución,4G/4.5G,Estaciones Base,1984,2024T2,N/A,N/A,N/A,0.0,90061.0,0.0,0.0
+MASORANGE,Red de distribución,5G,Estaciones Base,1988,2024T2,N/A,N/A,N/A,0.0,45769.0,0.0,0.0
+MASORANGE,Red de distribución,5G,Nodos,6072,2024T2,N/A,N/A,2100 MHz,0.0,0.0,0.0,69041.0
+MASORANGE,Red de distribución,Resto tecnologías,Estaciones Base,1992,2024T2,N/A,N/A,N/A,0.0,162032.0,0.0,0.0
+Movistar,Banda Ancha móvil,4G/4.5G,Líneas,6238,2022T3,N/A,Pospago,N/A,119698431.0,0.0,0.0,0.0
+Movistar,Banda Ancha móvil,4G/4.5G,Tráfico - datos,3291,2022T3,Nacional,N/A,N/A,0.0,0.0,3153820.85,0.0
+Movistar,Banda Ancha móvil,5G,Líneas,3119,2022T3,N/A,Pospago,N/A,46547290.0,0.0,0.0,0.0
+Movistar,Banda Ancha móvil,5G,Tráfico - datos,3302,2022T3,Nacional,N/A,N/A,0.0,0.0,779446.91,0.0
+Movistar,Banda Ancha móvil,Resto tecnologías,Tráfico - datos,3313,2022T3,Nacional,N/A,N/A,0.0,0.0,166862.8,0.0
+Movistar,Red de distribución,4G/4.5G,Estaciones Base,3434,2022T3,N/A,N/A,N/A,0.0,238624.0,0.0,0.0
+Movistar,Red de distribución,5G,Estaciones Base,3445,2022T3,N/A,N/A,N/A,0.0,97899.0,0.0,0.0
+Movistar,Red de distribución,5G,Nodos,10618,2022T3,N/A,N/A,2100 MHz,0.0,0.0,0.0,153202.0
+Movistar,Red de distribución,Resto tecnologías,Estaciones Base,3456,2022T3,N/A,N/A,N/A,0.0,443760.0,0.0,0.0
+Orange,Banda Ancha móvil,4G/4.5G,Líneas,2484,2022T3,N/A,Pospago,N/A,75174956.0,0.0,0.0,0.0
+Orange,Banda Ancha móvil,4G/4.5G,Tráfico - datos,1361,2022T3,Nacional,N/A,N/A,0.0,0.0,2582383.8,0.0
+Orange,Banda Ancha móvil,5G,Líneas,2498,2022T3,N/A,Pospago,N/A,15527683.0,0.0,0.0,0.0
+Orange,Banda Ancha móvil,5G,Tráfico - datos,1368,2022T3,Nacional,N/A,N/A,0.0,0.0,226876.25,0.0
+Orange,Banda Ancha móvil,Resto tecnologías,Tráfico - datos,1375,2022T3,Nacional,N/A,N/A,0.0,0.0,183276.35,0.0
+Orange,Red de distribución,4G/4.5G,Estaciones Base,1459,2022T3,N/A,N/A,N/A,0.0,124786.0,0.0,0.0
+Orange,Red de distribución,5G,Estaciones Base,1466,2022T3,N/A,N/A,N/A,0.0,56070.0,0.0,0.0
+Orange,Red de distribución,5G,Nodos,4620,2022T3,N/A,N/A,2100 MHz,0.0,0.0,0.0,82267.0
+Orange,Red de distribución,Resto tecnologías,Estaciones Base,1473,2022T3,N/A,N/A,N/A,0.0,250665.0,0.0,0.0
+Otros,Banda Ancha móvil,4G/4.5G,Líneas,4086,2022T3,N/A,Pospago,N/A,8804124.0,0.0,0.0,0.0
+Otros,Banda Ancha móvil,4G/4.5G,Tráfico - datos,3345,2022T3,Nacional,N/A,N/A,0.0,0.0,328868.37,0.0
+Otros,Banda Ancha móvil,5G,Líneas,548,2025T1,N/A,Pospago,N/A,110718.0,0.0,0.0,0.0
+Otros,Banda Ancha móvil,5G,Tráfico - datos,563,2025T1,Nacional,N/A,N/A,0.0,0.0,276.35,0.0
+Otros,Banda Ancha móvil,Resto tecnologías,Tráfico - datos,3357,2022T3,Nacional,N/A,N/A,0.0,0.0,59198.7,0.0
+Otros,Red de distribución,4G/4.5G,Estaciones Base,1053,2022T4,N/A,N/A,N/A,0.0,17.0,0.0,0.0
+Vodafone,Banda Ancha móvil,4G/4.5G,Líneas,6396,2022T3,N/A,Pospago,N/A,101973354.0,0.0,0.0,0.0
+Vodafone,Banda Ancha móvil,4G/4.5G,Tráfico - datos,3368,2022T3,Nacional,N/A,N/A,0.0,0.0,5283173.31,0.0
+Vodafone,Banda Ancha móvil,5G,Líneas,6418,2022T3,N/A,Pospago,N/A,45118667.0,0.0,0.0,0.0
+Vodafone,Banda Ancha móvil,5G,Tráfico - datos,3379,2022T3,Nacional,N/A,N/A,0.0,0.0,351012.26,0.0
+Vodafone,Banda Ancha móvil,Resto tecnologías,Tráfico - datos,3390,2022T3,Nacional,N/A,N/A,0.0,0.0,116135.24,0.0
+Vodafone,Red de distribución,4G/4.5G,Estaciones Base,3493,2022T3,N/A,N/A,N/A,0.0,211924.0,0.0,0.0
+Vodafone,Red de distribución,5G,Estaciones Base,3504,2022T3,N/A,N/A,N/A,0.0,63199.0,0.0,0.0
+Vodafone,Red de distribución,5G,Nodos,7207,2022T3,N/A,N/A,3.5 GHz,0.0,0.0,0.0,75526.0
+Vodafone,Red de distribución,Resto tecnologías,Estaciones Base,3515,2022T3,N/A,N/A,N/A,0.0,329064.0,0.0,0.0
