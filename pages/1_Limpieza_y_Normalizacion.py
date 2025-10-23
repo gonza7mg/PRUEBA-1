@@ -1,6 +1,7 @@
 # pages/1_Limpieza_y_Normalizacion.py
 import streamlit as st
 import subprocess
+import sys
 import zipfile
 import io
 import pandas as pd
@@ -8,7 +9,7 @@ from pathlib import Path
 import base64
 import requests
 
-st.set_page_config(page_title="Limpieza y Normalización – DSS CNMC", layout="wide", page_icon="��")
+st.set_page_config(page_title="Limpieza y Normalización – DSS CNMC", layout="wide", page_icon="🧹")
 st.header("🧹 Limpieza y Normalización de Datos")
 
 RAW_DIR = Path("data/raw")
@@ -16,10 +17,10 @@ CLEAN_DIR = Path("data/clean")
 LOGS_DIR = Path("logs")
 
 st.markdown("""
-Esta página ejecuta el proceso ETL (Extract–Transform–Load) para transformar los datos **RAW** descargados desde la CNMC
+Esta página ejecuta el proceso ETL (**Extract–Transform–Load**) para transformar los datos **RAW** descargados desde la CNMC
 en versiones **limpias y normalizadas (CLEAN)**, aplicando las rutinas definidas en `utils/data_cleaners/`.
 
-El flujo completo es: **data/raw → limpieza ETL → data/clean → logs/clean_report.csv → subida opcional a GitHub.**
+**Flujo completo:** `data/raw → limpieza ETL → data/clean → logs/clean_report.csv → subida opcional a GitHub`
 """)
 
 # ------------------------------------------------------------
@@ -62,7 +63,6 @@ if c1.button("🔄 Ejecutar limpieza completa (RAW → CLEAN)", use_container_wi
     with st.spinner("Ejecutando script de limpieza..."):
         try:
             result = subprocess.run(
-                import sys
                 [sys.executable, "scripts/make_clean_from_raw.py"],
                 capture_output=True, text=True, check=True
             )
