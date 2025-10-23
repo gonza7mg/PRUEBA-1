@@ -62,7 +62,8 @@ if c1.button("🔄 Ejecutar limpieza completa (RAW → CLEAN)", use_container_wi
     with st.spinner("Ejecutando script de limpieza..."):
         try:
             result = subprocess.run(
-                ["python", "scripts/make_clean_from_raw.py"],
+                import sys
+                [sys.executable, "scripts/make_clean_from_raw.py"],
                 capture_output=True, text=True, check=True
             )
             st.success("✅ Limpieza completada correctamente.")
