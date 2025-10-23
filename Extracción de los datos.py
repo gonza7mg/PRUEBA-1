@@ -1,4 +1,4 @@
-# app.py — CNMC RAW → ZIP/GitHub + Análisis exploratorio (sin TOPSIS)
+# EXTRACCION DE DATOS.py — CNMC RAW → ZIP/GitHub + Análisis exploratorio (sin TOPSIS)
 import io
 import zipfile
 import base64
