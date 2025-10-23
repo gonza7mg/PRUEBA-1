@@ -1,0 +1,7 @@
+[theme]
+# Colores corporativos (azul CNMC / fondo blanco)
+primaryColor = "#0a57d1"
+backgroundColor = "#f7f9fc"
+secondaryBackgroundColor = "#ffffff"
+textColor = "#0b132b"
+font = "sans serif"
