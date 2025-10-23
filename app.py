@@ -164,7 +164,7 @@ if df is not None:
     with st.expander(" Vista previa (primeras 50 filas)", expanded=True):
         st.dataframe(df.head(50), use_container_width=True)
 
-    st.header("🔎 Análisis exploratorio (RAW)")
+    st.header(" Análisis exploratorio (RAW)")
     cA, cB, cC, cD = st.columns([1,1,1,1])
     with cA:  st.metric("Filas", f"{len(df):,}")
     with cB:  st.metric("Columnas", f"{df.shape[1]}")
