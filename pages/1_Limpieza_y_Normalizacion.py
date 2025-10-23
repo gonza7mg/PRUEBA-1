@@ -5,8 +5,10 @@ import zipfile
 import io
 import pandas as pd
 from pathlib import Path
+import base64
+import requests
 
-st.set_page_config(page_title="Limpieza y Normalización – DSS CNMC", layout="wide", page_icon="🧹")
+st.set_page_config(page_title="Limpieza y Normalización – DSS CNMC", layout="wide", page_icon="��")
 st.header("🧹 Limpieza y Normalización de Datos")
 
 RAW_DIR = Path("data/raw")
@@ -16,12 +18,44 @@ LOGS_DIR = Path("logs")
 st.markdown("""
 Esta página ejecuta el proceso ETL (Extract–Transform–Load) para transformar los datos **RAW** descargados desde la CNMC
 en versiones **limpias y normalizadas (CLEAN)**, aplicando las rutinas definidas en `utils/data_cleaners/`.
+
+El flujo completo es: **data/raw → limpieza ETL → data/clean → logs/clean_report.csv → subida opcional a GitHub.**
 """)
+
+# ------------------------------------------------------------
+# Función auxiliar para subir archivos a GitHub
+# ------------------------------------------------------------
+def github_put_file(owner, repo, branch, path, content_bytes, token):
+    """Sube o actualiza un archivo en GitHub (REST API /contents)."""
+    url = f"https://api.github.com/repos/{owner}/{repo}/contents/{path}"
+    r = requests.get(url, params={"ref": branch}, headers={"Authorization": f"Bearer {token}"})
+    sha = r.json().get("sha") if r.status_code == 200 else None
+
+    payload = {
+        "message": f"Update {path}",
+        "content": base64.b64encode(content_bytes).decode("utf-8"),
+        "branch": branch,
+    }
+    if sha:
+        payload["sha"] = sha
+
+    r = requests.put(url, headers={"Authorization": f"Bearer {token}"}, json=payload)
+    if r.status_code not in (200, 201):
+        raise RuntimeError(f"GitHub PUT failed for {path}: {r.status_code} {r.text}")
+
+def push_all_to_github(files_dict: dict[str, bytes], subdir: str = "data/clean/"):
+    """Sube todos los CSV CLEAN al repo usando secretos configurados en Streamlit Cloud."""
+    owner_repo = st.secrets["GITHUB_REPO"]
+    branch     = st.secrets.get("GITHUB_BRANCH", "main")
+    token      = st.secrets["GITHUB_TOKEN"]
+    owner, repo = owner_repo.split("/", 1)
+    for fname, content in files_dict.items():
+        github_put_file(owner, repo, branch, f"{subdir}{fname}", content, token)
 
 # ------------------------------------------------------------
 # BOTONES PRINCIPALES
 # ------------------------------------------------------------
-c1, c2, c3 = st.columns([1,1,1])
+c1, c2, c3, c4 = st.columns([1,1,1,1])
 
 # --- Ejecutar limpieza completa ---
 if c1.button("🔄 Ejecutar limpieza completa (RAW → CLEAN)", use_container_width=True):
@@ -64,6 +98,21 @@ if c3.button("💾 Descargar ZIP CLEAN", use_container_width=True):
             use_container_width=True
         )
 
+# --- Subir CLEAN a GitHub ---
+if c4.button("⬆️ Subir CLEAN a GitHub (data/clean/)", use_container_width=True):
+    if not CLEAN_DIR.exists() or not any(CLEAN_DIR.glob("*.csv")):
+        st.warning("No hay archivos limpios en data/clean/. Ejecuta primero la limpieza.")
+    else:
+        with st.spinner("Subiendo archivos limpios a GitHub..."):
+            try:
+                files_dict = {f.name: f.read_bytes() for f in CLEAN_DIR.glob("*.csv")}
+                push_all_to_github(files_dict, subdir="data/clean/")
+                st.success("✅ Archivos CLEAN subidos correctamente a GitHub (data/clean/).")
+            except KeyError:
+                st.error("❌ Faltan secretos GITHUB_REPO, GITHUB_TOKEN o GITHUB_BRANCH en Streamlit Cloud.")
+            except Exception as e:
+                st.error(f"❌ Error al subir archivos a GitHub: {e}")
+
 # ------------------------------------------------------------
 # Mostrar contenido actual de las carpetas
 # ------------------------------------------------------------
@@ -86,4 +135,4 @@ with tab1:
 with tab2:
     st.dataframe(list_csvs(CLEAN_DIR), use_container_width=True)
 
-st.caption("El flujo completo queda así: **data/raw → limpieza ETL → data/clean → logs/clean_report.csv**.")
+st.caption("Flujo completo: **data/raw → limpieza ETL → data/clean → logs/clean_report.csv → subida opcional a GitHub.**")
