@@ -10,7 +10,7 @@ import base64
 import requests
 
 st.set_page_config(page_title="Limpieza y Normalización – DSS CNMC", layout="wide", page_icon="🧹")
-st.header("🧹 Limpieza y Normalización de Datos")
+st.header(" Limpieza y Normalización de Datos")
 
 RAW_DIR = Path("data/raw")
 CLEAN_DIR = Path("data/clean")
