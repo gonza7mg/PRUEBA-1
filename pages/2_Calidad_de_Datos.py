@@ -46,7 +46,7 @@ except Exception as e:
     st.error(f"No se pudo cargar {path}: {e}")
 
 if df is not None:
-    with st.expander("👀 Vista previa (primeras 50 filas)", expanded=False):
+    with st.expander(" Vista previa (primeras 50 filas)", expanded=False):
         st.dataframe(df.head(50), use_container_width=True)
 
     # Pista para reglas de unicidad y checks temporales
