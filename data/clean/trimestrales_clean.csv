@@ -1,21 +1,13 @@
-operador,servicio,concepto,id,trimestre,pais,tipo_de_mercado,tipo_de_ingreso,tipo_de_paquete,unidades,ingresos,ingresos_por_operador,empleados_por_operador,paquetes
-Otros,Datos generales,Número de empleados,119298,2005T1,España,N/A,N/A,N/A,Unidades,0.0,0.0,85960.0,0.0
-Digi,Datos generales,Ingresos,230135,2010T1,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,3578.77,0.0,0.0
-Digi,Datos generales,Número de empleados,113862,2010T1,España,N/A,N/A,N/A,Unidades,0.0,0.0,112355.0,0.0
-Grupo MASMOVIL,Datos generales,Ingresos,175949,2009T2,España,Servicio minorista,N/A,N/A,Millones de euros,0.0,16459.05,0.0,0.0
-Grupo MASMOVIL,Datos generales,Número de empleados,103159,2009T2,España,N/A,N/A,N/A,Unidades,0.0,0.0,30471.0,0.0
-MASORANGE,Datos generales,Ingresos,24972,2024T2,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,8224.87,0.0,0.0
-MASORANGE,Datos generales,Número de empleados,12408,2024T2,España,N/A,N/A,N/A,Unidades,0.0,0.0,25861.0,0.0
-Movistar,Datos generales,Ingresos,241868,2005T1,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,327467.16000000003,0.0,0.0
-Movistar,Datos generales,Número de empleados,119503,2005T1,España,N/A,N/A,N/A,Unidades,0.0,0.0,2047788.0,0.0
-Otros,Datos generales,Ingresos,2044533,2005T1,España,Servicio mayorista,Alquiler de circuitos,N/A,Millones de euros,702183.91,0.0,0.0,0.0
-Otros,Datos generales,Paquetes,618067,2012T1,España,N/A,N/A,Resto paquetes,Unidades,0.0,0.0,0.0,762568272.0
-Otros,Datos generales,Número de empleados,22671,2005T1,España,N/A,N/A,N/A,Unidades,0.0,0.0,132315.0,0.0
-Otros,Datos generales,Ingresos,218313,2005T1,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,88740.38,0.0,0.0
-Otros,Datos generales,Número de empleados,107204,2005T1,España,N/A,N/A,N/A,Unidades,0.0,0.0,334929.0,0.0
-Otros,Datos generales,Número de empleados,119776,2005T1,España,N/A,N/A,N/A,Unidades,0.0,0.0,530008.0,0.0
-Otros,Datos generales,Ingresos,243517,2005T1,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,149088.26,0.0,0.0
-Otros,Datos generales,Número de empleados,119696,2005T1,España,N/A,N/A,N/A,Unidades,0.0,0.0,1257800.0,0.0
-Otros,Datos generales,Número de empleados,119856,2005T1,España,N/A,N/A,N/A,Unidades,0.0,0.0,174235.0,0.0
-Vodafone,Datos generales,Ingresos,243677,2005T1,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,108625.51,0.0,0.0
-Vodafone,Datos generales,Número de empleados,119936,2005T1,España,N/A,N/A,N/A,Unidades,0.0,0.0,351264.0,0.0
+operador,servicio,id,trimestre,pais,tipo_de_mercado,concepto,tipo_de_ingreso,tipo_de_paquete,unidades,ingresos,ingresos_por_operador,empleados_por_operador,paquetes
+Canal Sur (RTVA),Datos generales,119298,2005T1,España,nan,Número de empleados,nan,nan,Unidades,0.0,0.0,85960.0,0.0
+Digi,Datos generales,343997,2010T1,España,nan,Número de empleados,nan,nan,Unidades,0.0,3578.77,112355.0,0.0
+Grupo MASMOVIL,Datos generales,279108,2009T2,España,nan,Número de empleados,nan,nan,Unidades,0.0,16459.05,30471.0,0.0
+MASORANGE,Datos generales,37380,2024T2,España,nan,Número de empleados,nan,nan,Unidades,0.0,8224.87,25861.0,0.0
+Movistar,Datos generales,361371,2005T1,España,nan,Número de empleados,nan,nan,Unidades,0.0,327467.16000000003,2047788.0,0.0
+Otros,Datos generales,22671,2005T1,España,nan,Número de empleados,nan,nan,Unidades,0.0,0.0,132315.0,0.0
+Otros,Datos generales,325517,2005T1,España,nan,Número de empleados,nan,nan,Unidades,0.0,88740.38,334929.0,0.0
+Otros,Datos generales,119776,2005T1,España,nan,Número de empleados,nan,nan,Unidades,0.0,0.0,530008.0,0.0
+Otros,Datos generales,363213,2005T1,España,nan,Número de empleados,nan,nan,Unidades,0.0,149088.26,1257800.0,0.0
+Otros,Datos generales,119856,2005T1,España,nan,Número de empleados,nan,nan,Unidades,0.0,0.0,174235.0,0.0
+Otros,Datos generales,363613,2005T1,España,nan,Número de empleados,nan,nan,Unidades,0.0,108625.51,351264.0,0.0
+Otros,Datos generales,2662600,2005T1,España,Servicio mayorista,Ingresos,Alquiler de circuitos,nan,Millones de euros,702183.91,0.0,0.0,762568272.0
