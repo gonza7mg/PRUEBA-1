@@ -1,727 +1,455 @@
-periodo,operador,servicio,concepto,id,anno,pais,tipo_de_mercado,tipo_de_ingreso,tipo_de_paquete,unidades,ingresos,ingresos_por_operador,empleados_por_operador,paquetes,inversiones_por_operador,gastos_por_operador
-1998-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,1,1998,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,4581.86,0.0
-1999-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,2,1999,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,6178.41,0.0
-2000-01-01,Otros,Datos generales,Gastos de explotación,3,2000,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,16.26
-2000-01-01,Otros,Datos generales,Gastos de explotación,4,2000,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,27.57
-2000-01-01,Movistar,Datos generales,Gastos de explotación,5,2000,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,328.72
-2000-01-01,Otros,Datos generales,Ingresos,23,4000,España,Servicio mayorista,N/A,N/A,Millones de euros,24783.0,24783.0,0.0,0.0,0.0,0.0
-2000-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,10,2000,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,10186.81,0.0
-2000-01-01,Otros,Datos generales,Gastos de explotación,6,2000,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,12.56
-2000-01-01,Orange,Datos generales,Gastos de explotación,7,2000,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,159.84
-2000-01-01,Resto,Datos generales,Gastos de explotación,8,2000,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,384.9
-2000-01-01,Vodafone,Datos generales,Gastos de explotación,9,2000,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,59.68
-2001-01-01,Otros,Datos generales,Gastos de explotación,13,2001,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,18.31
-2001-01-01,Otros,Datos generales,Gastos de explotación,14,2001,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,7.92
-2001-01-01,Movistar,Datos generales,Gastos de explotación,15,2001,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,307.95
-2001-01-01,Movistar,Datos generales,Ingresos,51,4002,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,15262.189999999999,0.0,0.0,0.0,0.0
-2001-01-01,Otros,Datos generales,Ingresos,232,16008,España,Servicio mayorista,Interconexión fija,N/A,Millones de euros,25745.96,0.0,0.0,0.0,0.0,0.0
-2001-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,21,2001,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,8190.52,0.0
-2001-01-01,Otros,Datos generales,Gastos de explotación,16,2001,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,12.24
-2001-01-01,Orange,Datos generales,Gastos de explotación,17,2001,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,76.41
-2001-01-01,Orange,Datos generales,Ingresos,61,4002,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,1796.06,0.0,0.0,0.0,0.0
-2001-01-01,Resto,Datos generales,Gastos de explotación,18,2001,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,213.35
-2001-01-01,Resto,Datos generales,Ingresos,63,4002,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,5961.990000000001,0.0,0.0,0.0,0.0
-2001-01-01,Vodafone,Datos generales,Gastos de explotación,19,2001,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,81.63
-2001-01-01,Vodafone,Datos generales,Ingresos,65,4002,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,2725.7200000000003,0.0,0.0,0.0,0.0
-2001-01-01,Otros,Datos generales,Gastos de explotación,20,2001,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,2.43
-2002-01-01,Otros,Datos generales,Gastos de explotación,38,2002,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,7.54
-2002-01-01,Otros,Datos generales,Gastos de explotación,39,2002,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,6.76
-2002-01-01,Movistar,Datos generales,Gastos de explotación,40,2002,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,263.02
-2002-01-01,Movistar,Datos generales,Ingresos,118,4004,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,16617.27,0.0,0.0,0.0,0.0
-2002-01-01,Movistar,Datos generales,Número de empleados,47,2002,España,N/A,N/A,N/A,Unidades,0.0,0.0,46473.0,0.0,0.0,0.0
-2002-01-01,Otros,Datos generales,Ingresos,750,24024,España,Servicio mayorista,Alquiler de circuitos,N/A,Millones de euros,31306.04,0.0,0.0,0.0,0.0,0.0
-2002-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,46,2002,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,5556.25,0.0
-2002-01-01,Otros,Datos generales,Gastos de explotación,41,2002,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,51.95
-2002-01-01,Otros,Datos generales,Número de empleados,48,2002,España,N/A,N/A,N/A,Unidades,0.0,0.0,5192.0,0.0,0.0,0.0
-2002-01-01,Orange,Datos generales,Gastos de explotación,42,2002,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,88.72
-2002-01-01,Orange,Datos generales,Ingresos,132,4004,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,2619.91,0.0,0.0,0.0,0.0
-2002-01-01,Orange,Datos generales,Número de empleados,49,2002,España,N/A,N/A,N/A,Unidades,0.0,0.0,4377.0,0.0,0.0,0.0
-2002-01-01,Otros,Datos generales,Número de empleados,51,2002,España,N/A,N/A,N/A,Unidades,0.0,0.0,9140.0,0.0,0.0,0.0
-2002-01-01,Resto,Datos generales,Gastos de explotación,43,2002,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,119.07
-2002-01-01,Resto,Datos generales,Ingresos,134,4004,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,8812.55,0.0,0.0,0.0,0.0
-2002-01-01,Resto,Datos generales,Número de empleados,50,2002,España,N/A,N/A,N/A,Unidades,0.0,0.0,22726.0,0.0,0.0,0.0
-2002-01-01,Otros,Datos generales,Número de empleados,52,2002,España,N/A,N/A,N/A,Unidades,0.0,0.0,1834.0,0.0,0.0,0.0
-2002-01-01,Vodafone,Datos generales,Gastos de explotación,44,2002,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,92.32
-2002-01-01,Vodafone,Datos generales,Ingresos,136,4004,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,3256.32,0.0,0.0,0.0,0.0
-2002-01-01,Vodafone,Datos generales,Número de empleados,53,2002,España,N/A,N/A,N/A,Unidades,0.0,0.0,4266.0,0.0,0.0,0.0
-2002-01-01,Otros,Datos generales,Gastos de explotación,45,2002,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,0.04
-2003-01-01,Otros,Datos generales,Gastos de explotación,74,2003,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,7.17
-2003-01-01,Otros,Datos generales,Gastos de explotación,75,2003,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,3.93
-2003-01-01,Movistar,Datos generales,Gastos de explotación,76,2003,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,261.14
-2003-01-01,Movistar,Datos generales,Ingresos,189,4006,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,18740.69,0.0,0.0,0.0,0.0
-2003-01-01,Movistar,Datos generales,Número de empleados,82,2003,España,N/A,N/A,N/A,Unidades,0.0,0.0,41111.0,0.0,0.0,0.0
-2003-01-01,Otros,Datos generales,Ingresos,1596,32048,España,Servicio mayorista,Alquiler de circuitos,N/A,Millones de euros,34646.45,0.0,0.0,0.0,0.0,0.0
-2003-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,81,2003,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,4547.61,0.0
-2003-01-01,Otros,Datos generales,Gastos de explotación,77,2003,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,26.73
-2003-01-01,Otros,Datos generales,Número de empleados,83,2003,España,N/A,N/A,N/A,Unidades,0.0,0.0,4360.0,0.0,0.0,0.0
-2003-01-01,Orange,Datos generales,Gastos de explotación,78,2003,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,64.2
-2003-01-01,Orange,Datos generales,Ingresos,207,4006,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,3429.9700000000003,0.0,0.0,0.0,0.0
-2003-01-01,Orange,Datos generales,Número de empleados,84,2003,España,N/A,N/A,N/A,Unidades,0.0,0.0,3813.0,0.0,0.0,0.0
-2003-01-01,Otros,Datos generales,Número de empleados,86,2003,España,N/A,N/A,N/A,Unidades,0.0,0.0,9259.0,0.0,0.0,0.0
-2003-01-01,Resto,Datos generales,Gastos de explotación,79,2003,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,122.7
-2003-01-01,Resto,Datos generales,Ingresos,209,4006,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,8488.99,0.0,0.0,0.0,0.0
-2003-01-01,Resto,Datos generales,Número de empleados,85,2003,España,N/A,N/A,N/A,Unidades,0.0,0.0,23258.0,0.0,0.0,0.0
-2003-01-01,Otros,Datos generales,Número de empleados,87,2003,España,N/A,N/A,N/A,Unidades,0.0,0.0,1989.0,0.0,0.0,0.0
-2003-01-01,Vodafone,Datos generales,Gastos de explotación,80,2003,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,104.75
-2003-01-01,Vodafone,Datos generales,Ingresos,211,4006,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,3986.82,0.0,0.0,0.0,0.0
-2003-01-01,Vodafone,Datos generales,Número de empleados,88,2003,España,N/A,N/A,N/A,Unidades,0.0,0.0,4436.0,0.0,0.0,0.0
-2004-01-01,Otros,Datos generales,Gastos de explotación,113,2004,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,6.06
-2004-01-01,Movistar,Datos generales,Gastos de explotación,114,2004,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,316.64
-2004-01-01,Movistar,Datos generales,Ingresos,265,4008,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,19832.420000000002,0.0,0.0,0.0,0.0
-2004-01-01,Movistar,Datos generales,Número de empleados,120,2004,España,N/A,N/A,N/A,Unidades,0.0,0.0,38801.0,0.0,0.0,0.0
-2004-01-01,Otros,Datos generales,Ingresos,2204,32064,España,Servicio mayorista,Alquiler de circuitos,N/A,Millones de euros,37327.94,0.0,0.0,0.0,0.0,0.0
-2004-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,119,2004,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,4714.85,0.0
-2004-01-01,Otros,Datos generales,Gastos de explotación,115,2004,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,48.46
-2004-01-01,Otros,Datos generales,Número de empleados,121,2004,España,N/A,N/A,N/A,Unidades,0.0,0.0,4216.0,0.0,0.0,0.0
-2004-01-01,Orange,Datos generales,Gastos de explotación,116,2004,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,92.94
-2004-01-01,Orange,Datos generales,Ingresos,283,4008,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,3887.8100000000004,0.0,0.0,0.0,0.0
-2004-01-01,Orange,Datos generales,Número de empleados,122,2004,España,N/A,N/A,N/A,Unidades,0.0,0.0,3261.0,0.0,0.0,0.0
-2004-01-01,Otros,Datos generales,Número de empleados,124,2004,España,N/A,N/A,N/A,Unidades,0.0,0.0,9317.0,0.0,0.0,0.0
-2004-01-01,Resto,Datos generales,Gastos de explotación,117,2004,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,108.56
-2004-01-01,Resto,Datos generales,Ingresos,285,4008,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,8771.56,0.0,0.0,0.0,0.0
-2004-01-01,Resto,Datos generales,Número de empleados,123,2004,España,N/A,N/A,N/A,Unidades,0.0,0.0,25958.0,0.0,0.0,0.0
-2004-01-01,Otros,Datos generales,Número de empleados,125,2004,España,N/A,N/A,N/A,Unidades,0.0,0.0,1988.0,0.0,0.0,0.0
-2004-01-01,Vodafone,Datos generales,Gastos de explotación,118,2004,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,147.11
-2004-01-01,Vodafone,Datos generales,Ingresos,287,4008,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,4836.16,0.0,0.0,0.0,0.0
-2004-01-01,Vodafone,Datos generales,Número de empleados,126,2004,España,N/A,N/A,N/A,Unidades,0.0,0.0,4464.0,0.0,0.0,0.0
-2005-01-01,Otros,Datos generales,Gastos de explotación,151,2005,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,37.63
-2005-01-01,Movistar,Datos generales,Gastos de explotación,152,2005,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,351.19
-2005-01-01,Movistar,Datos generales,Ingresos,343,4010,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,20959.989999999998,0.0,0.0,0.0,0.0
-2005-01-01,Movistar,Datos generales,Número de empleados,159,2005,España,N/A,N/A,N/A,Unidades,0.0,0.0,37061.0,0.0,0.0,0.0
-2005-01-01,Otros,Datos generales,Ingresos,2828,32080,España,Servicio mayorista,Alquiler de circuitos,N/A,Millones de euros,40875.950000000004,0.0,0.0,0.0,0.0,0.0
-2005-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,158,2005,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,5514.82,0.0
-2005-01-01,Otros,Datos generales,Gastos de explotación,153,2005,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,33.66
-2005-01-01,Otros,Datos generales,Número de empleados,160,2005,España,N/A,N/A,N/A,Unidades,0.0,0.0,4643.0,0.0,0.0,0.0
-2005-01-01,Orange,Datos generales,Gastos de explotación,154,2005,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,142.42
-2005-01-01,Orange,Datos generales,Ingresos,361,4010,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,4228.09,0.0,0.0,0.0,0.0
-2005-01-01,Orange,Datos generales,Número de empleados,161,2005,España,N/A,N/A,N/A,Unidades,0.0,0.0,3285.0,0.0,0.0,0.0
-2005-01-01,Otros,Datos generales,Número de empleados,163,2005,España,N/A,N/A,N/A,Unidades,0.0,0.0,9292.0,0.0,0.0,0.0
-2005-01-01,Resto,Datos generales,Gastos de explotación,155,2005,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,110.14
-2005-01-01,Resto,Datos generales,Ingresos,363,4010,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,9762.83,0.0,0.0,0.0,0.0
-2005-01-01,Resto,Datos generales,Número de empleados,162,2005,España,N/A,N/A,N/A,Unidades,0.0,0.0,27771.0,0.0,0.0,0.0
-2005-01-01,Otros,Datos generales,Número de empleados,164,2005,España,N/A,N/A,N/A,Unidades,0.0,0.0,1963.0,0.0,0.0,0.0
-2005-01-01,Vodafone,Datos generales,Gastos de explotación,156,2005,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,197.67
-2005-01-01,Vodafone,Datos generales,Ingresos,365,4010,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,5925.049999999999,0.0,0.0,0.0,0.0
-2005-01-01,Vodafone,Datos generales,Número de empleados,165,2005,España,N/A,N/A,N/A,Unidades,0.0,0.0,4504.0,0.0,0.0,0.0
-2005-01-01,Otros,Datos generales,Gastos de explotación,157,2005,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,0.12
-2006-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,197,2006,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,138.81,0.0
-2006-01-01,Otros,Datos generales,Gastos de explotación,190,2006,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,25.48
-2006-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,198,2006,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,136.58,0.0
-2006-01-01,Movistar,Datos generales,Gastos de explotación,191,2006,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,604.96
-2006-01-01,Movistar,Datos generales,Ingresos,439,4012,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,20495.32,0.0,0.0,0.0,0.0
-2006-01-01,Movistar,Datos generales,Inversiones en infraestr de telec y serv audiov,199,2006,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,2235.96,0.0
-2006-01-01,Movistar,Datos generales,Número de empleados,204,2006,España,N/A,N/A,N/A,Unidades,0.0,0.0,35645.0,0.0,0.0,0.0
-2006-01-01,Otros,Datos generales,Ingresos,3596,32096,España,Servicio mayorista,Alquiler de circuitos,N/A,Millones de euros,42124.71,0.0,0.0,0.0,0.0,0.0
-2006-01-01,Otros,Datos generales,Paquetes,636,6018,España,N/A,N/A,Resto,Unidades,0.0,0.0,0.0,4976363.0,0.0,0.0
-2006-01-01,Otros,Datos generales,Gastos de explotación,192,2006,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,52.59
-2006-01-01,Otros,Datos generales,Número de empleados,205,2006,España,N/A,N/A,N/A,Unidades,0.0,0.0,4689.0,0.0,0.0,0.0
-2006-01-01,Orange,Datos generales,Gastos de explotación,193,2006,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,180.79
-2006-01-01,Orange,Datos generales,Ingresos,457,4012,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,4322.639999999999,0.0,0.0,0.0,0.0
-2006-01-01,Orange,Datos generales,Inversiones en infraestr de telec y serv audiov,200,2006,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,730.18,0.0
-2006-01-01,Orange,Datos generales,Número de empleados,206,2006,España,N/A,N/A,N/A,Unidades,0.0,0.0,3800.0,0.0,0.0,0.0
-2006-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,202,2006,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,60.89,0.0
-2006-01-01,Otros,Datos generales,Número de empleados,208,2006,España,N/A,N/A,N/A,Unidades,0.0,0.0,9256.0,0.0,0.0,0.0
-2006-01-01,Resto,Datos generales,Gastos de explotación,194,2006,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,122.82
-2006-01-01,Resto,Datos generales,Ingresos,459,4012,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,10383.97,0.0,0.0,0.0,0.0
-2006-01-01,Resto,Datos generales,Inversiones en infraestr de telec y serv audiov,201,2006,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1537.04,0.0
-2006-01-01,Resto,Datos generales,Número de empleados,207,2006,España,N/A,N/A,N/A,Unidades,0.0,0.0,28890.0,0.0,0.0,0.0
-2006-01-01,Otros,Datos generales,Número de empleados,209,2006,España,N/A,N/A,N/A,Unidades,0.0,0.0,1982.0,0.0,0.0,0.0
-2006-01-01,Vodafone,Datos generales,Gastos de explotación,195,2006,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,188.39
-2006-01-01,Vodafone,Datos generales,Ingresos,461,4012,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,6922.780000000001,0.0,0.0,0.0,0.0
-2006-01-01,Vodafone,Datos generales,Inversiones en infraestr de telec y serv audiov,203,2006,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,845.86,0.0
-2006-01-01,Vodafone,Datos generales,Número de empleados,210,2006,España,N/A,N/A,N/A,Unidades,0.0,0.0,4471.0,0.0,0.0,0.0
-2006-01-01,Otros,Datos generales,Gastos de explotación,196,2006,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,9.58
-2007-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,245,2007,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,90.82,0.0
-2007-01-01,Otros,Datos generales,Gastos de explotación,238,2007,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,11.65
-2007-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,246,2007,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,160.17,0.0
-2007-01-01,Movistar,Datos generales,Gastos de explotación,239,2007,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,654.5
-2007-01-01,Movistar,Datos generales,Ingresos,535,4014,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,21359.17,0.0,0.0,0.0,0.0
-2007-01-01,Movistar,Datos generales,Inversiones en infraestr de telec y serv audiov,247,2007,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,2323.45,0.0
-2007-01-01,Movistar,Datos generales,Número de empleados,252,2007,España,N/A,N/A,N/A,Unidades,0.0,0.0,32999.0,0.0,0.0,0.0
-2007-01-01,Otros,Datos generales,Ingresos,4364,32112,España,Servicio mayorista,Alquiler de circuitos,N/A,Millones de euros,43866.490000000005,0.0,0.0,0.0,0.0,0.0
-2007-01-01,Otros,Datos generales,Paquetes,780,6021,España,N/A,N/A,Resto,Unidades,0.0,0.0,0.0,7225124.0,0.0,0.0
-2007-01-01,Otros,Datos generales,Gastos de explotación,240,2007,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,54.32
-2007-01-01,Otros,Datos generales,Número de empleados,253,2007,España,N/A,N/A,N/A,Unidades,0.0,0.0,4500.0,0.0,0.0,0.0
-2007-01-01,Orange,Datos generales,Gastos de explotación,241,2007,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,172.09
-2007-01-01,Orange,Datos generales,Ingresos,553,4014,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,4211.1900000000005,0.0,0.0,0.0,0.0
-2007-01-01,Orange,Datos generales,Inversiones en infraestr de telec y serv audiov,248,2007,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,658.7,0.0
-2007-01-01,Orange,Datos generales,Número de empleados,254,2007,España,N/A,N/A,N/A,Unidades,0.0,0.0,3715.0,0.0,0.0,0.0
-2007-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,250,2007,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,57.18,0.0
-2007-01-01,Otros,Datos generales,Número de empleados,256,2007,España,N/A,N/A,N/A,Unidades,0.0,0.0,5830.0,0.0,0.0,0.0
-2007-01-01,Resto,Datos generales,Gastos de explotación,242,2007,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,154.48
-2007-01-01,Resto,Datos generales,Ingresos,555,4014,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,10975.789999999999,0.0,0.0,0.0,0.0
-2007-01-01,Resto,Datos generales,Inversiones en infraestr de telec y serv audiov,249,2007,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1528.96,0.0
-2007-01-01,Resto,Datos generales,Número de empleados,255,2007,España,N/A,N/A,N/A,Unidades,0.0,0.0,31831.0,0.0,0.0,0.0
-2007-01-01,Otros,Datos generales,Número de empleados,257,2007,España,N/A,N/A,N/A,Unidades,0.0,0.0,1831.0,0.0,0.0,0.0
-2007-01-01,Vodafone,Datos generales,Gastos de explotación,243,2007,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,214.56
-2007-01-01,Vodafone,Datos generales,Ingresos,557,4014,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,7320.34,0.0,0.0,0.0,0.0
-2007-01-01,Vodafone,Datos generales,Inversiones en infraestr de telec y serv audiov,251,2007,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,957.97,0.0
-2007-01-01,Vodafone,Datos generales,Número de empleados,258,2007,España,N/A,N/A,N/A,Unidades,0.0,0.0,4299.0,0.0,0.0,0.0
-2007-01-01,Otros,Datos generales,Gastos de explotación,244,2007,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,18.86
-2008-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,293,2008,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,66.44,0.0
-2008-01-01,Otros,Datos generales,Gastos de explotación,286,2008,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,12.45
-2008-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,294,2008,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,152.24,0.0
-2008-01-01,Movistar,Datos generales,Gastos de explotación,287,2008,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,557.17
-2008-01-01,Movistar,Datos generales,Ingresos,631,4016,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,21796.92,0.0,0.0,0.0,0.0
-2008-01-01,Movistar,Datos generales,Inversiones en infraestr de telec y serv audiov,295,2008,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,2174.26,0.0
-2008-01-01,Movistar,Datos generales,Número de empleados,300,2008,España,N/A,N/A,N/A,Unidades,0.0,0.0,32643.0,0.0,0.0,0.0
-2008-01-01,Otros,Datos generales,Ingresos,5132,32128,España,Servicio mayorista,Alquiler de circuitos,N/A,Millones de euros,44080.450000000004,0.0,0.0,0.0,0.0,0.0
-2008-01-01,Otros,Datos generales,Paquetes,924,6024,España,N/A,N/A,Resto,Unidades,0.0,0.0,0.0,8504070.0,0.0,0.0
-2008-01-01,Otros,Datos generales,Gastos de explotación,288,2008,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,47.33
-2008-01-01,Otros,Datos generales,Número de empleados,301,2008,España,N/A,N/A,N/A,Unidades,0.0,0.0,4209.0,0.0,0.0,0.0
-2008-01-01,Orange,Datos generales,Gastos de explotación,289,2008,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,141.86
-2008-01-01,Orange,Datos generales,Ingresos,649,4016,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,4130.97,0.0,0.0,0.0,0.0
-2008-01-01,Orange,Datos generales,Inversiones en infraestr de telec y serv audiov,296,2008,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,561.24,0.0
-2008-01-01,Orange,Datos generales,Número de empleados,302,2008,España,N/A,N/A,N/A,Unidades,0.0,0.0,3307.0,0.0,0.0,0.0
-2008-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,298,2008,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,66.52,0.0
-2008-01-01,Otros,Datos generales,Número de empleados,304,2008,España,N/A,N/A,N/A,Unidades,0.0,0.0,6402.0,0.0,0.0,0.0
-2008-01-01,Resto,Datos generales,Gastos de explotación,290,2008,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,195.43
-2008-01-01,Resto,Datos generales,Ingresos,651,4016,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,11121.019999999999,0.0,0.0,0.0,0.0
-2008-01-01,Resto,Datos generales,Inversiones en infraestr de telec y serv audiov,297,2008,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1396.58,0.0
-2008-01-01,Resto,Datos generales,Número de empleados,303,2008,España,N/A,N/A,N/A,Unidades,0.0,0.0,29166.0,0.0,0.0,0.0
-2008-01-01,Otros,Datos generales,Número de empleados,305,2008,España,N/A,N/A,N/A,Unidades,0.0,0.0,1670.0,0.0,0.0,0.0
-2008-01-01,Vodafone,Datos generales,Gastos de explotación,291,2008,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,212.29
-2008-01-01,Vodafone,Datos generales,Ingresos,653,4016,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,7031.53,0.0,0.0,0.0,0.0
-2008-01-01,Vodafone,Datos generales,Inversiones en infraestr de telec y serv audiov,299,2008,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,724.1,0.0
-2008-01-01,Vodafone,Datos generales,Número de empleados,306,2008,España,N/A,N/A,N/A,Unidades,0.0,0.0,4333.0,0.0,0.0,0.0
-2008-01-01,Otros,Datos generales,Gastos de explotación,292,2008,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,11.48
-2009-01-01,Digi,Datos generales,Gastos de explotación,334,2009,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,0.04
-2009-01-01,Digi,Datos generales,Ingresos,740,4018,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,5.859999999999999,0.0,0.0,0.0,0.0
-2009-01-01,Digi,Datos generales,Inversiones en infraestr de telec y serv audiov,343,2009,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.12,0.0
-2009-01-01,Digi,Datos generales,Número de empleados,352,2009,España,N/A,N/A,N/A,Unidades,0.0,0.0,21.0,0.0,0.0,0.0
-2009-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,344,2009,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,46.6,0.0
-2009-01-01,Otros,Datos generales,Gastos de explotación,335,2009,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,2.53
-2009-01-01,Otros,Datos generales,Ingresos,377,2009,España,Servicio minorista,N/A,N/A,Millones de euros,0.0,9.48,0.0,0.0,0.0,0.0
-2009-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,345,2009,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.84,0.0
-2009-01-01,Otros,Datos generales,Número de empleados,353,2009,España,N/A,N/A,N/A,Unidades,0.0,0.0,27.0,0.0,0.0,0.0
-2009-01-01,Otros,Datos generales,Gastos de explotación,336,2009,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,14.27
-2009-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,346,2009,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,163.59,0.0
-2009-01-01,Movistar,Datos generales,Gastos de explotación,337,2009,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,437.77
-2009-01-01,Movistar,Datos generales,Ingresos,743,4018,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,20464.83,0.0,0.0,0.0,0.0
-2009-01-01,Movistar,Datos generales,Inversiones en infraestr de telec y serv audiov,347,2009,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1829.4,0.0
-2009-01-01,Movistar,Datos generales,Número de empleados,354,2009,España,N/A,N/A,N/A,Unidades,0.0,0.0,32393.0,0.0,0.0,0.0
-2009-01-01,Otros,Datos generales,Ingresos,6030,32144,España,Servicio mayorista,Alquiler de circuitos,N/A,Millones de euros,41177.59,0.0,0.0,0.0,0.0,0.0
-2009-01-01,Otros,Datos generales,Paquetes,1086,6027,España,N/A,N/A,Resto,Unidades,0.0,0.0,0.0,9265579.0,0.0,0.0
-2009-01-01,Otros,Datos generales,Gastos de explotación,338,2009,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,42.16
-2009-01-01,Otros,Datos generales,Número de empleados,355,2009,España,N/A,N/A,N/A,Unidades,0.0,0.0,3344.0,0.0,0.0,0.0
-2009-01-01,Orange,Datos generales,Gastos de explotación,339,2009,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,133.18
-2009-01-01,Orange,Datos generales,Ingresos,761,4018,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,3871.09,0.0,0.0,0.0,0.0
-2009-01-01,Orange,Datos generales,Inversiones en infraestr de telec y serv audiov,348,2009,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,442.55,0.0
-2009-01-01,Orange,Datos generales,Número de empleados,356,2009,España,N/A,N/A,N/A,Unidades,0.0,0.0,3133.0,0.0,0.0,0.0
-2009-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,350,2009,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,88.98,0.0
-2009-01-01,Otros,Datos generales,Número de empleados,358,2009,España,N/A,N/A,N/A,Unidades,0.0,0.0,6397.0,0.0,0.0,0.0
-2009-01-01,Resto,Datos generales,Gastos de explotación,340,2009,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,166.56
-2009-01-01,Resto,Datos generales,Ingresos,763,4018,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,10220.35,0.0,0.0,0.0,0.0
-2009-01-01,Resto,Datos generales,Inversiones en infraestr de telec y serv audiov,349,2009,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1061.19,0.0
-2009-01-01,Resto,Datos generales,Número de empleados,357,2009,España,N/A,N/A,N/A,Unidades,0.0,0.0,28664.0,0.0,0.0,0.0
-2009-01-01,Otros,Datos generales,Número de empleados,359,2009,España,N/A,N/A,N/A,Unidades,0.0,0.0,1748.0,0.0,0.0,0.0
-2009-01-01,Vodafone,Datos generales,Gastos de explotación,341,2009,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,186.26
-2009-01-01,Vodafone,Datos generales,Ingresos,765,4018,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,6605.99,0.0,0.0,0.0,0.0
-2009-01-01,Vodafone,Datos generales,Inversiones en infraestr de telec y serv audiov,351,2009,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,633.46,0.0
-2009-01-01,Vodafone,Datos generales,Número de empleados,360,2009,España,N/A,N/A,N/A,Unidades,0.0,0.0,4335.0,0.0,0.0,0.0
-2009-01-01,Otros,Datos generales,Gastos de explotación,342,2009,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,5.38
-2010-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,401,2010,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.3,0.0
-2010-01-01,Otros,Datos generales,Gastos de explotación,392,2010,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,38.03
-2010-01-01,Digi,Datos generales,Gastos de explotación,391,2010,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,0.03
-2010-01-01,Digi,Datos generales,Ingresos,859,4020,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,29.520000000000003,0.0,0.0,0.0,0.0
-2010-01-01,Digi,Datos generales,Inversiones en infraestr de telec y serv audiov,402,2010,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.16,0.0
-2010-01-01,Digi,Datos generales,Número de empleados,411,2010,España,N/A,N/A,N/A,Unidades,0.0,0.0,34.0,0.0,0.0,0.0
-2010-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,403,2010,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,45.43,0.0
-2010-01-01,Otros,Datos generales,Gastos de explotación,393,2010,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,0.88
-2010-01-01,Otros,Datos generales,Ingresos,437,2010,España,Servicio minorista,N/A,N/A,Millones de euros,0.0,11.14,0.0,0.0,0.0,0.0
-2010-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,404,2010,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,2.12,0.0
-2010-01-01,Otros,Datos generales,Número de empleados,412,2010,España,N/A,N/A,N/A,Unidades,0.0,0.0,31.0,0.0,0.0,0.0
-2010-01-01,Otros,Datos generales,Gastos de explotación,394,2010,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,18.93
-2010-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,405,2010,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,128.39,0.0
-2010-01-01,Movistar,Datos generales,Gastos de explotación,395,2010,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,322.65
-2010-01-01,Movistar,Datos generales,Ingresos,862,4020,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,19347.22,0.0,0.0,0.0,0.0
-2010-01-01,Movistar,Datos generales,Inversiones en infraestr de telec y serv audiov,406,2010,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1994.32,0.0
-2010-01-01,Movistar,Datos generales,Número de empleados,413,2010,España,N/A,N/A,N/A,Unidades,0.0,0.0,32217.0,0.0,0.0,0.0
-2010-01-01,Otros,Datos generales,Ingresos,7415,34170,España,Servicio mayorista,Alquiler de circuitos,N/A,Millones de euros,39731.88,0.0,0.0,0.0,0.0,0.0
-2010-01-01,Otros,Datos generales,Paquetes,1263,6030,España,N/A,N/A,Resto,Unidades,0.0,0.0,0.0,10041066.0,0.0,0.0
-2010-01-01,Otros,Datos generales,Gastos de explotación,396,2010,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,42.95
-2010-01-01,Otros,Datos generales,Número de empleados,414,2010,España,N/A,N/A,N/A,Unidades,0.0,0.0,3082.0,0.0,0.0,0.0
-2010-01-01,Orange,Datos generales,Gastos de explotación,397,2010,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,95.07
-2010-01-01,Orange,Datos generales,Ingresos,881,4020,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,3847.87,0.0,0.0,0.0,0.0
-2010-01-01,Orange,Datos generales,Inversiones en infraestr de telec y serv audiov,407,2010,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,402.06,0.0
-2010-01-01,Orange,Datos generales,Número de empleados,415,2010,España,N/A,N/A,N/A,Unidades,0.0,0.0,3071.0,0.0,0.0,0.0
-2010-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,409,2010,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,97.98,0.0
-2010-01-01,Otros,Datos generales,Número de empleados,417,2010,España,N/A,N/A,N/A,Unidades,0.0,0.0,6410.0,0.0,0.0,0.0
-2010-01-01,Resto,Datos generales,Gastos de explotación,398,2010,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,141.46
-2010-01-01,Resto,Datos generales,Ingresos,883,4020,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,10398.33,0.0,0.0,0.0,0.0
-2010-01-01,Resto,Datos generales,Inversiones en infraestr de telec y serv audiov,408,2010,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1120.74,0.0
-2010-01-01,Resto,Datos generales,Número de empleados,416,2010,España,N/A,N/A,N/A,Unidades,0.0,0.0,26815.0,0.0,0.0,0.0
-2010-01-01,Otros,Datos generales,Número de empleados,418,2010,España,N/A,N/A,N/A,Unidades,0.0,0.0,1716.0,0.0,0.0,0.0
-2010-01-01,Vodafone,Datos generales,Gastos de explotación,399,2010,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,180.16
-2010-01-01,Vodafone,Datos generales,Ingresos,885,4020,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,6097.8,0.0,0.0,0.0,0.0
-2010-01-01,Vodafone,Datos generales,Inversiones en infraestr de telec y serv audiov,410,2010,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,674.72,0.0
-2010-01-01,Vodafone,Datos generales,Número de empleados,419,2010,España,N/A,N/A,N/A,Unidades,0.0,0.0,4421.0,0.0,0.0,0.0
-2010-01-01,Otros,Datos generales,Gastos de explotación,400,2010,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,13.9
-2011-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,461,2011,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.35,0.0
-2011-01-01,Otros,Datos generales,Gastos de explotación,452,2011,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,31.23
-2011-01-01,Digi,Datos generales,Gastos de explotación,451,2011,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,0.03
-2011-01-01,Digi,Datos generales,Ingresos,979,4022,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,49.79,0.0,0.0,0.0,0.0
-2011-01-01,Digi,Datos generales,Inversiones en infraestr de telec y serv audiov,462,2011,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.07,0.0
-2011-01-01,Digi,Datos generales,Número de empleados,471,2011,España,N/A,N/A,N/A,Unidades,0.0,0.0,52.0,0.0,0.0,0.0
-2011-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,463,2011,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,59.71,0.0
-2011-01-01,Otros,Datos generales,Gastos de explotación,453,2011,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,1.2
-2011-01-01,Otros,Datos generales,Ingresos,497,2011,España,Servicio minorista,N/A,N/A,Millones de euros,0.0,13.36,0.0,0.0,0.0,0.0
-2011-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,464,2011,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,2.44,0.0
-2011-01-01,Otros,Datos generales,Número de empleados,472,2011,España,N/A,N/A,N/A,Unidades,0.0,0.0,39.0,0.0,0.0,0.0
-2011-01-01,Otros,Datos generales,Gastos de explotación,454,2011,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,20.7
-2011-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,465,2011,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,230.02,0.0
-2011-01-01,Movistar,Datos generales,Gastos de explotación,455,2011,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,357.26
-2011-01-01,Movistar,Datos generales,Ingresos,982,4022,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,17710.74,0.0,0.0,0.0,0.0
-2011-01-01,Movistar,Datos generales,Inversiones en infraestr de telec y serv audiov,466,2011,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,2890.91,0.0
-2011-01-01,Movistar,Datos generales,Número de empleados,473,2011,España,N/A,N/A,N/A,Unidades,0.0,0.0,30298.0,0.0,0.0,0.0
-2011-01-01,Otros,Datos generales,Ingresos,8435,34187,España,Servicio mayorista,Alquiler de circuitos,N/A,Millones de euros,37889.2,0.0,0.0,0.0,0.0,0.0
-2011-01-01,Otros,Datos generales,Paquetes,1443,6033,España,N/A,N/A,Resto,Unidades,0.0,0.0,0.0,10565843.0,0.0,0.0
-2011-01-01,Otros,Datos generales,Gastos de explotación,456,2011,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,38.73
-2011-01-01,Otros,Datos generales,Número de empleados,474,2011,España,N/A,N/A,N/A,Unidades,0.0,0.0,2951.0,0.0,0.0,0.0
-2011-01-01,Orange,Datos generales,Gastos de explotación,457,2011,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,77.99
-2011-01-01,Orange,Datos generales,Ingresos,1001,4022,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,4013.19,0.0,0.0,0.0,0.0
-2011-01-01,Orange,Datos generales,Inversiones en infraestr de telec y serv audiov,467,2011,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,989.99,0.0
-2011-01-01,Orange,Datos generales,Número de empleados,475,2011,España,N/A,N/A,N/A,Unidades,0.0,0.0,3002.0,0.0,0.0,0.0
-2011-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,469,2011,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,77.3,0.0
-2011-01-01,Otros,Datos generales,Número de empleados,477,2011,España,N/A,N/A,N/A,Unidades,0.0,0.0,6517.0,0.0,0.0,0.0
-2011-01-01,Resto,Datos generales,Gastos de explotación,458,2011,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,147.84
-2011-01-01,Resto,Datos generales,Ingresos,1003,4022,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,10426.39,0.0,0.0,0.0,0.0
-2011-01-01,Resto,Datos generales,Inversiones en infraestr de telec y serv audiov,468,2011,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1082.55,0.0
-2011-01-01,Resto,Datos generales,Número de empleados,476,2011,España,N/A,N/A,N/A,Unidades,0.0,0.0,25596.0,0.0,0.0,0.0
-2011-01-01,Otros,Datos generales,Número de empleados,478,2011,España,N/A,N/A,N/A,Unidades,0.0,0.0,1981.0,0.0,0.0,0.0
-2011-01-01,Vodafone,Datos generales,Gastos de explotación,459,2011,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,86.71
-2011-01-01,Vodafone,Datos generales,Ingresos,1005,4022,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,5675.72,0.0,0.0,0.0,0.0
-2011-01-01,Vodafone,Datos generales,Inversiones en infraestr de telec y serv audiov,470,2011,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,573.17,0.0
-2011-01-01,Vodafone,Datos generales,Número de empleados,479,2011,España,N/A,N/A,N/A,Unidades,0.0,0.0,4392.0,0.0,0.0,0.0
-2011-01-01,Otros,Datos generales,Gastos de explotación,460,2011,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,14.32
-2012-01-01,Otros,Datos generales,Gastos de explotación,512,2012,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,28.28
-2012-01-01,Digi,Datos generales,Gastos de explotación,511,2012,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,0.19
-2012-01-01,Digi,Datos generales,Ingresos,1101,4024,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,51.3,0.0,0.0,0.0,0.0
-2012-01-01,Digi,Datos generales,Inversiones en infraestr de telec y serv audiov,521,2012,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.35,0.0
-2012-01-01,Digi,Datos generales,Número de empleados,530,2012,España,N/A,N/A,N/A,Unidades,0.0,0.0,60.0,0.0,0.0,0.0
-2012-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,522,2012,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,119.19,0.0
-2012-01-01,Otros,Datos generales,Gastos de explotación,513,2012,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,1.62
-2012-01-01,Otros,Datos generales,Ingresos,558,2012,España,Servicio minorista,N/A,N/A,Millones de euros,0.0,14.94,0.0,0.0,0.0,0.0
-2012-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,523,2012,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1.69,0.0
-2012-01-01,Otros,Datos generales,Número de empleados,531,2012,España,N/A,N/A,N/A,Unidades,0.0,0.0,50.0,0.0,0.0,0.0
-2012-01-01,Otros,Datos generales,Gastos de explotación,514,2012,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,18.89
-2012-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,524,2012,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,187.87,0.0
-2012-01-01,Movistar,Datos generales,Gastos de explotación,515,2012,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,357.82
-2012-01-01,Movistar,Datos generales,Ingresos,1104,4024,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,15472.63,0.0,0.0,0.0,0.0
-2012-01-01,Movistar,Datos generales,Inversiones en infraestr de telec y serv audiov,525,2012,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1648.3,0.0
-2012-01-01,Movistar,Datos generales,Número de empleados,532,2012,España,N/A,N/A,N/A,Unidades,0.0,0.0,27370.0,0.0,0.0,0.0
-2012-01-01,Otros,Datos generales,Ingresos,9472,34204,España,Servicio mayorista,Alquiler de circuitos,N/A,Millones de euros,35099.01,0.0,0.0,0.0,0.0,0.0
-2012-01-01,Otros,Datos generales,Paquetes,2705,10060,España,N/A,N/A,Resto,Unidades,0.0,0.0,0.0,10858315.0,0.0,0.0
-2012-01-01,Otros,Datos generales,Gastos de explotación,516,2012,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,29.67
-2012-01-01,Otros,Datos generales,Número de empleados,533,2012,España,N/A,N/A,N/A,Unidades,0.0,0.0,2776.0,0.0,0.0,0.0
-2012-01-01,Orange,Datos generales,Gastos de explotación,517,2012,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,69.07
-2012-01-01,Orange,Datos generales,Ingresos,1123,4024,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,4038.04,0.0,0.0,0.0,0.0
-2012-01-01,Orange,Datos generales,Inversiones en infraestr de telec y serv audiov,526,2012,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,479.87,0.0
-2012-01-01,Orange,Datos generales,Número de empleados,534,2012,España,N/A,N/A,N/A,Unidades,0.0,0.0,3962.0,0.0,0.0,0.0
-2012-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,528,2012,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,53.67,0.0
-2012-01-01,Otros,Datos generales,Número de empleados,536,2012,España,N/A,N/A,N/A,Unidades,0.0,0.0,6319.0,0.0,0.0,0.0
-2012-01-01,Resto,Datos generales,Gastos de explotación,518,2012,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,149.29
-2012-01-01,Resto,Datos generales,Ingresos,1125,4024,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,10378.599999999999,0.0,0.0,0.0,0.0
-2012-01-01,Resto,Datos generales,Inversiones en infraestr de telec y serv audiov,527,2012,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,966.48,0.0
-2012-01-01,Resto,Datos generales,Número de empleados,535,2012,España,N/A,N/A,N/A,Unidades,0.0,0.0,21340.0,0.0,0.0,0.0
-2012-01-01,Otros,Datos generales,Número de empleados,537,2012,España,N/A,N/A,N/A,Unidades,0.0,0.0,2049.0,0.0,0.0,0.0
-2012-01-01,Vodafone,Datos generales,Gastos de explotación,519,2012,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,101.81
-2012-01-01,Vodafone,Datos generales,Ingresos,1127,4024,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,5143.469999999999,0.0,0.0,0.0,0.0
-2012-01-01,Vodafone,Datos generales,Inversiones en infraestr de telec y serv audiov,529,2012,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,588.2,0.0
-2012-01-01,Vodafone,Datos generales,Número de empleados,538,2012,España,N/A,N/A,N/A,Unidades,0.0,0.0,4206.0,0.0,0.0,0.0
-2012-01-01,Otros,Datos generales,Gastos de explotación,520,2012,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,15.16
-2013-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,582,2013,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.01,0.0
-2013-01-01,Otros,Datos generales,Gastos de explotación,573,2013,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,29.78
-2013-01-01,Digi,Datos generales,Gastos de explotación,572,2013,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,0.21
-2013-01-01,Digi,Datos generales,Ingresos,1225,4026,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,48.24,0.0,0.0,0.0,0.0
-2013-01-01,Digi,Datos generales,Inversiones en infraestr de telec y serv audiov,583,2013,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.02,0.0
-2013-01-01,Digi,Datos generales,Número de empleados,592,2013,España,N/A,N/A,N/A,Unidades,0.0,0.0,71.0,0.0,0.0,0.0
-2013-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,584,2013,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,42.56,0.0
-2013-01-01,Otros,Datos generales,Gastos de explotación,574,2013,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,1.09
-2013-01-01,Otros,Datos generales,Ingresos,620,2013,España,Servicio minorista,N/A,N/A,Millones de euros,0.0,17.02,0.0,0.0,0.0,0.0
-2013-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,585,2013,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1.44,0.0
-2013-01-01,Otros,Datos generales,Número de empleados,593,2013,España,N/A,N/A,N/A,Unidades,0.0,0.0,38.0,0.0,0.0,0.0
-2013-01-01,Otros,Datos generales,Gastos de explotación,575,2013,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,22.71
-2013-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,586,2013,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,177.89,0.0
-2013-01-01,Movistar,Datos generales,Gastos de explotación,576,2013,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,269.25
-2013-01-01,Movistar,Datos generales,Ingresos,1228,4026,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,13534.5,0.0,0.0,0.0,0.0
-2013-01-01,Movistar,Datos generales,Inversiones en infraestr de telec y serv audiov,587,2013,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1502.67,0.0
-2013-01-01,Movistar,Datos generales,Número de empleados,594,2013,España,N/A,N/A,N/A,Unidades,0.0,0.0,26060.0,0.0,0.0,0.0
-2013-01-01,Otros,Datos generales,Ingresos,10526,34221,España,Servicio mayorista,Alquiler de circuitos,N/A,Millones de euros,32549.19,0.0,0.0,0.0,0.0,0.0
-2013-01-01,Otros,Datos generales,Paquetes,3015,10065,España,N/A,N/A,Resto,Unidades,0.0,0.0,0.0,11561838.0,0.0,0.0
-2013-01-01,Otros,Datos generales,Gastos de explotación,577,2013,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,26.85
-2013-01-01,Otros,Datos generales,Número de empleados,595,2013,España,N/A,N/A,N/A,Unidades,0.0,0.0,2543.0,0.0,0.0,0.0
-2013-01-01,Orange,Datos generales,Gastos de explotación,578,2013,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,67.95
-2013-01-01,Orange,Datos generales,Ingresos,1247,4026,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,4049.4300000000003,0.0,0.0,0.0,0.0
-2013-01-01,Orange,Datos generales,Inversiones en infraestr de telec y serv audiov,588,2013,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,588.65,0.0
-2013-01-01,Orange,Datos generales,Número de empleados,596,2013,España,N/A,N/A,N/A,Unidades,0.0,0.0,3986.0,0.0,0.0,0.0
-2013-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,590,2013,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,49.4,0.0
-2013-01-01,Otros,Datos generales,Número de empleados,598,2013,España,N/A,N/A,N/A,Unidades,0.0,0.0,6325.0,0.0,0.0,0.0
-2013-01-01,Resto,Datos generales,Gastos de explotación,579,2013,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,80.86
-2013-01-01,Resto,Datos generales,Ingresos,1249,4026,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,10358.63,0.0,0.0,0.0,0.0
-2013-01-01,Resto,Datos generales,Inversiones en infraestr de telec y serv audiov,589,2013,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1042.5,0.0
-2013-01-01,Resto,Datos generales,Número de empleados,597,2013,España,N/A,N/A,N/A,Unidades,0.0,0.0,19495.0,0.0,0.0,0.0
-2013-01-01,Otros,Datos generales,Número de empleados,599,2013,España,N/A,N/A,N/A,Unidades,0.0,0.0,2435.0,0.0,0.0,0.0
-2013-01-01,Vodafone,Datos generales,Gastos de explotación,580,2013,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,133.67
-2013-01-01,Vodafone,Datos generales,Ingresos,1251,4026,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,4541.37,0.0,0.0,0.0,0.0
-2013-01-01,Vodafone,Datos generales,Inversiones en infraestr de telec y serv audiov,591,2013,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,489.97,0.0
-2013-01-01,Vodafone,Datos generales,Número de empleados,600,2013,España,N/A,N/A,N/A,Unidades,0.0,0.0,3614.0,0.0,0.0,0.0
-2013-01-01,Otros,Datos generales,Gastos de explotación,581,2013,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,14.44
-2014-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,644,2014,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,2.15,0.0
-2014-01-01,Otros,Datos generales,Gastos de explotación,635,2014,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,25.0
-2014-01-01,Digi,Datos generales,Gastos de explotación,634,2014,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,0.29
-2014-01-01,Digi,Datos generales,Ingresos,1349,4028,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,54.14,0.0,0.0,0.0,0.0
-2014-01-01,Digi,Datos generales,Inversiones en infraestr de telec y serv audiov,645,2014,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.16,0.0
-2014-01-01,Digi,Datos generales,Número de empleados,654,2014,España,N/A,N/A,N/A,Unidades,0.0,0.0,83.0,0.0,0.0,0.0
-2014-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,646,2014,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,26.93,0.0
-2014-01-01,Otros,Datos generales,Gastos de explotación,636,2014,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,1.73
-2014-01-01,Otros,Datos generales,Ingresos,682,2014,España,Servicio minorista,N/A,N/A,Millones de euros,0.0,17.87,0.0,0.0,0.0,0.0
-2014-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,647,2014,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.65,0.0
-2014-01-01,Otros,Datos generales,Número de empleados,655,2014,España,N/A,N/A,N/A,Unidades,0.0,0.0,66.0,0.0,0.0,0.0
-2014-01-01,Otros,Datos generales,Gastos de explotación,637,2014,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,23.58
-2014-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,648,2014,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,188.37,0.0
-2014-01-01,Movistar,Datos generales,Gastos de explotación,638,2014,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,193.88
-2014-01-01,Movistar,Datos generales,Ingresos,1352,4028,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,12474.830000000002,0.0,0.0,0.0,0.0
-2014-01-01,Movistar,Datos generales,Inversiones en infraestr de telec y serv audiov,649,2014,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1719.38,0.0
-2014-01-01,Movistar,Datos generales,Número de empleados,656,2014,España,N/A,N/A,N/A,Unidades,0.0,0.0,26230.0,0.0,0.0,0.0
-2014-01-01,Otros,Datos generales,Ingresos,11580,34238,España,Servicio mayorista,Alquiler de circuitos,N/A,Millones de euros,30608.81,0.0,0.0,0.0,0.0,0.0
-2014-01-01,Otros,Datos generales,Paquetes,3325,10070,España,N/A,N/A,Resto,Unidades,0.0,0.0,0.0,12554545.0,0.0,0.0
-2014-01-01,Otros,Datos generales,Gastos de explotación,639,2014,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,28.27
-2014-01-01,Otros,Datos generales,Número de empleados,657,2014,España,N/A,N/A,N/A,Unidades,0.0,0.0,2425.0,0.0,0.0,0.0
-2014-01-01,Orange,Datos generales,Gastos de explotación,640,2014,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,56.31
-2014-01-01,Orange,Datos generales,Ingresos,1371,4028,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,3907.2,0.0,0.0,0.0,0.0
-2014-01-01,Orange,Datos generales,Inversiones en infraestr de telec y serv audiov,650,2014,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,587.77,0.0
-2014-01-01,Orange,Datos generales,Número de empleados,658,2014,España,N/A,N/A,N/A,Unidades,0.0,0.0,4008.0,0.0,0.0,0.0
-2014-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,652,2014,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,25.78,0.0
-2014-01-01,Otros,Datos generales,Número de empleados,660,2014,España,N/A,N/A,N/A,Unidades,0.0,0.0,6302.0,0.0,0.0,0.0
-2014-01-01,Resto,Datos generales,Gastos de explotación,641,2014,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,68.99
-2014-01-01,Resto,Datos generales,Ingresos,1373,4028,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,10174.15,0.0,0.0,0.0,0.0
-2014-01-01,Resto,Datos generales,Inversiones en infraestr de telec y serv audiov,651,2014,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1696.35,0.0
-2014-01-01,Resto,Datos generales,Número de empleados,659,2014,España,N/A,N/A,N/A,Unidades,0.0,0.0,18503.0,0.0,0.0,0.0
-2014-01-01,Otros,Datos generales,Número de empleados,661,2014,España,N/A,N/A,N/A,Unidades,0.0,0.0,2331.0,0.0,0.0,0.0
-2014-01-01,Vodafone,Datos generales,Gastos de explotación,642,2014,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,128.09
-2014-01-01,Vodafone,Datos generales,Ingresos,1375,4028,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,3980.6400000000003,0.0,0.0,0.0,0.0
-2014-01-01,Vodafone,Datos generales,Inversiones en infraestr de telec y serv audiov,653,2014,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,816.82,0.0
-2014-01-01,Vodafone,Datos generales,Número de empleados,662,2014,España,N/A,N/A,N/A,Unidades,0.0,0.0,3634.0,0.0,0.0,0.0
-2014-01-01,Otros,Datos generales,Gastos de explotación,643,2014,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,12.44
-2015-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,705,2015,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,3.42,0.0
-2015-01-01,Otros,Datos generales,Gastos de explotación,697,2015,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,17.42
-2015-01-01,Digi,Datos generales,Gastos de explotación,696,2015,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,0.45
-2015-01-01,Digi,Datos generales,Ingresos,1469,4030,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,73.88999999999999,0.0,0.0,0.0,0.0
-2015-01-01,Digi,Datos generales,Inversiones en infraestr de telec y serv audiov,706,2015,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.22,0.0
-2015-01-01,Digi,Datos generales,Número de empleados,715,2015,España,N/A,N/A,N/A,Unidades,0.0,0.0,102.0,0.0,0.0,0.0
-2015-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,707,2015,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,46.86,0.0
-2015-01-01,Otros,Datos generales,Gastos de explotación,698,2015,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,3.1
-2015-01-01,Otros,Datos generales,Ingresos,742,2015,España,Servicio minorista,N/A,N/A,Millones de euros,0.0,35.78,0.0,0.0,0.0,0.0
-2015-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,708,2015,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1.42,0.0
-2015-01-01,Otros,Datos generales,Número de empleados,716,2015,España,N/A,N/A,N/A,Unidades,0.0,0.0,97.0,0.0,0.0,0.0
-2015-01-01,Otros,Datos generales,Gastos de explotación,699,2015,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,20.96
-2015-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,709,2015,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,183.8,0.0
-2015-01-01,Movistar,Datos generales,Gastos de explotación,700,2015,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,158.27
-2015-01-01,Movistar,Datos generales,Ingresos,1472,4030,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,12293.61,0.0,0.0,0.0,0.0
-2015-01-01,Movistar,Datos generales,Inversiones en infraestr de telec y serv audiov,710,2015,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1801.94,0.0
-2015-01-01,Movistar,Datos generales,Número de empleados,717,2015,España,N/A,N/A,N/A,Unidades,0.0,0.0,26257.0,0.0,0.0,0.0
-2015-01-01,Otros,Datos generales,Ingresos,12600,34255,España,Servicio mayorista,Alquiler de circuitos,N/A,Millones de euros,30507.61,0.0,0.0,0.0,0.0,0.0
-2015-01-01,Otros,Datos generales,Paquetes,3625,10075,España,N/A,N/A,Resto,Unidades,0.0,0.0,0.0,13223160.0,0.0,0.0
-2015-01-01,Orange,Datos generales,Gastos de explotación,701,2015,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,62.27
-2015-01-01,Orange,Datos generales,Ingresos,1491,4030,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,3841.37,0.0,0.0,0.0,0.0
-2015-01-01,Orange,Datos generales,Inversiones en infraestr de telec y serv audiov,711,2015,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,680.97,0.0
-2015-01-01,Orange,Datos generales,Número de empleados,718,2015,España,N/A,N/A,N/A,Unidades,0.0,0.0,3984.0,0.0,0.0,0.0
-2015-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,713,2015,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,16.58,0.0
-2015-01-01,Otros,Datos generales,Número de empleados,720,2015,España,N/A,N/A,N/A,Unidades,0.0,0.0,6277.0,0.0,0.0,0.0
-2015-01-01,Resto,Datos generales,Gastos de explotación,702,2015,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,73.14
-2015-01-01,Resto,Datos generales,Ingresos,1493,4030,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,8751.57,0.0,0.0,0.0,0.0
-2015-01-01,Resto,Datos generales,Inversiones en infraestr de telec y serv audiov,712,2015,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1223.17,0.0
-2015-01-01,Resto,Datos generales,Número de empleados,719,2015,España,N/A,N/A,N/A,Unidades,0.0,0.0,18810.0,0.0,0.0,0.0
-2015-01-01,Otros,Datos generales,Número de empleados,721,2015,España,N/A,N/A,N/A,Unidades,0.0,0.0,2268.0,0.0,0.0,0.0
-2015-01-01,Vodafone,Datos generales,Gastos de explotación,703,2015,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,152.9
-2015-01-01,Vodafone,Datos generales,Ingresos,1495,4030,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,5511.389999999999,0.0,0.0,0.0,0.0
-2015-01-01,Vodafone,Datos generales,Inversiones en infraestr de telec y serv audiov,714,2015,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1721.59,0.0
-2015-01-01,Vodafone,Datos generales,Número de empleados,722,2015,España,N/A,N/A,N/A,Unidades,0.0,0.0,5704.0,0.0,0.0,0.0
-2015-01-01,Otros,Datos generales,Gastos de explotación,704,2015,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,16.99
-2016-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,763,2016,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,5.58,0.0
-2016-01-01,Digi,Datos generales,Gastos de explotación,756,2016,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,0.56
-2016-01-01,Digi,Datos generales,Ingresos,1585,4032,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,84.21000000000001,0.0,0.0,0.0,0.0
-2016-01-01,Digi,Datos generales,Inversiones en infraestr de telec y serv audiov,764,2016,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.7,0.0
-2016-01-01,Digi,Datos generales,Número de empleados,773,2016,España,N/A,N/A,N/A,Unidades,0.0,0.0,123.0,0.0,0.0,0.0
-2016-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,765,2016,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,92.37,0.0
-2016-01-01,Otros,Datos generales,Gastos de explotación,757,2016,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,6.63
-2016-01-01,Otros,Datos generales,Ingresos,800,2016,España,Servicio minorista,N/A,N/A,Millones de euros,0.0,55.75,0.0,0.0,0.0,0.0
-2016-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,766,2016,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1.79,0.0
-2016-01-01,Otros,Datos generales,Número de empleados,774,2016,España,N/A,N/A,N/A,Unidades,0.0,0.0,88.0,0.0,0.0,0.0
-2016-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,767,2016,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,173.81,0.0
-2016-01-01,Movistar,Datos generales,Gastos de explotación,758,2016,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,120.76
-2016-01-01,Movistar,Datos generales,Ingresos,1588,4032,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,14720.92,0.0,0.0,0.0,0.0
-2016-01-01,Movistar,Datos generales,Inversiones en infraestr de telec y serv audiov,768,2016,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1829.05,0.0
-2016-01-01,Movistar,Datos generales,Número de empleados,775,2016,España,N/A,N/A,N/A,Unidades,0.0,0.0,23548.0,0.0,0.0,0.0
-2016-01-01,Otros,Datos generales,Ingresos,13586,34272,España,Servicio mayorista,Alquiler de circuitos,N/A,Millones de euros,32777.81,0.0,0.0,0.0,0.0,0.0
-2016-01-01,Otros,Datos generales,Paquetes,3915,10080,España,N/A,N/A,Resto,Unidades,0.0,0.0,0.0,13909914.0,0.0,0.0
-2016-01-01,Orange,Datos generales,Gastos de explotación,759,2016,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,83.8
-2016-01-01,Orange,Datos generales,Ingresos,1607,4032,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,5039.219999999999,0.0,0.0,0.0,0.0
-2016-01-01,Orange,Datos generales,Inversiones en infraestr de telec y serv audiov,769,2016,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1143.33,0.0
-2016-01-01,Orange,Datos generales,Número de empleados,776,2016,España,N/A,N/A,N/A,Unidades,0.0,0.0,5301.0,0.0,0.0,0.0
-2016-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,771,2016,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,28.68,0.0
-2016-01-01,Otros,Datos generales,Número de empleados,778,2016,España,N/A,N/A,N/A,Unidades,0.0,0.0,6290.0,0.0,0.0,0.0
-2016-01-01,Resto,Datos generales,Gastos de explotación,760,2016,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,68.5
-2016-01-01,Resto,Datos generales,Ingresos,1609,4032,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,7076.02,0.0,0.0,0.0,0.0
-2016-01-01,Resto,Datos generales,Inversiones en infraestr de telec y serv audiov,770,2016,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,478.55,0.0
-2016-01-01,Resto,Datos generales,Número de empleados,777,2016,España,N/A,N/A,N/A,Unidades,0.0,0.0,16704.0,0.0,0.0,0.0
-2016-01-01,Otros,Datos generales,Número de empleados,779,2016,España,N/A,N/A,N/A,Unidades,0.0,0.0,2273.0,0.0,0.0,0.0
-2016-01-01,Vodafone,Datos generales,Gastos de explotación,761,2016,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,162.84
-2016-01-01,Vodafone,Datos generales,Ingresos,1611,4032,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,5801.68,0.0,0.0,0.0,0.0
-2016-01-01,Vodafone,Datos generales,Inversiones en infraestr de telec y serv audiov,772,2016,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1138.93,0.0
-2016-01-01,Vodafone,Datos generales,Número de empleados,780,2016,España,N/A,N/A,N/A,Unidades,0.0,0.0,5095.0,0.0,0.0,0.0
-2016-01-01,Otros,Datos generales,Gastos de explotación,762,2016,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,16.9
-2017-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,820,2017,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,20.23,0.0
-2017-01-01,Digi,Datos generales,Gastos de explotación,814,2017,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,0.64
-2017-01-01,Digi,Datos generales,Ingresos,1702,4034,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,93.8,0.0,0.0,0.0,0.0
-2017-01-01,Digi,Datos generales,Inversiones en infraestr de telec y serv audiov,821,2017,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.3,0.0
-2017-01-01,Digi,Datos generales,Número de empleados,830,2017,España,N/A,N/A,N/A,Unidades,0.0,0.0,189.0,0.0,0.0,0.0
-2017-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,822,2017,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,99.55,0.0
-2017-01-01,Otros,Datos generales,Gastos de explotación,815,2017,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,35.63
-2017-01-01,Otros,Datos generales,Ingresos,1704,4034,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,1303.12,0.0,0.0,0.0,0.0
-2017-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,823,2017,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,237.05,0.0
-2017-01-01,Otros,Datos generales,Número de empleados,831,2017,España,N/A,N/A,N/A,Unidades,0.0,0.0,470.0,0.0,0.0,0.0
-2017-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,824,2017,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,167.42,0.0
-2017-01-01,Movistar,Datos generales,Gastos de explotación,816,2017,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,185.1
-2017-01-01,Movistar,Datos generales,Ingresos,1706,4034,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,14884.419999999998,0.0,0.0,0.0,0.0
-2017-01-01,Movistar,Datos generales,Inversiones en infraestr de telec y serv audiov,825,2017,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1788.38,0.0
-2017-01-01,Movistar,Datos generales,Número de empleados,832,2017,España,N/A,N/A,N/A,Unidades,0.0,0.0,22258.0,0.0,0.0,0.0
-2017-01-01,Otros,Datos generales,Ingresos,14589,34289,España,Servicio mayorista,Alquiler de circuitos,N/A,Millones de euros,34097.36,0.0,0.0,0.0,0.0,0.0
-2017-01-01,Otros,Datos generales,Paquetes,5043,12102,España,N/A,N/A,Banda ancha fija. tel móvil y banda ancha móvil,Unidades,0.0,0.0,0.0,14479247.0,0.0,0.0
-2017-01-01,Orange,Datos generales,Gastos de explotación,817,2017,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,82.75
-2017-01-01,Orange,Datos generales,Ingresos,1725,4034,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,5427.799999999999,0.0,0.0,0.0,0.0
-2017-01-01,Orange,Datos generales,Inversiones en infraestr de telec y serv audiov,826,2017,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1152.77,0.0
-2017-01-01,Orange,Datos generales,Número de empleados,833,2017,España,N/A,N/A,N/A,Unidades,0.0,0.0,5448.0,0.0,0.0,0.0
-2017-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,828,2017,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,38.56,0.0
-2017-01-01,Otros,Datos generales,Número de empleados,835,2017,España,N/A,N/A,N/A,Unidades,0.0,0.0,6295.0,0.0,0.0,0.0
-2017-01-01,Resto,Datos generales,Gastos de explotación,818,2017,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,79.05
-2017-01-01,Resto,Datos generales,Ingresos,1727,4034,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,6796.76,0.0,0.0,0.0,0.0
-2017-01-01,Resto,Datos generales,Inversiones en infraestr de telec y serv audiov,827,2017,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,379.02,0.0
-2017-01-01,Resto,Datos generales,Número de empleados,834,2017,España,N/A,N/A,N/A,Unidades,0.0,0.0,16731.0,0.0,0.0,0.0
-2017-01-01,Otros,Datos generales,Número de empleados,836,2017,España,N/A,N/A,N/A,Unidades,0.0,0.0,2275.0,0.0,0.0,0.0
-2017-01-01,Vodafone,Datos generales,Gastos de explotación,819,2017,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,183.91
-2017-01-01,Vodafone,Datos generales,Ingresos,1729,4034,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,5591.450000000001,0.0,0.0,0.0,0.0
-2017-01-01,Vodafone,Datos generales,Inversiones en infraestr de telec y serv audiov,829,2017,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,796.73,0.0
-2017-01-01,Vodafone,Datos generales,Número de empleados,837,2017,España,N/A,N/A,N/A,Unidades,0.0,0.0,5034.0,0.0,0.0,0.0
-2018-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,879,2018,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,49.29,0.0
-2018-01-01,Digi,Datos generales,Gastos de explotación,873,2018,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,1.16
-2018-01-01,Digi,Datos generales,Ingresos,1820,4036,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,128.39,0.0,0.0,0.0,0.0
-2018-01-01,Digi,Datos generales,Inversiones en infraestr de telec y serv audiov,880,2018,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,7.25,0.0
-2018-01-01,Digi,Datos generales,Número de empleados,889,2018,España,N/A,N/A,N/A,Unidades,0.0,0.0,394.0,0.0,0.0,0.0
-2018-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,881,2018,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,153.64,0.0
-2018-01-01,Otros,Datos generales,Gastos de explotación,874,2018,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,49.71
-2018-01-01,Otros,Datos generales,Ingresos,1822,4036,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,1563.4499999999998,0.0,0.0,0.0,0.0
-2018-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,882,2018,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,524.68,0.0
-2018-01-01,Otros,Datos generales,Número de empleados,890,2018,España,N/A,N/A,N/A,Unidades,0.0,0.0,596.0,0.0,0.0,0.0
-2018-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,883,2018,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,138.46,0.0
-2018-01-01,Movistar,Datos generales,Gastos de explotación,875,2018,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,176.05
-2018-01-01,Movistar,Datos generales,Ingresos,1824,4036,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,15183.14,0.0,0.0,0.0,0.0
-2018-01-01,Movistar,Datos generales,Inversiones en infraestr de telec y serv audiov,884,2018,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1756.04,0.0
-2018-01-01,Movistar,Datos generales,Número de empleados,891,2018,España,N/A,N/A,N/A,Unidades,0.0,0.0,20755.0,0.0,0.0,0.0
-2018-01-01,Otros,Datos generales,Ingresos,15592,34306,España,Servicio mayorista,Alquiler de circuitos,N/A,Millones de euros,34382.54,0.0,0.0,0.0,0.0,0.0
-2018-01-01,Otros,Datos generales,Paquetes,5397,12108,España,N/A,N/A,Banda ancha fija. tel móvil y banda ancha móvil,Unidades,0.0,0.0,0.0,14874478.0,0.0,0.0
-2018-01-01,Orange,Datos generales,Gastos de explotación,876,2018,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,75.83
-2018-01-01,Orange,Datos generales,Ingresos,1843,4036,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,5501.06,0.0,0.0,0.0,0.0
-2018-01-01,Orange,Datos generales,Inversiones en infraestr de telec y serv audiov,885,2018,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1337.8,0.0
-2018-01-01,Orange,Datos generales,Número de empleados,892,2018,España,N/A,N/A,N/A,Unidades,0.0,0.0,5626.0,0.0,0.0,0.0
-2018-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,887,2018,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,47.61,0.0
-2018-01-01,Otros,Datos generales,Número de empleados,894,2018,España,N/A,N/A,N/A,Unidades,0.0,0.0,6458.0,0.0,0.0,0.0
-2018-01-01,Resto,Datos generales,Gastos de explotación,877,2018,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,68.77
-2018-01-01,Resto,Datos generales,Ingresos,1845,4036,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,6622.860000000001,0.0,0.0,0.0,0.0
-2018-01-01,Resto,Datos generales,Inversiones en infraestr de telec y serv audiov,886,2018,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,314.48,0.0
-2018-01-01,Resto,Datos generales,Número de empleados,893,2018,España,N/A,N/A,N/A,Unidades,0.0,0.0,17330.0,0.0,0.0,0.0
-2018-01-01,Otros,Datos generales,Número de empleados,895,2018,España,N/A,N/A,N/A,Unidades,0.0,0.0,2313.0,0.0,0.0,0.0
-2018-01-01,Vodafone,Datos generales,Gastos de explotación,878,2018,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,161.85
-2018-01-01,Vodafone,Datos generales,Ingresos,1847,4036,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,5383.629999999999,0.0,0.0,0.0,0.0
-2018-01-01,Vodafone,Datos generales,Inversiones en infraestr de telec y serv audiov,888,2018,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,996.85,0.0
-2018-01-01,Vodafone,Datos generales,Número de empleados,896,2018,España,N/A,N/A,N/A,Unidades,0.0,0.0,5165.0,0.0,0.0,0.0
-2019-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,938,2019,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,99.41,0.0
-2019-01-01,Digi,Datos generales,Gastos de explotación,932,2019,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,1.59
-2019-01-01,Digi,Datos generales,Ingresos,1938,4038,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,194.54,0.0,0.0,0.0,0.0
-2019-01-01,Digi,Datos generales,Inversiones en infraestr de telec y serv audiov,939,2019,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,38.05,0.0
-2019-01-01,Digi,Datos generales,Número de empleados,948,2019,España,N/A,N/A,N/A,Unidades,0.0,0.0,827.0,0.0,0.0,0.0
-2019-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,940,2019,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,154.17,0.0
-2019-01-01,Otros,Datos generales,Gastos de explotación,933,2019,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,57.05
-2019-01-01,Otros,Datos generales,Ingresos,1940,4038,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,1859.36,0.0,0.0,0.0,0.0
-2019-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,941,2019,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,734.42,0.0
-2019-01-01,Otros,Datos generales,Número de empleados,949,2019,España,N/A,N/A,N/A,Unidades,0.0,0.0,683.0,0.0,0.0,0.0
-2019-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,942,2019,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,154.34,0.0
-2019-01-01,Movistar,Datos generales,Gastos de explotación,934,2019,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,147.65
-2019-01-01,Movistar,Datos generales,Ingresos,1942,4038,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,15493.12,0.0,0.0,0.0,0.0
-2019-01-01,Movistar,Datos generales,Inversiones en infraestr de telec y serv audiov,943,2019,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1723.34,0.0
-2019-01-01,Movistar,Datos generales,Número de empleados,950,2019,España,N/A,N/A,N/A,Unidades,0.0,0.0,18176.0,0.0,0.0,0.0
-2019-01-01,Otros,Datos generales,Ingresos,16595,34323,España,Servicio mayorista,Alquiler de circuitos,N/A,Millones de euros,34227.09,0.0,0.0,0.0,0.0,0.0
-2019-01-01,Otros,Datos generales,Paquetes,5751,12114,España,N/A,N/A,Banda ancha fija. tel móvil y banda ancha móvil,Unidades,0.0,0.0,0.0,15415402.0,0.0,0.0
-2019-01-01,Orange,Datos generales,Gastos de explotación,935,2019,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,73.25
-2019-01-01,Orange,Datos generales,Ingresos,1961,4038,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,5418.110000000001,0.0,0.0,0.0,0.0
-2019-01-01,Orange,Datos generales,Inversiones en infraestr de telec y serv audiov,944,2019,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1005.03,0.0
-2019-01-01,Orange,Datos generales,Número de empleados,951,2019,España,N/A,N/A,N/A,Unidades,0.0,0.0,5794.0,0.0,0.0,0.0
-2019-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,946,2019,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,44.78,0.0
-2019-01-01,Otros,Datos generales,Número de empleados,953,2019,España,N/A,N/A,N/A,Unidades,0.0,0.0,6542.0,0.0,0.0,0.0
-2019-01-01,Resto,Datos generales,Gastos de explotación,936,2019,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,84.64
-2019-01-01,Resto,Datos generales,Ingresos,1963,4038,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,6263.55,0.0,0.0,0.0,0.0
-2019-01-01,Resto,Datos generales,Inversiones en infraestr de telec y serv audiov,945,2019,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1075.4,0.0
-2019-01-01,Resto,Datos generales,Número de empleados,952,2019,España,N/A,N/A,N/A,Unidades,0.0,0.0,17718.0,0.0,0.0,0.0
-2019-01-01,Otros,Datos generales,Número de empleados,954,2019,España,N/A,N/A,N/A,Unidades,0.0,0.0,2285.0,0.0,0.0,0.0
-2019-01-01,Vodafone,Datos generales,Gastos de explotación,937,2019,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,159.46
-2019-01-01,Vodafone,Datos generales,Ingresos,1965,4038,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,4998.43,0.0,0.0,0.0,0.0
-2019-01-01,Vodafone,Datos generales,Inversiones en infraestr de telec y serv audiov,947,2019,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,736.24,0.0
-2019-01-01,Vodafone,Datos generales,Número de empleados,955,2019,España,N/A,N/A,N/A,Unidades,0.0,0.0,4246.0,0.0,0.0,0.0
-2020-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,997,2020,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,114.43,0.0
-2020-01-01,Digi,Datos generales,Gastos de explotación,991,2020,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,2.74
-2020-01-01,Digi,Datos generales,Ingresos,2056,4040,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,274.36,0.0,0.0,0.0,0.0
-2020-01-01,Digi,Datos generales,Inversiones en infraestr de telec y serv audiov,998,2020,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,68.02,0.0
-2020-01-01,Digi,Datos generales,Número de empleados,1007,2020,España,N/A,N/A,N/A,Unidades,0.0,0.0,1687.0,0.0,0.0,0.0
-2020-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,999,2020,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,181.2,0.0
-2020-01-01,Otros,Datos generales,Gastos de explotación,992,2020,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,64.96
-2020-01-01,Otros,Datos generales,Ingresos,2058,4040,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,2133.09,0.0,0.0,0.0,0.0
-2020-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,1000,2020,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,459.94,0.0
-2020-01-01,Otros,Datos generales,Número de empleados,1008,2020,España,N/A,N/A,N/A,Unidades,0.0,0.0,978.0,0.0,0.0,0.0
-2020-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,1001,2020,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,89.74,0.0
-2020-01-01,Movistar,Datos generales,Gastos de explotación,993,2020,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,127.63
-2020-01-01,Movistar,Datos generales,Ingresos,2060,4040,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,14679.150000000001,0.0,0.0,0.0,0.0
-2020-01-01,Movistar,Datos generales,Inversiones en infraestr de telec y serv audiov,1002,2020,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1458.25,0.0
-2020-01-01,Movistar,Datos generales,Número de empleados,1009,2020,España,N/A,N/A,N/A,Unidades,0.0,0.0,18248.0,0.0,0.0,0.0
-2020-01-01,Otros,Datos generales,Ingresos,17598,34340,España,Servicio mayorista,Alquiler de circuitos,N/A,Millones de euros,33026.04,0.0,0.0,0.0,0.0,0.0
-2020-01-01,Otros,Datos generales,Paquetes,6105,12120,España,N/A,N/A,Banda ancha fija. tel móvil y banda ancha móvil,Unidades,0.0,0.0,0.0,15856942.0,0.0,0.0
-2020-01-01,Orange,Datos generales,Gastos de explotación,994,2020,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,71.45
-2020-01-01,Orange,Datos generales,Ingresos,2079,4040,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,5557.21,0.0,0.0,0.0,0.0
-2020-01-01,Orange,Datos generales,Inversiones en infraestr de telec y serv audiov,1003,2020,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1135.24,0.0
-2020-01-01,Orange,Datos generales,Número de empleados,1010,2020,España,N/A,N/A,N/A,Unidades,0.0,0.0,5891.0,0.0,0.0,0.0
-2020-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,1005,2020,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,60.11,0.0
-2020-01-01,Otros,Datos generales,Número de empleados,1012,2020,España,N/A,N/A,N/A,Unidades,0.0,0.0,6537.0,0.0,0.0,0.0
-2020-01-01,Resto,Datos generales,Gastos de explotación,995,2020,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,97.45
-2020-01-01,Resto,Datos generales,Ingresos,2081,4040,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,5618.14,0.0,0.0,0.0,0.0
-2020-01-01,Resto,Datos generales,Inversiones en infraestr de telec y serv audiov,1004,2020,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,624.26,0.0
-2020-01-01,Resto,Datos generales,Número de empleados,1011,2020,España,N/A,N/A,N/A,Unidades,0.0,0.0,17540.0,0.0,0.0,0.0
-2020-01-01,Otros,Datos generales,Número de empleados,1013,2020,España,N/A,N/A,N/A,Unidades,0.0,0.0,2351.0,0.0,0.0,0.0
-2020-01-01,Vodafone,Datos generales,Gastos de explotación,996,2020,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,157.42
-2020-01-01,Vodafone,Datos generales,Ingresos,2083,4040,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,4764.09,0.0,0.0,0.0,0.0
-2020-01-01,Vodafone,Datos generales,Inversiones en infraestr de telec y serv audiov,1006,2020,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,824.67,0.0
-2020-01-01,Vodafone,Datos generales,Número de empleados,1014,2020,España,N/A,N/A,N/A,Unidades,0.0,0.0,4260.0,0.0,0.0,0.0
-2021-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,1056,2021,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,156.32,0.0
-2021-01-01,Digi,Datos generales,Gastos de explotación,1050,2021,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,6.63
-2021-01-01,Digi,Datos generales,Ingresos,2174,4042,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,364.03000000000003,0.0,0.0,0.0,0.0
-2021-01-01,Digi,Datos generales,Inversiones en infraestr de telec y serv audiov,1057,2021,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,154.47,0.0
-2021-01-01,Digi,Datos generales,Número de empleados,1066,2021,España,N/A,N/A,N/A,Unidades,0.0,0.0,3322.0,0.0,0.0,0.0
-2021-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,1058,2021,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,155.87,0.0
-2021-01-01,Otros,Datos generales,Gastos de explotación,1051,2021,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,70.19
-2021-01-01,Otros,Datos generales,Ingresos,2176,4042,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,2223.37,0.0,0.0,0.0,0.0
-2021-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,1059,2021,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,707.28,0.0
-2021-01-01,Otros,Datos generales,Número de empleados,1067,2021,España,N/A,N/A,N/A,Unidades,0.0,0.0,969.0,0.0,0.0,0.0
-2021-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,1060,2021,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,104.75,0.0
-2021-01-01,Movistar,Datos generales,Gastos de explotación,1052,2021,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,121.79
-2021-01-01,Movistar,Datos generales,Ingresos,2178,4042,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,14388.05,0.0,0.0,0.0,0.0
-2021-01-01,Movistar,Datos generales,Inversiones en infraestr de telec y serv audiov,1061,2021,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1957.9,0.0
-2021-01-01,Movistar,Datos generales,Número de empleados,1068,2021,España,N/A,N/A,N/A,Unidades,0.0,0.0,18399.0,0.0,0.0,0.0
-2021-01-01,Otros,Datos generales,Ingresos,18601,34357,España,Servicio mayorista,Alquiler de circuitos,N/A,Millones de euros,34355.43,0.0,0.0,0.0,0.0,0.0
-2021-01-01,Otros,Datos generales,Paquetes,6459,12126,España,N/A,N/A,Banda ancha fija. tel móvil y banda ancha móvil,Unidades,0.0,0.0,0.0,16191816.0,0.0,0.0
-2021-01-01,Orange,Datos generales,Gastos de explotación,1053,2021,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,77.81
-2021-01-01,Orange,Datos generales,Ingresos,2197,4042,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,5545.06,0.0,0.0,0.0,0.0
-2021-01-01,Orange,Datos generales,Inversiones en infraestr de telec y serv audiov,1062,2021,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1515.67,0.0
-2021-01-01,Orange,Datos generales,Número de empleados,1069,2021,España,N/A,N/A,N/A,Unidades,0.0,0.0,5430.0,0.0,0.0,0.0
-2021-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,1064,2021,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,50.1,0.0
-2021-01-01,Otros,Datos generales,Número de empleados,1071,2021,España,N/A,N/A,N/A,Unidades,0.0,0.0,6666.0,0.0,0.0,0.0
-2021-01-01,Resto,Datos generales,Gastos de explotación,1054,2021,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,102.49
-2021-01-01,Resto,Datos generales,Ingresos,2199,4042,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,6795.24,0.0,0.0,0.0,0.0
-2021-01-01,Resto,Datos generales,Inversiones en infraestr de telec y serv audiov,1063,2021,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1335.02,0.0
-2021-01-01,Resto,Datos generales,Número de empleados,1070,2021,España,N/A,N/A,N/A,Unidades,0.0,0.0,18576.0,0.0,0.0,0.0
-2021-01-01,Otros,Datos generales,Número de empleados,1072,2021,España,N/A,N/A,N/A,Unidades,0.0,0.0,2387.0,0.0,0.0,0.0
-2021-01-01,Vodafone,Datos generales,Gastos de explotación,1055,2021,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,115.39
-2021-01-01,Vodafone,Datos generales,Ingresos,2201,4042,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,5039.7,0.0,0.0,0.0,0.0
-2021-01-01,Vodafone,Datos generales,Inversiones en infraestr de telec y serv audiov,1065,2021,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1067.01,0.0
-2021-01-01,Vodafone,Datos generales,Número de empleados,1073,2021,España,N/A,N/A,N/A,Unidades,0.0,0.0,4093.0,0.0,0.0,0.0
-2022-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,1115,2022,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,227.34,0.0
-2022-01-01,Digi,Datos generales,Gastos de explotación,1109,2022,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,8.61
-2022-01-01,Digi,Datos generales,Ingresos,2290,4044,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,495.93,0.0,0.0,0.0,0.0
-2022-01-01,Digi,Datos generales,Inversiones en infraestr de telec y serv audiov,1116,2022,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,231.88,0.0
-2022-01-01,Digi,Datos generales,Número de empleados,1124,2022,España,N/A,N/A,N/A,Unidades,0.0,0.0,5092.0,0.0,0.0,0.0
-2022-01-01,Otros,Datos generales,Gastos de explotación,1110,2022,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,80.23
-2022-01-01,Otros,Datos generales,Ingresos,2292,4044,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,2848.72,0.0,0.0,0.0,0.0
-2022-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,1117,2022,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,605.91,0.0
-2022-01-01,Otros,Datos generales,Número de empleados,1125,2022,España,N/A,N/A,N/A,Unidades,0.0,0.0,1487.0,0.0,0.0,0.0
-2022-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,1118,2022,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,104.58,0.0
-2022-01-01,Movistar,Datos generales,Gastos de explotación,1111,2022,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,152.73
-2022-01-01,Movistar,Datos generales,Ingresos,2294,4044,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,14527.130000000001,0.0,0.0,0.0,0.0
-2022-01-01,Movistar,Datos generales,Inversiones en infraestr de telec y serv audiov,1119,2022,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1755.01,0.0
-2022-01-01,Movistar,Datos generales,Número de empleados,1126,2022,España,N/A,N/A,N/A,Unidades,0.0,0.0,16749.0,0.0,0.0,0.0
-2022-01-01,Otros,Datos generales,Ingresos,19587,34374,España,Servicio mayorista,Alquiler de circuitos,N/A,Millones de euros,34634.740000000005,0.0,0.0,0.0,0.0,0.0
-2022-01-01,Otros,Datos generales,Paquetes,6807,12132,España,N/A,N/A,Banda ancha fija. tel móvil y banda ancha móvil,Unidades,0.0,0.0,0.0,16492940.0,0.0,0.0
-2022-01-01,Orange,Datos generales,Gastos de explotación,1112,2022,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,66.1
-2022-01-01,Orange,Datos generales,Ingresos,2313,4044,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,5612.63,0.0,0.0,0.0,0.0
-2022-01-01,Orange,Datos generales,Inversiones en infraestr de telec y serv audiov,1120,2022,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1044.95,0.0
-2022-01-01,Orange,Datos generales,Número de empleados,1127,2022,España,N/A,N/A,N/A,Unidades,0.0,0.0,5294.0,0.0,0.0,0.0
-2022-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,1122,2022,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,44.02,0.0
-2022-01-01,Otros,Datos generales,Número de empleados,1129,2022,España,N/A,N/A,N/A,Unidades,0.0,0.0,6765.0,0.0,0.0,0.0
-2022-01-01,Resto,Datos generales,Gastos de explotación,1113,2022,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,90.12
-2022-01-01,Resto,Datos generales,Ingresos,2315,4044,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,6613.0,0.0,0.0,0.0,0.0
-2022-01-01,Resto,Datos generales,Inversiones en infraestr de telec y serv audiov,1121,2022,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1037.91,0.0
-2022-01-01,Resto,Datos generales,Número de empleados,1128,2022,España,N/A,N/A,N/A,Unidades,0.0,0.0,18023.0,0.0,0.0,0.0
-2022-01-01,Otros,Datos generales,Número de empleados,1130,2022,España,N/A,N/A,N/A,Unidades,0.0,0.0,2444.0,0.0,0.0,0.0
-2022-01-01,Vodafone,Datos generales,Gastos de explotación,1114,2022,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,73.14
-2022-01-01,Vodafone,Datos generales,Ingresos,2317,4044,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,4537.31,0.0,0.0,0.0,0.0
-2022-01-01,Vodafone,Datos generales,Inversiones en infraestr de telec y serv audiov,1123,2022,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,676.11,0.0
-2022-01-01,Vodafone,Datos generales,Número de empleados,1131,2022,España,N/A,N/A,N/A,Unidades,0.0,0.0,4088.0,0.0,0.0,0.0
-2023-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,1173,2023,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,232.22,0.0
-2023-01-01,Digi,Datos generales,Gastos de explotación,1167,2023,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,10.69
-2023-01-01,Digi,Datos generales,Ingresos,2406,4046,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,642.09,0.0,0.0,0.0,0.0
-2023-01-01,Digi,Datos generales,Inversiones en infraestr de telec y serv audiov,1174,2023,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,304.25,0.0
-2023-01-01,Digi,Datos generales,Número de empleados,1182,2023,España,N/A,N/A,N/A,Unidades,0.0,0.0,7699.0,0.0,0.0,0.0
-2023-01-01,Otros,Datos generales,Gastos de explotación,1168,2023,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,65.47
-2023-01-01,Otros,Datos generales,Ingresos,2408,4046,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,2806.72,0.0,0.0,0.0,0.0
-2023-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,1175,2023,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,460.68,0.0
-2023-01-01,Otros,Datos generales,Número de empleados,1183,2023,España,N/A,N/A,N/A,Unidades,0.0,0.0,1507.0,0.0,0.0,0.0
-2023-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,1176,2023,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,132.89,0.0
-2023-01-01,Movistar,Datos generales,Gastos de explotación,1169,2023,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,137.66
-2023-01-01,Movistar,Datos generales,Ingresos,2410,4046,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,13950.8,0.0,0.0,0.0,0.0
-2023-01-01,Movistar,Datos generales,Inversiones en infraestr de telec y serv audiov,1177,2023,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1872.5,0.0
-2023-01-01,Movistar,Datos generales,Número de empleados,1184,2023,España,N/A,N/A,N/A,Unidades,0.0,0.0,16988.0,0.0,0.0,0.0
-2023-01-01,Otros,Datos generales,Ingresos,20573,34391,España,Servicio mayorista,Alquiler de circuitos,N/A,Millones de euros,34595.97,0.0,0.0,0.0,0.0,0.0
-2023-01-01,Otros,Datos generales,Paquetes,7155,12138,España,N/A,N/A,Banda ancha fija. tel móvil y banda ancha móvil,Unidades,0.0,0.0,0.0,17021147.0,0.0,0.0
-2023-01-01,Orange,Datos generales,Gastos de explotación,1170,2023,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,65.1
-2023-01-01,Orange,Datos generales,Ingresos,2429,4046,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,5679.82,0.0,0.0,0.0,0.0
-2023-01-01,Orange,Datos generales,Inversiones en infraestr de telec y serv audiov,1178,2023,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,938.14,0.0
-2023-01-01,Orange,Datos generales,Número de empleados,1185,2023,España,N/A,N/A,N/A,Unidades,0.0,0.0,5283.0,0.0,0.0,0.0
-2023-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,1180,2023,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,51.95,0.0
-2023-01-01,Otros,Datos generales,Número de empleados,1187,2023,España,N/A,N/A,N/A,Unidades,0.0,0.0,6904.0,0.0,0.0,0.0
-2023-01-01,Resto,Datos generales,Gastos de explotación,1171,2023,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,88.64
-2023-01-01,Resto,Datos generales,Ingresos,2431,4046,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,7083.719999999999,0.0,0.0,0.0,0.0
-2023-01-01,Resto,Datos generales,Inversiones en infraestr de telec y serv audiov,1179,2023,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1445.93,0.0
-2023-01-01,Resto,Datos generales,Número de empleados,1186,2023,España,N/A,N/A,N/A,Unidades,0.0,0.0,18332.0,0.0,0.0,0.0
-2023-01-01,Otros,Datos generales,Número de empleados,1188,2023,España,N/A,N/A,N/A,Unidades,0.0,0.0,2475.0,0.0,0.0,0.0
-2023-01-01,Vodafone,Datos generales,Gastos de explotación,1172,2023,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,70.0
-2023-01-01,Vodafone,Datos generales,Ingresos,2433,4046,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,4432.82,0.0,0.0,0.0,0.0
-2023-01-01,Vodafone,Datos generales,Inversiones en infraestr de telec y serv audiov,1181,2023,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,558.0,0.0
-2023-01-01,Vodafone,Datos generales,Número de empleados,1189,2023,España,N/A,N/A,N/A,Unidades,0.0,0.0,3771.0,0.0,0.0,0.0
-2024-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,1231,2024,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,193.89,0.0
-2024-01-01,Digi,Datos generales,Gastos de explotación,1225,2024,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,16.47
-2024-01-01,Digi,Datos generales,Ingresos,2522,4048,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,781.31,0.0,0.0,0.0,0.0
-2024-01-01,Digi,Datos generales,Inversiones en infraestr de telec y serv audiov,1232,2024,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,326.97,0.0
-2024-01-01,Digi,Datos generales,Número de empleados,1240,2024,España,N/A,N/A,N/A,Unidades,0.0,0.0,9386.0,0.0,0.0,0.0
-2024-01-01,Otros,Datos generales,Gastos de explotación,1226,2024,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,57.98
-2024-01-01,Otros,Datos generales,Ingresos,2524,4048,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,2784.3,0.0,0.0,0.0,0.0
-2024-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,1233,2024,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,477.35,0.0
-2024-01-01,Otros,Datos generales,Número de empleados,1241,2024,España,N/A,N/A,N/A,Unidades,0.0,0.0,1380.0,0.0,0.0,0.0
-2024-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,1234,2024,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,107.28,0.0
-2024-01-01,Movistar,Datos generales,Gastos de explotación,1227,2024,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,124.55
-2024-01-01,Movistar,Datos generales,Ingresos,2526,4048,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,13751.27,0.0,0.0,0.0,0.0
-2024-01-01,Movistar,Datos generales,Inversiones en infraestr de telec y serv audiov,1235,2024,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1937.87,0.0
-2024-01-01,Movistar,Datos generales,Número de empleados,1242,2024,España,N/A,N/A,N/A,Unidades,0.0,0.0,13852.0,0.0,0.0,0.0
-2024-01-01,Otros,Datos generales,Ingresos,20280,32384,España,Servicio mayorista,Alquiler de circuitos,N/A,Millones de euros,34572.84,0.0,0.0,0.0,0.0,0.0
-2024-01-01,Otros,Datos generales,Paquetes,7503,12144,España,N/A,N/A,Banda ancha fija. tel móvil y banda ancha móvil,Unidades,0.0,0.0,0.0,17746867.0,0.0,0.0
-2024-01-01,Orange,Datos generales,Gastos de explotación,1228,2024,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,56.6
-2024-01-01,Orange,Datos generales,Ingresos,2544,4048,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,5567.57,0.0,0.0,0.0,0.0
-2024-01-01,Orange,Datos generales,Inversiones en infraestr de telec y serv audiov,1236,2024,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,1054.29,0.0
-2024-01-01,Orange,Datos generales,Número de empleados,1243,2024,España,N/A,N/A,N/A,Unidades,0.0,0.0,4947.0,0.0,0.0,0.0
-2024-01-01,Otros,Datos generales,Inversiones en infraestr de telec y serv audiov,1238,2024,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,57.82,0.0
-2024-01-01,Otros,Datos generales,Número de empleados,1245,2024,España,N/A,N/A,N/A,Unidades,0.0,0.0,6770.0,0.0,0.0,0.0
-2024-01-01,Resto,Datos generales,Gastos de explotación,1229,2024,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,107.21
-2024-01-01,Resto,Datos generales,Ingresos,2546,4048,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,7599.5,0.0,0.0,0.0,0.0
-2024-01-01,Resto,Datos generales,Inversiones en infraestr de telec y serv audiov,1237,2024,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,2147.36,0.0
-2024-01-01,Resto,Datos generales,Número de empleados,1244,2024,España,N/A,N/A,N/A,Unidades,0.0,0.0,19941.0,0.0,0.0,0.0
-2024-01-01,Otros,Datos generales,Número de empleados,1246,2024,España,N/A,N/A,N/A,Unidades,0.0,0.0,2530.0,0.0,0.0,0.0
-2024-01-01,Vodafone,Datos generales,Gastos de explotación,1230,2024,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,0.0,64.31
-2024-01-01,Vodafone,Datos generales,Ingresos,2548,4048,España,Servicio mayorista,N/A,N/A,Millones de euros,0.0,4088.8900000000003,0.0,0.0,0.0,0.0
-2024-01-01,Vodafone,Datos generales,Inversiones en infraestr de telec y serv audiov,1239,2024,España,N/A,N/A,N/A,Millones de euros,0.0,0.0,0.0,0.0,416.91,0.0
-2024-01-01,Vodafone,Datos generales,Número de empleados,1247,2024,España,N/A,N/A,N/A,Unidades,0.0,0.0,2423.0,0.0,0.0,0.0
+periodo,operador,servicio,tipo_de_ingreso,ingresos,id,anno,pais,tipo_de_mercado,concepto,tipo_de_paquete,unidades,ingresos_por_operador,empleados_por_operador,paquetes,inversiones_por_operador,gastos_por_operador
+2010-01-01,Otros,Datos generales,nan,0.0,401,2010,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,0.3,0.0
+2010-01-01,Otros,Datos generales,nan,0.0,392,2010,España,nan,Gastos de explotación,nan,Millones de euros,0.0,0.0,0.0,0.0,38.03
+2010-01-01,Otros,Datos generales,nan,0.0,2063,10050,España,nan,Gastos de explotación,nan,Millones de euros,29.520000000000003,34.0,0.0,0.16,0.03
+2010-01-01,Otros,Datos generales,nan,0.0,403,2010,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,45.43,0.0
+2010-01-01,Otros,Datos generales,nan,0.0,1646,8040,España,nan,Gastos de explotación,nan,Millones de euros,11.14,31.0,0.0,2.12,0.88
+2010-01-01,Otros,Datos generales,nan,0.0,394,2010,España,nan,Gastos de explotación,nan,Millones de euros,0.0,0.0,0.0,0.0,18.93
+2010-01-01,Otros,Datos generales,nan,0.0,405,2010,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,128.39,0.0
+2010-01-01,Movistar,Datos generales,nan,0.0,2076,10050,España,nan,Gastos de explotación,nan,Millones de euros,19347.22,32217.0,0.0,1994.32,322.65
+2010-01-01,Otros,Datos generales,nan,0.0,810,4020,España,nan,Gastos de explotación,nan,Millones de euros,0.0,3082.0,0.0,0.0,42.95
+2010-01-01,Orange,Datos generales,nan,0.0,2100,10050,España,nan,Gastos de explotación,nan,Millones de euros,3847.87,3071.0,0.0,402.06,95.07
+2010-01-01,Otros,Datos generales,nan,0.0,826,4020,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,6410.0,0.0,97.98,0.0
+2010-01-01,Resto,Datos generales,nan,0.0,2105,10050,España,nan,Gastos de explotación,nan,Millones de euros,10398.33,26815.0,0.0,1120.74,141.46
+2010-01-01,Otros,Datos generales,nan,0.0,418,2010,España,nan,Número de empleados,nan,Unidades,0.0,1716.0,0.0,0.0,0.0
+2010-01-01,Vodafone,Datos generales,nan,0.0,2113,10050,España,nan,Gastos de explotación,nan,Millones de euros,6097.8,4421.0,0.0,674.72,180.16
+2010-01-01,Otros,Datos generales,nan,0.0,400,2010,España,nan,Gastos de explotación,nan,Millones de euros,0.0,0.0,0.0,0.0,13.9
+2010-01-01,nan,Datos generales,Alquiler de circuitos,730.66,425,2010,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2010-01-01,nan,Datos generales,Banda Ancha móvil,1687.66,440,2010,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2010-01-01,nan,Datos generales,Banda ancha fija,4010.28,439,2010,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2010-01-01,nan,Datos generales,Banda ancha fija mayorista,454.63,426,2010,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2010-01-01,nan,Datos generales,Comunicaciones de Empresa,1508.98,441,2010,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2010-01-01,nan,Datos generales,Contenidos audiovisuales,18.15,427,2010,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2010-01-01,nan,Datos generales,Interconexión fija,1693.87,428,2010,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2010-01-01,nan,Datos generales,Interconexión móvil,2658.31,429,2010,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2010-01-01,nan,Datos generales,Otros servicios mayoristas,517.25,430,2010,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2010-01-01,nan,Datos generales,Otros servicios minoristas,1572.1,442,2010,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2010-01-01,nan,Datos generales,Servicios audiovisuales,4389.5,443,2010,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2010-01-01,nan,Datos generales,Servicios de información telefónica,74.56,444,2010,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2010-01-01,nan,Datos generales,Telefonía fija,5847.16,445,2010,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2010-01-01,nan,Datos generales,Telefonía móvil,12348.63,446,2010,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2010-01-01,nan,Datos generales,Transmisión de datos,41.21,431,2010,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2010-01-01,nan,Datos generales,Transporte y difusión de la señal audiovisual,394.99,432,2010,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2010-01-01,nan,Datos generales,Venta y alquiler de terminales,1783.94,447,2010,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2010-01-01,nan,Datos generales,nan,0.0,1263,6030,España,nan,Paquetes,Resto,Unidades,0.0,0.0,10041066.0,0.0,0.0
+2011-01-01,Otros,Datos generales,nan,0.0,461,2011,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,0.35,0.0
+2011-01-01,Otros,Datos generales,nan,0.0,452,2011,España,nan,Gastos de explotación,nan,Millones de euros,0.0,0.0,0.0,0.0,31.23
+2011-01-01,Otros,Datos generales,nan,0.0,2363,10055,España,nan,Gastos de explotación,nan,Millones de euros,49.79,52.0,0.0,0.07,0.03
+2011-01-01,Otros,Datos generales,nan,0.0,463,2011,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,59.71,0.0
+2011-01-01,Otros,Datos generales,nan,0.0,1886,8044,España,nan,Gastos de explotación,nan,Millones de euros,13.36,39.0,0.0,2.44,1.2
+2011-01-01,Otros,Datos generales,nan,0.0,454,2011,España,nan,Gastos de explotación,nan,Millones de euros,0.0,0.0,0.0,0.0,20.7
+2011-01-01,Otros,Datos generales,nan,0.0,465,2011,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,230.02,0.0
+2011-01-01,Movistar,Datos generales,nan,0.0,2376,10055,España,nan,Gastos de explotación,nan,Millones de euros,17710.74,30298.0,0.0,2890.91,357.26
+2011-01-01,Otros,Datos generales,nan,0.0,930,4022,España,nan,Gastos de explotación,nan,Millones de euros,0.0,2951.0,0.0,0.0,38.73
+2011-01-01,Orange,Datos generales,nan,0.0,2400,10055,España,nan,Gastos de explotación,nan,Millones de euros,4013.19,3002.0,0.0,989.99,77.99
+2011-01-01,Otros,Datos generales,nan,0.0,946,4022,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,6517.0,0.0,77.3,0.0
+2011-01-01,Resto,Datos generales,nan,0.0,2405,10055,España,nan,Gastos de explotación,nan,Millones de euros,10426.39,25596.0,0.0,1082.55,147.84
+2011-01-01,Otros,Datos generales,nan,0.0,478,2011,España,nan,Número de empleados,nan,Unidades,0.0,1981.0,0.0,0.0,0.0
+2011-01-01,Vodafone,Datos generales,nan,0.0,2413,10055,España,nan,Gastos de explotación,nan,Millones de euros,5675.72,4392.0,0.0,573.17,86.71
+2011-01-01,Otros,Datos generales,nan,0.0,460,2011,España,nan,Gastos de explotación,nan,Millones de euros,0.0,0.0,0.0,0.0,14.32
+2011-01-01,nan,Datos generales,Alquiler de circuitos,741.29,485,2011,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2011-01-01,nan,Datos generales,Banda Ancha móvil,2156.3,500,2011,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2011-01-01,nan,Datos generales,Banda ancha fija,3833.72,499,2011,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2011-01-01,nan,Datos generales,Banda ancha fija mayorista,545.57,486,2011,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2011-01-01,nan,Datos generales,Comunicaciones de Empresa,1512.21,501,2011,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2011-01-01,nan,Datos generales,Contenidos audiovisuales,106.89,487,2011,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2011-01-01,nan,Datos generales,Interconexión fija,1668.22,488,2011,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2011-01-01,nan,Datos generales,Interconexión móvil,2443.24,489,2011,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2011-01-01,nan,Datos generales,Otros servicios mayoristas,553.78,490,2011,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2011-01-01,nan,Datos generales,Otros servicios minoristas,1232.41,502,2011,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2011-01-01,nan,Datos generales,Servicios audiovisuales,4018.14,503,2011,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2011-01-01,nan,Datos generales,Servicios de información telefónica,63.06,504,2011,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2011-01-01,nan,Datos generales,Telefonía fija,5372.35,505,2011,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2011-01-01,nan,Datos generales,Telefonía móvil,11305.23,506,2011,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2011-01-01,nan,Datos generales,Transmisión de datos,41.88,491,2011,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2011-01-01,nan,Datos generales,Transporte y difusión de la señal audiovisual,413.51,492,2011,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2011-01-01,nan,Datos generales,Venta y alquiler de terminales,1881.4,507,2011,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2011-01-01,nan,Datos generales,nan,0.0,1443,6033,España,nan,Paquetes,Resto,Unidades,0.0,0.0,10565843.0,0.0,0.0
+2012-01-01,Otros,Datos generales,nan,0.0,512,2012,España,nan,Gastos de explotación,nan,Millones de euros,0.0,0.0,0.0,0.0,28.28
+2012-01-01,Otros,Datos generales,nan,0.0,2663,10060,España,nan,Gastos de explotación,nan,Millones de euros,51.3,60.0,0.0,0.35,0.19
+2012-01-01,Otros,Datos generales,nan,0.0,522,2012,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,119.19,0.0
+2012-01-01,Otros,Datos generales,nan,0.0,2125,8048,España,nan,Gastos de explotación,nan,Millones de euros,14.94,50.0,0.0,1.69,1.62
+2012-01-01,Otros,Datos generales,nan,0.0,514,2012,España,nan,Gastos de explotación,nan,Millones de euros,0.0,0.0,0.0,0.0,18.89
+2012-01-01,Otros,Datos generales,nan,0.0,524,2012,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,187.87,0.0
+2012-01-01,Movistar,Datos generales,nan,0.0,2676,10060,España,nan,Gastos de explotación,nan,Millones de euros,15472.63,27370.0,0.0,1648.3,357.82
+2012-01-01,Otros,Datos generales,nan,0.0,1049,4024,España,nan,Gastos de explotación,nan,Millones de euros,0.0,2776.0,0.0,0.0,29.67
+2012-01-01,Orange,Datos generales,nan,0.0,2700,10060,España,nan,Gastos de explotación,nan,Millones de euros,4038.04,3962.0,0.0,479.87,69.07
+2012-01-01,Otros,Datos generales,nan,0.0,1064,4024,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,6319.0,0.0,53.67,0.0
+2012-01-01,Resto,Datos generales,nan,0.0,2705,10060,España,nan,Gastos de explotación,nan,Millones de euros,10378.599999999999,21340.0,0.0,966.48,149.29
+2012-01-01,Otros,Datos generales,nan,0.0,537,2012,España,nan,Número de empleados,nan,Unidades,0.0,2049.0,0.0,0.0,0.0
+2012-01-01,Vodafone,Datos generales,nan,0.0,2713,10060,España,nan,Gastos de explotación,nan,Millones de euros,5143.469999999999,4206.0,0.0,588.2,101.81
+2012-01-01,Otros,Datos generales,nan,0.0,520,2012,España,nan,Gastos de explotación,nan,Millones de euros,0.0,0.0,0.0,0.0,15.16
+2012-01-01,nan,Datos generales,Alquiler de circuitos,747.75,546,2012,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2012-01-01,nan,Datos generales,Banda Ancha móvil,2773.24,561,2012,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2012-01-01,nan,Datos generales,Banda ancha fija,3659.0,560,2012,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2012-01-01,nan,Datos generales,Banda ancha fija mayorista,593.29,547,2012,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2012-01-01,nan,Datos generales,Comunicaciones de Empresa,1511.71,562,2012,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2012-01-01,nan,Datos generales,Contenidos audiovisuales,157.49,548,2012,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2012-01-01,nan,Datos generales,Interconexión fija,1679.12,549,2012,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2012-01-01,nan,Datos generales,Interconexión móvil,2021.96,550,2012,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2012-01-01,nan,Datos generales,Otros servicios mayoristas,522.19,551,2012,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2012-01-01,nan,Datos generales,Otros servicios minoristas,1227.29,563,2012,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2012-01-01,nan,Datos generales,Servicios audiovisuales,3603.94,564,2012,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2012-01-01,nan,Datos generales,Servicios de información telefónica,51.29,565,2012,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2012-01-01,nan,Datos generales,Telefonía fija,4814.55,566,2012,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2012-01-01,nan,Datos generales,Telefonía móvil,9379.05,567,2012,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2012-01-01,nan,Datos generales,Transmisión de datos,51.17,552,2012,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2012-01-01,nan,Datos generales,Transporte y difusión de la señal audiovisual,394.5,553,2012,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2012-01-01,nan,Datos generales,Venta y alquiler de terminales,1911.47,568,2012,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2012-01-01,nan,Datos generales,nan,0.0,2705,10060,España,nan,Paquetes,Resto,Unidades,0.0,0.0,10858315.0,0.0,0.0
+2013-01-01,Otros,Datos generales,nan,0.0,582,2013,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,0.01,0.0
+2013-01-01,Otros,Datos generales,nan,0.0,573,2013,España,nan,Gastos de explotación,nan,Millones de euros,0.0,0.0,0.0,0.0,29.78
+2013-01-01,Otros,Datos generales,nan,0.0,2972,10065,España,nan,Gastos de explotación,nan,Millones de euros,48.24,71.0,0.0,0.02,0.21
+2013-01-01,Otros,Datos generales,nan,0.0,584,2013,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,42.56,0.0
+2013-01-01,Otros,Datos generales,nan,0.0,2372,8052,España,nan,Gastos de explotación,nan,Millones de euros,17.02,38.0,0.0,1.44,1.09
+2013-01-01,Otros,Datos generales,nan,0.0,575,2013,España,nan,Gastos de explotación,nan,Millones de euros,0.0,0.0,0.0,0.0,22.71
+2013-01-01,Otros,Datos generales,nan,0.0,586,2013,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,177.89,0.0
+2013-01-01,Movistar,Datos generales,nan,0.0,2985,10065,España,nan,Gastos de explotación,nan,Millones de euros,13534.5,26060.0,0.0,1502.67,269.25
+2013-01-01,Otros,Datos generales,nan,0.0,1172,4026,España,nan,Gastos de explotación,nan,Millones de euros,0.0,2543.0,0.0,0.0,26.85
+2013-01-01,Orange,Datos generales,nan,0.0,3009,10065,España,nan,Gastos de explotación,nan,Millones de euros,4049.4300000000003,3986.0,0.0,588.65,67.95
+2013-01-01,Otros,Datos generales,nan,0.0,1188,4026,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,6325.0,0.0,49.4,0.0
+2013-01-01,Resto,Datos generales,nan,0.0,3014,10065,España,nan,Gastos de explotación,nan,Millones de euros,10358.63,19495.0,0.0,1042.5,80.86
+2013-01-01,Otros,Datos generales,nan,0.0,599,2013,España,nan,Número de empleados,nan,Unidades,0.0,2435.0,0.0,0.0,0.0
+2013-01-01,Vodafone,Datos generales,nan,0.0,3022,10065,España,nan,Gastos de explotación,nan,Millones de euros,4541.37,3614.0,0.0,489.97,133.67
+2013-01-01,Otros,Datos generales,nan,0.0,581,2013,España,nan,Gastos de explotación,nan,Millones de euros,0.0,0.0,0.0,0.0,14.44
+2013-01-01,nan,Datos generales,Alquiler de circuitos,727.1,608,2013,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2013-01-01,nan,Datos generales,Banda Ancha móvil,3314.93,623,2013,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2013-01-01,nan,Datos generales,Banda ancha fija,3558.81,622,2013,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2013-01-01,nan,Datos generales,Banda ancha fija mayorista,653.82,609,2013,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2013-01-01,nan,Datos generales,Comunicaciones de Empresa,1450.35,624,2013,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2013-01-01,nan,Datos generales,Contenidos audiovisuales,201.94,610,2013,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2013-01-01,nan,Datos generales,Interconexión fija,1608.69,611,2013,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2013-01-01,nan,Datos generales,Interconexión móvil,1547.08,612,2013,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2013-01-01,nan,Datos generales,Otros servicios mayoristas,621.29,613,2013,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2013-01-01,nan,Datos generales,Otros servicios minoristas,1292.87,625,2013,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2013-01-01,nan,Datos generales,Servicios audiovisuales,3376.0,626,2013,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2013-01-01,nan,Datos generales,Servicios de información telefónica,40.58,627,2013,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2013-01-01,nan,Datos generales,Telefonía fija,4169.63,628,2013,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2013-01-01,nan,Datos generales,Telefonía móvil,7436.53,629,2013,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2013-01-01,nan,Datos generales,Transmisión de datos,57.9,614,2013,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2013-01-01,nan,Datos generales,Transporte y difusión de la señal audiovisual,374.48,615,2013,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2013-01-01,nan,Datos generales,Venta y alquiler de terminales,2117.19,630,2013,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2013-01-01,nan,Datos generales,nan,0.0,3015,10065,España,nan,Paquetes,Resto,Unidades,0.0,0.0,11561838.0,0.0,0.0
+2014-01-01,Otros,Datos generales,nan,0.0,644,2014,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,2.15,0.0
+2014-01-01,Otros,Datos generales,nan,0.0,635,2014,España,nan,Gastos de explotación,nan,Millones de euros,0.0,0.0,0.0,0.0,25.0
+2014-01-01,Otros,Datos generales,nan,0.0,3282,10070,España,nan,Gastos de explotación,nan,Millones de euros,54.14,83.0,0.0,0.16,0.29
+2014-01-01,Otros,Datos generales,nan,0.0,646,2014,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,26.93,0.0
+2014-01-01,Otros,Datos generales,nan,0.0,2620,8056,España,nan,Gastos de explotación,nan,Millones de euros,17.87,66.0,0.0,0.65,1.73
+2014-01-01,Otros,Datos generales,nan,0.0,637,2014,España,nan,Gastos de explotación,nan,Millones de euros,0.0,0.0,0.0,0.0,23.58
+2014-01-01,Otros,Datos generales,nan,0.0,648,2014,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,188.37,0.0
+2014-01-01,Movistar,Datos generales,nan,0.0,3295,10070,España,nan,Gastos de explotación,nan,Millones de euros,12474.830000000002,26230.0,0.0,1719.38,193.88
+2014-01-01,Otros,Datos generales,nan,0.0,1296,4028,España,nan,Gastos de explotación,nan,Millones de euros,0.0,2425.0,0.0,0.0,28.27
+2014-01-01,Orange,Datos generales,nan,0.0,3319,10070,España,nan,Gastos de explotación,nan,Millones de euros,3907.2,4008.0,0.0,587.77,56.31
+2014-01-01,Otros,Datos generales,nan,0.0,1312,4028,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,6302.0,0.0,25.78,0.0
+2014-01-01,Resto,Datos generales,nan,0.0,3324,10070,España,nan,Gastos de explotación,nan,Millones de euros,10174.15,18503.0,0.0,1696.35,68.99
+2014-01-01,Otros,Datos generales,nan,0.0,661,2014,España,nan,Número de empleados,nan,Unidades,0.0,2331.0,0.0,0.0,0.0
+2014-01-01,Vodafone,Datos generales,nan,0.0,3332,10070,España,nan,Gastos de explotación,nan,Millones de euros,3980.6400000000003,3634.0,0.0,816.82,128.09
+2014-01-01,Otros,Datos generales,nan,0.0,643,2014,España,nan,Gastos de explotación,nan,Millones de euros,0.0,0.0,0.0,0.0,12.44
+2014-01-01,nan,Datos generales,Alquiler de circuitos,677.08,670,2014,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2014-01-01,nan,Datos generales,Banda Ancha móvil,3614.77,685,2014,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2014-01-01,nan,Datos generales,Banda ancha fija,3641.07,684,2014,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2014-01-01,nan,Datos generales,Banda ancha fija mayorista,699.22,671,2014,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2014-01-01,nan,Datos generales,Comunicaciones de Empresa,1437.57,686,2014,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2014-01-01,nan,Datos generales,Contenidos audiovisuales,280.76,672,2014,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2014-01-01,nan,Datos generales,Interconexión fija,1474.42,673,2014,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2014-01-01,nan,Datos generales,Interconexión móvil,1403.89,674,2014,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2014-01-01,nan,Datos generales,Otros servicios mayoristas,678.84,675,2014,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2014-01-01,nan,Datos generales,Otros servicios minoristas,1214.79,687,2014,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2014-01-01,nan,Datos generales,Servicios audiovisuales,3505.65,688,2014,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2014-01-01,nan,Datos generales,Servicios de información telefónica,31.38,689,2014,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2014-01-01,nan,Datos generales,Telefonía fija,3449.02,690,2014,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2014-01-01,nan,Datos generales,Telefonía móvil,6016.6,691,2014,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2014-01-01,nan,Datos generales,Transmisión de datos,50.01,676,2014,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2014-01-01,nan,Datos generales,Transporte y difusión de la señal audiovisual,357.64,677,2014,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2014-01-01,nan,Datos generales,Venta y alquiler de terminales,2076.1,692,2014,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2014-01-01,nan,Datos generales,nan,0.0,3325,10070,España,nan,Paquetes,Resto,Unidades,0.0,0.0,12554545.0,0.0,0.0
+2015-01-01,Otros,Datos generales,nan,0.0,705,2015,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,3.42,0.0
+2015-01-01,Otros,Datos generales,nan,0.0,697,2015,España,nan,Gastos de explotación,nan,Millones de euros,0.0,0.0,0.0,0.0,17.42
+2015-01-01,Otros,Datos generales,nan,0.0,3586,10075,España,nan,Gastos de explotación,nan,Millones de euros,73.88999999999999,102.0,0.0,0.22,0.45
+2015-01-01,Otros,Datos generales,nan,0.0,707,2015,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,46.86,0.0
+2015-01-01,Otros,Datos generales,nan,0.0,2864,8060,España,nan,Gastos de explotación,nan,Millones de euros,35.78,97.0,0.0,1.42,3.1
+2015-01-01,Otros,Datos generales,nan,0.0,699,2015,España,nan,Gastos de explotación,nan,Millones de euros,0.0,0.0,0.0,0.0,20.96
+2015-01-01,Otros,Datos generales,nan,0.0,709,2015,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,183.8,0.0
+2015-01-01,Movistar,Datos generales,nan,0.0,3599,10075,España,nan,Gastos de explotación,nan,Millones de euros,12293.61,26257.0,0.0,1801.94,158.27
+2015-01-01,Orange,Datos generales,nan,0.0,3621,10075,España,nan,Gastos de explotación,nan,Millones de euros,3841.37,3984.0,0.0,680.97,62.27
+2015-01-01,Otros,Datos generales,nan,0.0,1433,4030,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,6277.0,0.0,16.58,0.0
+2015-01-01,Resto,Datos generales,nan,0.0,3626,10075,España,nan,Gastos de explotación,nan,Millones de euros,8751.57,18810.0,0.0,1223.17,73.14
+2015-01-01,Otros,Datos generales,nan,0.0,721,2015,España,nan,Número de empleados,nan,Unidades,0.0,2268.0,0.0,0.0,0.0
+2015-01-01,Vodafone,Datos generales,nan,0.0,3634,10075,España,nan,Gastos de explotación,nan,Millones de euros,5511.389999999999,5704.0,0.0,1721.59,152.9
+2015-01-01,Otros,Datos generales,nan,0.0,704,2015,España,nan,Gastos de explotación,nan,Millones de euros,0.0,0.0,0.0,0.0,16.99
+2015-01-01,nan,Datos generales,Alquiler de circuitos,772.47,730,2015,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2015-01-01,nan,Datos generales,Banda Ancha móvil,4008.32,745,2015,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2015-01-01,nan,Datos generales,Banda ancha fija,3799.63,744,2015,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2015-01-01,nan,Datos generales,Banda ancha fija mayorista,709.19,731,2015,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2015-01-01,nan,Datos generales,Comunicaciones de Empresa,1384.69,746,2015,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2015-01-01,nan,Datos generales,Contenidos audiovisuales,522.57,732,2015,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2015-01-01,nan,Datos generales,Interconexión fija,1142.64,733,2015,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2015-01-01,nan,Datos generales,Interconexión móvil,1628.17,734,2015,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2015-01-01,nan,Datos generales,Otros servicios mayoristas,711.3,735,2015,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2015-01-01,nan,Datos generales,Otros servicios minoristas,1247.54,747,2015,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2015-01-01,nan,Datos generales,Servicios audiovisuales,3803.17,748,2015,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2015-01-01,nan,Datos generales,Servicios de información telefónica,25.44,749,2015,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2015-01-01,nan,Datos generales,Telefonía fija,3043.99,750,2015,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2015-01-01,nan,Datos generales,Telefonía móvil,5069.8,751,2015,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2015-01-01,nan,Datos generales,Transmisión de datos,51.44,736,2015,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2015-01-01,nan,Datos generales,Transporte y difusión de la señal audiovisual,333.43,737,2015,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2015-01-01,nan,Datos generales,Venta y alquiler de terminales,2253.82,752,2015,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2015-01-01,nan,Datos generales,nan,0.0,3625,10075,España,nan,Paquetes,Resto,Unidades,0.0,0.0,13223160.0,0.0,0.0
+2016-01-01,Otros,Datos generales,nan,0.0,763,2016,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,5.58,0.0
+2016-01-01,Otros,Datos generales,nan,0.0,3878,10080,España,nan,Gastos de explotación,nan,Millones de euros,84.21000000000001,123.0,0.0,0.7,0.56
+2016-01-01,Otros,Datos generales,nan,0.0,765,2016,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,92.37,0.0
+2016-01-01,Otros,Datos generales,nan,0.0,3097,8064,España,nan,Gastos de explotación,nan,Millones de euros,55.75,88.0,0.0,1.79,6.63
+2016-01-01,Otros,Datos generales,nan,0.0,767,2016,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,173.81,0.0
+2016-01-01,Movistar,Datos generales,nan,0.0,3889,10080,España,nan,Gastos de explotación,nan,Millones de euros,14720.92,23548.0,0.0,1829.05,120.76
+2016-01-01,Orange,Datos generales,nan,0.0,3911,10080,España,nan,Gastos de explotación,nan,Millones de euros,5039.219999999999,5301.0,0.0,1143.33,83.8
+2016-01-01,Otros,Datos generales,nan,0.0,1549,4032,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,6290.0,0.0,28.68,0.0
+2016-01-01,Resto,Datos generales,nan,0.0,3916,10080,España,nan,Gastos de explotación,nan,Millones de euros,7076.02,16704.0,0.0,478.55,68.5
+2016-01-01,Otros,Datos generales,nan,0.0,779,2016,España,nan,Número de empleados,nan,Unidades,0.0,2273.0,0.0,0.0,0.0
+2016-01-01,Vodafone,Datos generales,nan,0.0,3924,10080,España,nan,Gastos de explotación,nan,Millones de euros,5801.68,5095.0,0.0,1138.93,162.84
+2016-01-01,Otros,Datos generales,nan,0.0,762,2016,España,nan,Gastos de explotación,nan,Millones de euros,0.0,0.0,0.0,0.0,16.9
+2016-01-01,nan,Datos generales,Alquiler de circuitos,813.51,788,2016,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2016-01-01,nan,Datos generales,Banda Ancha móvil,4245.38,803,2016,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2016-01-01,nan,Datos generales,Banda ancha fija,4188.65,802,2016,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2016-01-01,nan,Datos generales,Banda ancha fija mayorista,714.41,789,2016,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2016-01-01,nan,Datos generales,Comunicaciones de Empresa,1370.92,804,2016,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2016-01-01,nan,Datos generales,Contenidos audiovisuales,2272.1,790,2016,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2016-01-01,nan,Datos generales,Interconexión fija,1158.63,791,2016,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2016-01-01,nan,Datos generales,Interconexión móvil,1698.78,792,2016,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2016-01-01,nan,Datos generales,Otros servicios mayoristas,951.1,793,2016,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2016-01-01,nan,Datos generales,Otros servicios minoristas,1275.49,805,2016,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2016-01-01,nan,Datos generales,Servicios audiovisuales,4070.69,806,2016,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2016-01-01,nan,Datos generales,Servicios de información telefónica,19.01,807,2016,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2016-01-01,nan,Datos generales,Telefonía fija,2612.71,808,2016,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2016-01-01,nan,Datos generales,Telefonía móvil,4814.04,809,2016,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2016-01-01,nan,Datos generales,Transmisión de datos,134.0,794,2016,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2016-01-01,nan,Datos generales,Transporte y difusión de la señal audiovisual,349.95,795,2016,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2016-01-01,nan,Datos generales,Venta y alquiler de terminales,2088.44,810,2016,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2016-01-01,nan,Datos generales,nan,0.0,3915,10080,España,nan,Paquetes,Resto,Unidades,0.0,0.0,13909914.0,0.0,0.0
+2017-01-01,Otros,Datos generales,nan,0.0,820,2017,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,20.23,0.0
+2017-01-01,Otros,Datos generales,nan,0.0,4167,10085,España,nan,Gastos de explotación,nan,Millones de euros,93.8,189.0,0.0,0.3,0.64
+2017-01-01,Otros,Datos generales,nan,0.0,822,2017,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,99.55,0.0
+2017-01-01,Otros,Datos generales,nan,0.0,4173,10085,España,nan,Gastos de explotación,nan,Millones de euros,1303.12,470.0,0.0,237.05,35.63
+2017-01-01,Otros,Datos generales,nan,0.0,824,2017,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,167.42,0.0
+2017-01-01,Movistar,Datos generales,nan,0.0,4179,10085,España,nan,Gastos de explotación,nan,Millones de euros,14884.419999999998,22258.0,0.0,1788.38,185.1
+2017-01-01,Orange,Datos generales,nan,0.0,4201,10085,España,nan,Gastos de explotación,nan,Millones de euros,5427.799999999999,5448.0,0.0,1152.77,82.75
+2017-01-01,Otros,Datos generales,nan,0.0,1663,4034,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,6295.0,0.0,38.56,0.0
+2017-01-01,Resto,Datos generales,nan,0.0,4206,10085,España,nan,Gastos de explotación,nan,Millones de euros,6796.76,16731.0,0.0,379.02,79.05
+2017-01-01,Otros,Datos generales,nan,0.0,836,2017,España,nan,Número de empleados,nan,Unidades,0.0,2275.0,0.0,0.0,0.0
+2017-01-01,Vodafone,Datos generales,nan,0.0,4214,10085,España,nan,Gastos de explotación,nan,Millones de euros,5591.450000000001,5034.0,0.0,796.73,183.91
+2017-01-01,nan,Datos generales,Alquiler de circuitos,782.61,847,2017,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2017-01-01,nan,Datos generales,Banda Ancha móvil,4679.16,862,2017,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2017-01-01,nan,Datos generales,Banda ancha fija,4468.67,861,2017,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2017-01-01,nan,Datos generales,Banda ancha fija mayorista,799.82,848,2017,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2017-01-01,nan,Datos generales,Comunicaciones de Empresa,1429.03,863,2017,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2017-01-01,nan,Datos generales,Contenidos audiovisuales,3227.94,849,2017,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2017-01-01,nan,Datos generales,Interconexión fija,971.13,850,2017,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2017-01-01,nan,Datos generales,Interconexión móvil,1549.66,851,2017,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2017-01-01,nan,Datos generales,Otros servicios mayoristas,1071.53,852,2017,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2017-01-01,nan,Datos generales,Otros servicios minoristas,1349.27,864,2017,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2017-01-01,nan,Datos generales,Servicios audiovisuales,4350.18,865,2017,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2017-01-01,nan,Datos generales,Servicios de información telefónica,16.9,866,2017,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2017-01-01,nan,Datos generales,Telefonía fija,2412.05,867,2017,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2017-01-01,nan,Datos generales,Telefonía móvil,4451.85,868,2017,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2017-01-01,nan,Datos generales,Transmisión de datos,219.38,853,2017,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2017-01-01,nan,Datos generales,Transporte y difusión de la señal audiovisual,352.93,854,2017,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2017-01-01,nan,Datos generales,Venta y alquiler de terminales,1965.25,869,2017,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2017-01-01,nan,Datos generales,nan,0.0,5043,12102,España,nan,Paquetes,Banda ancha fija. tel móvil y banda ancha móvil,Unidades,0.0,0.0,14479247.0,0.0,0.0
+2018-01-01,Otros,Datos generales,nan,0.0,879,2018,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,49.29,0.0
+2018-01-01,Otros,Datos generales,nan,0.0,4462,10090,España,nan,Gastos de explotación,nan,Millones de euros,128.39,394.0,0.0,7.25,1.16
+2018-01-01,Otros,Datos generales,nan,0.0,881,2018,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,153.64,0.0
+2018-01-01,Otros,Datos generales,nan,0.0,4468,10090,España,nan,Gastos de explotación,nan,Millones de euros,1563.4499999999998,596.0,0.0,524.68,49.71
+2018-01-01,Otros,Datos generales,nan,0.0,883,2018,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,138.46,0.0
+2018-01-01,Movistar,Datos generales,nan,0.0,4474,10090,España,nan,Gastos de explotación,nan,Millones de euros,15183.14,20755.0,0.0,1756.04,176.05
+2018-01-01,Orange,Datos generales,nan,0.0,4496,10090,España,nan,Gastos de explotación,nan,Millones de euros,5501.06,5626.0,0.0,1337.8,75.83
+2018-01-01,Otros,Datos generales,nan,0.0,1781,4036,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,6458.0,0.0,47.61,0.0
+2018-01-01,Resto,Datos generales,nan,0.0,4501,10090,España,nan,Gastos de explotación,nan,Millones de euros,6622.860000000001,17330.0,0.0,314.48,68.77
+2018-01-01,Otros,Datos generales,nan,0.0,895,2018,España,nan,Número de empleados,nan,Unidades,0.0,2313.0,0.0,0.0,0.0
+2018-01-01,Vodafone,Datos generales,nan,0.0,4509,10090,España,nan,Gastos de explotación,nan,Millones de euros,5383.629999999999,5165.0,0.0,996.85,161.85
+2018-01-01,nan,Datos generales,Alquiler de circuitos,765.72,906,2018,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2018-01-01,nan,Datos generales,Banda Ancha móvil,5262.4,921,2018,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2018-01-01,nan,Datos generales,Banda ancha fija,4411.24,920,2018,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2018-01-01,nan,Datos generales,Banda ancha fija mayorista,916.53,907,2018,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2018-01-01,nan,Datos generales,Comunicaciones de Empresa,1449.32,922,2018,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2018-01-01,nan,Datos generales,Contenidos audiovisuales,3464.38,908,2018,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2018-01-01,nan,Datos generales,Interconexión fija,898.6,909,2018,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2018-01-01,nan,Datos generales,Interconexión móvil,1465.78,910,2018,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2018-01-01,nan,Datos generales,Otros servicios mayoristas,1178.93,911,2018,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2018-01-01,nan,Datos generales,Otros servicios minoristas,1259.19,923,2018,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2018-01-01,nan,Datos generales,Servicios audiovisuales,4338.33,924,2018,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2018-01-01,nan,Datos generales,Servicios de información telefónica,11.29,925,2018,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2018-01-01,nan,Datos generales,Telefonía fija,2244.39,926,2018,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2018-01-01,nan,Datos generales,Telefonía móvil,4115.73,927,2018,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2018-01-01,nan,Datos generales,Transmisión de datos,230.72,912,2018,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2018-01-01,nan,Datos generales,Transporte y difusión de la señal audiovisual,351.44,913,2018,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2018-01-01,nan,Datos generales,Venta y alquiler de terminales,2018.55,928,2018,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2018-01-01,nan,Datos generales,nan,0.0,5397,12108,España,nan,Paquetes,Banda ancha fija. tel móvil y banda ancha móvil,Unidades,0.0,0.0,14874478.0,0.0,0.0
+2019-01-01,Otros,Datos generales,nan,0.0,938,2019,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,99.41,0.0
+2019-01-01,Otros,Datos generales,nan,0.0,4757,10095,España,nan,Gastos de explotación,nan,Millones de euros,194.54,827.0,0.0,38.05,1.59
+2019-01-01,Otros,Datos generales,nan,0.0,940,2019,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,154.17,0.0
+2019-01-01,Otros,Datos generales,nan,0.0,4763,10095,España,nan,Gastos de explotación,nan,Millones de euros,1859.36,683.0,0.0,734.42,57.05
+2019-01-01,Otros,Datos generales,nan,0.0,942,2019,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,154.34,0.0
+2019-01-01,Movistar,Datos generales,nan,0.0,4769,10095,España,nan,Gastos de explotación,nan,Millones de euros,15493.12,18176.0,0.0,1723.34,147.65
+2019-01-01,Orange,Datos generales,nan,0.0,4791,10095,España,nan,Gastos de explotación,nan,Millones de euros,5418.110000000001,5794.0,0.0,1005.03,73.25
+2019-01-01,Otros,Datos generales,nan,0.0,1899,4038,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,6542.0,0.0,44.78,0.0
+2019-01-01,Resto,Datos generales,nan,0.0,4796,10095,España,nan,Gastos de explotación,nan,Millones de euros,6263.55,17718.0,0.0,1075.4,84.64
+2019-01-01,Otros,Datos generales,nan,0.0,954,2019,España,nan,Número de empleados,nan,Unidades,0.0,2285.0,0.0,0.0,0.0
+2019-01-01,Vodafone,Datos generales,nan,0.0,4804,10095,España,nan,Gastos de explotación,nan,Millones de euros,4998.43,4246.0,0.0,736.24,159.46
+2019-01-01,nan,Datos generales,Alquiler de circuitos,717.8,965,2019,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2019-01-01,nan,Datos generales,Banda Ancha móvil,5460.25,980,2019,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2019-01-01,nan,Datos generales,Banda ancha fija,4341.48,979,2019,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2019-01-01,nan,Datos generales,Banda ancha fija mayorista,919.9,966,2019,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2019-01-01,nan,Datos generales,Comunicaciones de Empresa,1473.47,981,2019,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2019-01-01,nan,Datos generales,Contenidos audiovisuales,3360.25,967,2019,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2019-01-01,nan,Datos generales,Interconexión fija,903.87,968,2019,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2019-01-01,nan,Datos generales,Interconexión móvil,1633.67,969,2019,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2019-01-01,nan,Datos generales,Otros servicios mayoristas,1232.82,970,2019,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2019-01-01,nan,Datos generales,Otros servicios minoristas,1519.88,982,2019,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2019-01-01,nan,Datos generales,Servicios audiovisuales,4374.14,983,2019,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2019-01-01,nan,Datos generales,Servicios de información telefónica,10.1,984,2019,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2019-01-01,nan,Datos generales,Telefonía fija,2044.07,985,2019,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2019-01-01,nan,Datos generales,Telefonía móvil,3829.08,986,2019,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2019-01-01,nan,Datos generales,Transmisión de datos,206.47,971,2019,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2019-01-01,nan,Datos generales,Transporte y difusión de la señal audiovisual,355.27,972,2019,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2019-01-01,nan,Datos generales,Venta y alquiler de terminales,1844.57,987,2019,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2019-01-01,nan,Datos generales,nan,0.0,5751,12114,España,nan,Paquetes,Banda ancha fija. tel móvil y banda ancha móvil,Unidades,0.0,0.0,15415402.0,0.0,0.0
+2020-01-01,Otros,Datos generales,nan,0.0,997,2020,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,114.43,0.0
+2020-01-01,Otros,Datos generales,nan,0.0,5052,10100,España,nan,Gastos de explotación,nan,Millones de euros,274.36,1687.0,0.0,68.02,2.74
+2020-01-01,Otros,Datos generales,nan,0.0,999,2020,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,181.2,0.0
+2020-01-01,Otros,Datos generales,nan,0.0,5058,10100,España,nan,Gastos de explotación,nan,Millones de euros,2133.09,978.0,0.0,459.94,64.96
+2020-01-01,Otros,Datos generales,nan,0.0,1001,2020,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,89.74,0.0
+2020-01-01,Movistar,Datos generales,nan,0.0,5064,10100,España,nan,Gastos de explotación,nan,Millones de euros,14679.150000000001,18248.0,0.0,1458.25,127.63
+2020-01-01,Orange,Datos generales,nan,0.0,5086,10100,España,nan,Gastos de explotación,nan,Millones de euros,5557.21,5891.0,0.0,1135.24,71.45
+2020-01-01,Otros,Datos generales,nan,0.0,2017,4040,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,6537.0,0.0,60.11,0.0
+2020-01-01,Resto,Datos generales,nan,0.0,5091,10100,España,nan,Gastos de explotación,nan,Millones de euros,5618.14,17540.0,0.0,624.26,97.45
+2020-01-01,Otros,Datos generales,nan,0.0,1013,2020,España,nan,Número de empleados,nan,Unidades,0.0,2351.0,0.0,0.0,0.0
+2020-01-01,Vodafone,Datos generales,nan,0.0,5099,10100,España,nan,Gastos de explotación,nan,Millones de euros,4764.09,4260.0,0.0,824.67,157.42
+2020-01-01,nan,Datos generales,Alquiler de circuitos,764.45,1024,2020,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2020-01-01,nan,Datos generales,Banda Ancha móvil,5470.57,1039,2020,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2020-01-01,nan,Datos generales,Banda ancha fija,4371.71,1038,2020,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2020-01-01,nan,Datos generales,Banda ancha fija mayorista,935.66,1025,2020,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2020-01-01,nan,Datos generales,Comunicaciones de Empresa,1399.83,1040,2020,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2020-01-01,nan,Datos generales,Contenidos audiovisuales,2855.85,1026,2020,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2020-01-01,nan,Datos generales,Interconexión fija,836.06,1027,2020,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2020-01-01,nan,Datos generales,Interconexión móvil,1696.76,1028,2020,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2020-01-01,nan,Datos generales,Otros servicios mayoristas,2082.74,1029,2020,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2020-01-01,nan,Datos generales,Otros servicios minoristas,1235.57,1041,2020,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2020-01-01,nan,Datos generales,Servicios audiovisuales,3855.37,1042,2020,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2020-01-01,nan,Datos generales,Servicios de información telefónica,7.76,1043,2020,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2020-01-01,nan,Datos generales,Telefonía fija,1769.56,1044,2020,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2020-01-01,nan,Datos generales,Telefonía móvil,3674.72,1045,2020,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2020-01-01,nan,Datos generales,Transmisión de datos,177.78,1030,2020,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2020-01-01,nan,Datos generales,Transporte y difusión de la señal audiovisual,349.74,1031,2020,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2020-01-01,nan,Datos generales,Venta y alquiler de terminales,1541.91,1046,2020,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2020-01-01,nan,Datos generales,nan,0.0,6105,12120,España,nan,Paquetes,Banda ancha fija. tel móvil y banda ancha móvil,Unidades,0.0,0.0,15856942.0,0.0,0.0
+2021-01-01,Otros,Datos generales,nan,0.0,1056,2021,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,156.32,0.0
+2021-01-01,Otros,Datos generales,nan,0.0,5347,10105,España,nan,Gastos de explotación,nan,Millones de euros,364.03000000000003,3322.0,0.0,154.47,6.63
+2021-01-01,Otros,Datos generales,nan,0.0,1058,2021,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,155.87,0.0
+2021-01-01,Otros,Datos generales,nan,0.0,5353,10105,España,nan,Gastos de explotación,nan,Millones de euros,2223.37,969.0,0.0,707.28,70.19
+2021-01-01,Otros,Datos generales,nan,0.0,1060,2021,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,104.75,0.0
+2021-01-01,Movistar,Datos generales,nan,0.0,5359,10105,España,nan,Gastos de explotación,nan,Millones de euros,14388.05,18399.0,0.0,1957.9,121.79
+2021-01-01,Orange,Datos generales,nan,0.0,5381,10105,España,nan,Gastos de explotación,nan,Millones de euros,5545.06,5430.0,0.0,1515.67,77.81
+2021-01-01,Otros,Datos generales,nan,0.0,2135,4042,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,6666.0,0.0,50.1,0.0
+2021-01-01,Resto,Datos generales,nan,0.0,5386,10105,España,nan,Gastos de explotación,nan,Millones de euros,6795.24,18576.0,0.0,1335.02,102.49
+2021-01-01,Otros,Datos generales,nan,0.0,1072,2021,España,nan,Número de empleados,nan,Unidades,0.0,2387.0,0.0,0.0,0.0
+2021-01-01,Vodafone,Datos generales,nan,0.0,5394,10105,España,nan,Gastos de explotación,nan,Millones de euros,5039.7,4093.0,0.0,1067.01,115.39
+2021-01-01,nan,Datos generales,Alquiler de circuitos,791.04,1083,2021,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2021-01-01,nan,Datos generales,Banda Ancha móvil,4526.71,1098,2021,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2021-01-01,nan,Datos generales,Banda ancha fija,4527.7,1097,2021,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2021-01-01,nan,Datos generales,Banda ancha fija mayorista,1057.47,1084,2021,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2021-01-01,nan,Datos generales,Comunicaciones de Empresa,1286.76,1099,2021,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2021-01-01,nan,Datos generales,Contenidos audiovisuales,2885.8,1085,2021,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2021-01-01,nan,Datos generales,Interconexión fija,724.04,1086,2021,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2021-01-01,nan,Datos generales,Interconexión móvil,1938.55,1087,2021,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2021-01-01,nan,Datos generales,Otros servicios mayoristas,2493.49,1088,2021,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2021-01-01,nan,Datos generales,Otros servicios minoristas,1485.62,1100,2021,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2021-01-01,nan,Datos generales,Servicios audiovisuales,4616.8,1101,2021,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2021-01-01,nan,Datos generales,Servicios de información telefónica,4.68,1102,2021,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2021-01-01,nan,Datos generales,Telefonía fija,1631.24,1103,2021,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2021-01-01,nan,Datos generales,Telefonía móvil,3927.88,1104,2021,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2021-01-01,nan,Datos generales,Transmisión de datos,165.41,1089,2021,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2021-01-01,nan,Datos generales,Transporte y difusión de la señal audiovisual,331.42,1090,2021,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2021-01-01,nan,Datos generales,Venta y alquiler de terminales,1960.82,1105,2021,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2021-01-01,nan,Datos generales,nan,0.0,6459,12126,España,nan,Paquetes,Banda ancha fija. tel móvil y banda ancha móvil,Unidades,0.0,0.0,16191816.0,0.0,0.0
+2022-01-01,Otros,Datos generales,nan,0.0,1115,2022,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,227.34,0.0
+2022-01-01,Otros,Datos generales,nan,0.0,5639,10110,España,nan,Gastos de explotación,nan,Millones de euros,495.93,5092.0,0.0,231.88,8.61
+2022-01-01,Otros,Datos generales,nan,0.0,5644,10110,España,nan,Gastos de explotación,nan,Millones de euros,2848.72,1487.0,0.0,605.91,80.23
+2022-01-01,Otros,Datos generales,nan,0.0,1118,2022,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,104.58,0.0
+2022-01-01,Movistar,Datos generales,nan,0.0,5650,10110,España,nan,Gastos de explotación,nan,Millones de euros,14527.130000000001,16749.0,0.0,1755.01,152.73
+2022-01-01,Orange,Datos generales,nan,0.0,5672,10110,España,nan,Gastos de explotación,nan,Millones de euros,5612.63,5294.0,0.0,1044.95,66.1
+2022-01-01,Otros,Datos generales,nan,0.0,2251,4044,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,6765.0,0.0,44.02,0.0
+2022-01-01,Resto,Datos generales,nan,0.0,5677,10110,España,nan,Gastos de explotación,nan,Millones de euros,6613.0,18023.0,0.0,1037.91,90.12
+2022-01-01,Otros,Datos generales,nan,0.0,1130,2022,España,nan,Número de empleados,nan,Unidades,0.0,2444.0,0.0,0.0,0.0
+2022-01-01,Vodafone,Datos generales,nan,0.0,5685,10110,España,nan,Gastos de explotación,nan,Millones de euros,4537.31,4088.0,0.0,676.11,73.14
+2022-01-01,nan,Datos generales,Alquiler de circuitos,759.07,1141,2022,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2022-01-01,nan,Datos generales,Banda Ancha móvil,4594.71,1156,2022,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2022-01-01,nan,Datos generales,Banda ancha fija,4614.05,1155,2022,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2022-01-01,nan,Datos generales,Banda ancha fija mayorista,1036.1,1142,2022,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2022-01-01,nan,Datos generales,Comunicaciones de Empresa,1274.99,1157,2022,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2022-01-01,nan,Datos generales,Contenidos audiovisuales,2873.34,1143,2022,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2022-01-01,nan,Datos generales,Interconexión fija,603.92,1144,2022,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2022-01-01,nan,Datos generales,Interconexión móvil,1882.36,1145,2022,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2022-01-01,nan,Datos generales,Otros servicios mayoristas,2824.76,1146,2022,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2022-01-01,nan,Datos generales,Otros servicios minoristas,1717.98,1158,2022,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2022-01-01,nan,Datos generales,Servicios audiovisuales,4724.6,1159,2022,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2022-01-01,nan,Datos generales,Servicios de información telefónica,2.84,1160,2022,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2022-01-01,nan,Datos generales,Telefonía fija,1456.15,1161,2022,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2022-01-01,nan,Datos generales,Telefonía móvil,3610.32,1162,2022,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2022-01-01,nan,Datos generales,Transmisión de datos,167.84,1147,2022,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2022-01-01,nan,Datos generales,Transporte y difusión de la señal audiovisual,331.37,1148,2022,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2022-01-01,nan,Datos generales,Venta y alquiler de terminales,2160.34,1163,2022,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2022-01-01,nan,Datos generales,nan,0.0,6807,12132,España,nan,Paquetes,Banda ancha fija. tel móvil y banda ancha móvil,Unidades,0.0,0.0,16492940.0,0.0,0.0
+2023-01-01,Otros,Datos generales,nan,0.0,1173,2023,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,232.22,0.0
+2023-01-01,Otros,Datos generales,nan,0.0,5929,10115,España,nan,Gastos de explotación,nan,Millones de euros,642.09,7699.0,0.0,304.25,10.69
+2023-01-01,Otros,Datos generales,nan,0.0,5934,10115,España,nan,Gastos de explotación,nan,Millones de euros,2806.72,1507.0,0.0,460.68,65.47
+2023-01-01,Otros,Datos generales,nan,0.0,1176,2023,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,132.89,0.0
+2023-01-01,Movistar,Datos generales,nan,0.0,5940,10115,España,nan,Gastos de explotación,nan,Millones de euros,13950.8,16988.0,0.0,1872.5,137.66
+2023-01-01,Orange,Datos generales,nan,0.0,5962,10115,España,nan,Gastos de explotación,nan,Millones de euros,5679.82,5283.0,0.0,938.14,65.1
+2023-01-01,Otros,Datos generales,nan,0.0,2367,4046,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,6904.0,0.0,51.95,0.0
+2023-01-01,Resto,Datos generales,nan,0.0,5967,10115,España,nan,Gastos de explotación,nan,Millones de euros,7083.719999999999,18332.0,0.0,1445.93,88.64
+2023-01-01,Otros,Datos generales,nan,0.0,1188,2023,España,nan,Número de empleados,nan,Unidades,0.0,2475.0,0.0,0.0,0.0
+2023-01-01,Vodafone,Datos generales,nan,0.0,5975,10115,España,nan,Gastos de explotación,nan,Millones de euros,4432.82,3771.0,0.0,558.0,70.0
+2023-01-01,nan,Datos generales,Alquiler de circuitos,827.21,1199,2023,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2023-01-01,nan,Datos generales,Banda Ancha móvil,4713.92,1214,2023,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2023-01-01,nan,Datos generales,Banda ancha fija,4731.82,1213,2023,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2023-01-01,nan,Datos generales,Banda ancha fija mayorista,1207.65,1200,2023,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2023-01-01,nan,Datos generales,Comunicaciones de Empresa,1132.34,1215,2023,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2023-01-01,nan,Datos generales,Contenidos audiovisuales,2618.6,1201,2023,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2023-01-01,nan,Datos generales,Interconexión fija,460.33,1202,2023,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2023-01-01,nan,Datos generales,Interconexión móvil,1618.47,1203,2023,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2023-01-01,nan,Datos generales,Otros servicios mayoristas,3022.51,1204,2023,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2023-01-01,nan,Datos generales,Otros servicios minoristas,1395.73,1216,2023,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2023-01-01,nan,Datos generales,Servicios audiovisuales,5073.39,1217,2023,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2023-01-01,nan,Datos generales,Servicios de información telefónica,1.38,1218,2023,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2023-01-01,nan,Datos generales,Telefonía fija,1233.07,1219,2023,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2023-01-01,nan,Datos generales,Telefonía móvil,3509.64,1220,2023,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2023-01-01,nan,Datos generales,Transmisión de datos,334.45,1205,2023,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2023-01-01,nan,Datos generales,Transporte y difusión de la señal audiovisual,345.74,1206,2023,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2023-01-01,nan,Datos generales,Venta y alquiler de terminales,2369.72,1221,2023,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2023-01-01,nan,Datos generales,nan,0.0,7155,12138,España,nan,Paquetes,Banda ancha fija. tel móvil y banda ancha móvil,Unidades,0.0,0.0,17021147.0,0.0,0.0
+2024-01-01,Otros,Datos generales,nan,0.0,1231,2024,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,193.89,0.0
+2024-01-01,Otros,Datos generales,nan,0.0,6219,10120,España,nan,Gastos de explotación,nan,Millones de euros,781.31,9386.0,0.0,326.97,16.47
+2024-01-01,Otros,Datos generales,nan,0.0,6224,10120,España,nan,Gastos de explotación,nan,Millones de euros,2784.3,1380.0,0.0,477.35,57.98
+2024-01-01,Otros,Datos generales,nan,0.0,1234,2024,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,0.0,0.0,107.28,0.0
+2024-01-01,Movistar,Datos generales,nan,0.0,6230,10120,España,nan,Gastos de explotación,nan,Millones de euros,13751.27,13852.0,0.0,1937.87,124.55
+2024-01-01,Orange,Datos generales,nan,0.0,6251,10120,España,nan,Gastos de explotación,nan,Millones de euros,5567.57,4947.0,0.0,1054.29,56.6
+2024-01-01,Otros,Datos generales,nan,0.0,2483,4048,España,nan,Inversiones en infraestr de telec y serv audiov,nan,Millones de euros,0.0,6770.0,0.0,57.82,0.0
+2024-01-01,Resto,Datos generales,nan,0.0,6256,10120,España,nan,Gastos de explotación,nan,Millones de euros,7599.5,19941.0,0.0,2147.36,107.21
+2024-01-01,Otros,Datos generales,nan,0.0,1246,2024,España,nan,Número de empleados,nan,Unidades,0.0,2530.0,0.0,0.0,0.0
+2024-01-01,Vodafone,Datos generales,nan,0.0,6264,10120,España,nan,Gastos de explotación,nan,Millones de euros,4088.8900000000003,2423.0,0.0,416.91,64.31
+2024-01-01,nan,Datos generales,Alquiler de circuitos,925.83,1257,2024,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2024-01-01,nan,Datos generales,Banda Ancha móvil,4748.07,1272,2024,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2024-01-01,nan,Datos generales,Banda ancha fija,4382.09,1271,2024,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2024-01-01,nan,Datos generales,Banda ancha fija mayorista,1241.75,1258,2024,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2024-01-01,nan,Datos generales,Comunicaciones de Empresa,1159.55,1273,2024,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2024-01-01,nan,Datos generales,Contenidos audiovisuales,2526.09,1259,2024,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2024-01-01,nan,Datos generales,Interconexión fija,407.45,1260,2024,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2024-01-01,nan,Datos generales,Interconexión móvil,1495.6,1261,2024,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2024-01-01,nan,Datos generales,Otros servicios mayoristas,3138.57,1262,2024,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2024-01-01,nan,Datos generales,Otros servicios minoristas,1366.09,1274,2024,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2024-01-01,nan,Datos generales,Servicios audiovisuales,5138.07,1275,2024,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2024-01-01,nan,Datos generales,Telefonía fija,1666.97,1276,2024,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2024-01-01,nan,Datos generales,Telefonía móvil,3309.34,1277,2024,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2024-01-01,nan,Datos generales,Transmisión de datos,302.94,1263,2024,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2024-01-01,nan,Datos generales,Transporte y difusión de la señal audiovisual,347.83,1264,2024,España,Servicio mayorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2024-01-01,nan,Datos generales,Venta y alquiler de terminales,2416.6,1278,2024,España,Servicio minorista,Ingresos,nan,Millones de euros,0.0,0.0,0.0,0.0,0.0
+2024-01-01,nan,Datos generales,nan,0.0,7503,12144,España,nan,Paquetes,Banda ancha fija. tel móvil y banda ancha móvil,Unidades,0.0,0.0,17746867.0,0.0,0.0
