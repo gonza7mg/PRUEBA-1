@@ -5,7 +5,7 @@ import streamlit as st
 from utils.data_quality import run_quality_suite
 
 st.set_page_config(page_title="Calidad de Datos – DSS CNMC", layout="wide", page_icon="🧪")
-st.header("🧪 Calidad de Datos (RAW o CLEAN)")
+st.header("Calidad de Datos (RAW o CLEAN)")
 
 # Selección de origen y dataset
 origen = st.radio("Origen de datos", ["RAW (data/raw)", "CLEAN (data/clean)"], horizontal=True)

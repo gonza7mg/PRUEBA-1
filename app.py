@@ -11,7 +11,7 @@ from utils.cnmc_ckan import fetch_resource  # descarga CKAN
 # Los limpiadores existen pero NO se usan aquí (analizamos RAW primero)
 
 st.set_page_config(page_title="DSS Telecomunicaciones – CNMC", layout="wide", page_icon="📶")
-st.title("📶 DSS Telecomunicaciones – CNMC")
+st.title(" DSS Telecomunicaciones – CNMC")
 
 # Recursos CKAN (RAW)
 RESOURCES = {
@@ -161,7 +161,7 @@ else:
         st.info("Pulsa '⬇️ Descargar RAW' para obtener datos desde CNMC en esta sesión.")
 
 if df is not None:
-    with st.expander("👀 Vista previa (primeras 50 filas)", expanded=True):
+    with st.expander(" Vista previa (primeras 50 filas)", expanded=True):
         st.dataframe(df.head(50), use_container_width=True)
 
     st.header("🔎 Análisis exploratorio (RAW)")
@@ -171,15 +171,15 @@ if df is not None:
     with cC:  st.metric("Duplicados", f"{df.duplicated().sum():,}")
     with cD:  st.metric("Nulos (totales)", f"{int(df.isna().sum().sum()):,}")
 
-    with st.expander("📋 Columnas: tipos, nulos y únicos"):
+    with st.expander(" Columnas: tipos, nulos y únicos"):
         st.dataframe(df_basic_overview(df), use_container_width=True, height=420)
 
     num_stats = df_numeric_stats(df)
     if not num_stats.empty:
-        with st.expander("🧮 Estadísticas numéricas (describe)"):
+        with st.expander(" Estadísticas numéricas (describe)"):
             st.dataframe(num_stats, use_container_width=True)
 
-    with st.expander("🏷️ Categóricas: valores más frecuentes"):
+    with st.expander(" Categóricas: valores más frecuentes"):
         topvals = df_top_values(df, max_cols=8, top_n=12)
         if not topvals:
             st.write("No hay columnas categóricas (tipo object) que mostrar.")
