@@ -23,9 +23,9 @@ en versiones **limpias y normalizadas (CLEAN)**, aplicando las rutinas definidas
 **Flujo completo:** `data/raw → limpieza ETL → data/clean → logs/clean_report.csv → subida opcional a GitHub`
 """)
 
-# ------------------------------------------------------------
+
 # Función auxiliar para subir archivos a GitHub
-# ------------------------------------------------------------
+
 def github_put_file(owner, repo, branch, path, content_bytes, token):
     """Sube o actualiza un archivo en GitHub (REST API /contents)."""
     url = f"https://api.github.com/repos/{owner}/{repo}/contents/{path}"
@@ -53,9 +53,9 @@ def push_all_to_github(files_dict: dict[str, bytes], subdir: str = "data/clean/"
     for fname, content in files_dict.items():
         github_put_file(owner, repo, branch, f"{subdir}{fname}", content, token)
 
-# ------------------------------------------------------------
+
 # BOTONES PRINCIPALES
-# ------------------------------------------------------------
+
 c1, c2, c3, c4 = st.columns([1,1,1,1])
 
 # --- Ejecutar limpieza completa ---
