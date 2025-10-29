@@ -4,9 +4,9 @@ import pandas as pd
 import numpy as np
 from pandas.api.types import is_numeric_dtype
 
-# ─────────────────────────────────────────────────────────────
+
 # Helpers de texto / columnas
-# ─────────────────────────────────────────────────────────────
+
 def _strip_accents(s: str) -> str:
     return "".join(c for c in unicodedata.normalize("NFKD", s) if not unicodedata.combining(c))
 
@@ -28,9 +28,9 @@ def clean_strings(df: pd.DataFrame, cols):
             out[c] = out[c].astype(str).str.strip()
     return out
 
-# ─────────────────────────────────────────────────────────────
+
 # Conversión numérica robusta
-# ─────────────────────────────────────────────────────────────
+
 def coerce_numeric(df: pd.DataFrame, prefer_comma_decimal: bool = True):
     """
     Convierte columnas object a numéricas cuando sea posible.
@@ -46,9 +46,9 @@ def coerce_numeric(df: pd.DataFrame, prefer_comma_decimal: bool = True):
             out[c] = pd.to_numeric(s, errors="ignore")
     return out
 
-# ─────────────────────────────────────────────────────────────
+
 # Periodo canónico
-# ─────────────────────────────────────────────────────────────
+
 def build_period_column(df: pd.DataFrame) -> pd.DataFrame:
     """
     Crea 'periodo' canónico si no existe:
@@ -102,9 +102,9 @@ def build_period_column(df: pd.DataFrame) -> pd.DataFrame:
 
     return out
 
-# ─────────────────────────────────────────────────────────────
+
 # Duplicados y agregación por llaves
-# ─────────────────────────────────────────────────────────────
+
 def drop_dupes_and_aggregate(df: pd.DataFrame, keys: list[str], agg_map: dict | None = None):
     out = df.copy()
     if not keys:
@@ -119,9 +119,9 @@ def drop_dupes_and_aggregate(df: pd.DataFrame, keys: list[str], agg_map: dict | 
             agg_map[c] = "sum" if is_numeric_dtype(out[c]) else "first"
     return out.groupby(keys, dropna=False, as_index=False).agg(agg_map)
 
-# ─────────────────────────────────────────────────────────────
+
 # Agrupar operadores pequeños
-# ─────────────────────────────────────────────────────────────
+
 def group_small_ops(df: pd.DataFrame, top_n: int = 5, col_op: str = "operador"):
     out = df.copy()
     if col_op not in out.columns:
@@ -130,9 +130,9 @@ def group_small_ops(df: pd.DataFrame, top_n: int = 5, col_op: str = "operador"):
     out[col_op] = out[col_op].where(out[col_op].isin(top_ops), "Otros")
     return out
 
-# ─────────────────────────────────────────────────────────────
+
 # Normalizar provincias (acento/alias simples)
-# ─────────────────────────────────────────────────────────────
+
 _PROV_FIX = {
     "a coruna": "a coruña",
     "araba alava": "araba/álava",
