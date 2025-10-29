@@ -4,7 +4,7 @@ from datetime import datetime
 
 # ---------- Utilidades ----------
 PROVINCIAS_INE = {
-    # listado mínimo; amplíalo si quieres validación completa
+    # listado mínimo; ampliar para validación completa
     "alava", "araba/álava", "albacete", "alicante", "almeria", "a coruña",
     "asturias", "avila", "badajoz", "barcelona", "burgos", "caceres", "cadiz",
     "cantabria", "castellon", "ciudad real", "cordoba", "cuenca", "girona",
