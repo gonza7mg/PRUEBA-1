@@ -77,7 +77,7 @@ if df is not None:
             use_container_width=True
         )
 
-        with st.expander("🔎 Guía de interpretación"):
+        with st.expander(" Guía de interpretación"):
             st.markdown("""
 - **Completitud**: columnas con mayor % de nulos → decidir imputación o descarte.
 - **Validez**: negativos en métricas que no los admiten; rangos temporales anómalos.
