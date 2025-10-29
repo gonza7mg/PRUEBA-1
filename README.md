@@ -1,11 +1,10 @@
 # DSS Telecom CNMC (Streamlit)
 
-Proyecto base para un **Dashboard de Soporte a Decisiones** con datos abiertos de la **CNMC**.
+**Dashboard de Soporte a Decisiones** con datos abiertos de la **CNMC**.
 
 ## Cómo usar en Streamlit Cloud
-1) Sube esta carpeta a un **repo público de GitHub**.
-2) (Opcional) Genera los CSV con `python scripts/download_cnmc.py` (o súbelos luego a `data/clean/`).
-3) En Streamlit Cloud → Deploy a public app from GitHub → `app.py`.
+
+1) En Streamlit Cloud → Deploy a public app from GitHub → `app.py`.
 
 ## Recursos CKAN
 - Anual (datos generales): `5e2d8f37-2385-4774-82ec-365cd83d65bd`
