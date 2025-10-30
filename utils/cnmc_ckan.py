@@ -1,41 +1,22 @@
-# utils/cnmc_ckan.py
-import requests
-import pandas as pd
-from io import StringIO
+import time, requests, pandas as pd
+CKAN_BASE = "https://catalogodatos.cnmc.es/api/3/action/datastore_search"
+UA = {"User-Agent": "DSS-Telecom/1.0"}
 
-BASE_URL = "https://datos.cnmc.gob.es/api/3/action/datastore_search?resource_id={}"
+def fetch_resource(resource_id: str, limit: int = 50000, sleep_sec: float = 0.25) -> pd.DataFrame:
+    params = {"resource_id": resource_id, "limit": limit, "offset": 0}
+    r = requests.get(CKAN_BASE, params=params, headers=UA, timeout=60)
+    r.raise_for_status()
+    res = r.json()["result"]
+    total = res.get("total", len(res.get("records", [])))
+    records = res.get("records", [])
 
-def fetch_resource(resource_id: str, limit: int = None) -> pd.DataFrame:
-    """
-    Descarga un recurso de la CNMC Open Data API (CKAN) y lo devuelve como DataFrame.
-    - resource_id: identificador del recurso en CKAN
-    - limit: número máximo de registros (por defecto, todo el dataset)
-    """
-    url = BASE_URL.format(resource_id)
-    if limit:
-        url += f"&limit={limit}"
-
-    response = requests.get(url)
-    response.raise_for_status()  # Lanza error si la API devuelve un código != 200
-
-    data = response.json()
-    records = data.get("result", {}).get("records", [])
-
-    if not records:
-        raise ValueError(f"No se obtuvieron registros del recurso {resource_id}")
-
-    df = pd.DataFrame.from_records(records)
-    return df
-
-def download_csv(resource_id: str, path: str) -> str:
-    """
-    Descarga el CSV bruto desde la API de la CNMC y lo guarda en disco.
-    """
-    url = f"https://datos.cnmc.gob.es/datastore/dump/{resource_id}?bom=True"
-    response = requests.get(url)
-    response.raise_for_status()
-
-    with open(path, "wb") as f:
-        f.write(response.content)
-
-    return path
+    while len(records) < total:
+        params["offset"] += limit
+        time.sleep(sleep_sec)
+        r = requests.get(CKAN_BASE, params=params, headers=UA, timeout=60)
+        r.raise_for_status()
+        recs = r.json()["result"].get("records", [])
+        if not recs:
+            break
+        records.extend(recs)
+    return pd.DataFrame.from_records(records)
