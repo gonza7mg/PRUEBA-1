@@ -9,7 +9,6 @@ def fetch_resource(resource_id: str, limit: int = 50000, sleep_sec: float = 0.25
     res = r.json()["result"]
     total = res.get("total", len(res.get("records", [])))
     records = res.get("records", [])
-
     while len(records) < total:
         params["offset"] += limit
         time.sleep(sleep_sec)
