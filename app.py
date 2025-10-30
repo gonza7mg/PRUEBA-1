@@ -18,9 +18,9 @@ RESOURCES = {
     "anual_datos_generales": "5e2d8f37-2385-4774-82ec-365cd83d65bd",
     "anual_mercados": "7afbf769-655d-4b43-b49f-95c2919ec1fe",
     "mensual": "3632297f-07d8-480c-aca5-c987dcde0ccb",
-    "provinciales": "1efe6d64-72a8-4f45-a36c-691054f3e277",
-    "trimestrales": "5da45f2f-e596-4940-b682-eab18e85288a",
-    "infraestructuras": "baab2a5e-cc52-4704-a799-a28b19223a3b",
+    "provinciales": "8b33419f-db41-46d3-8c80-b2e7ae723c10",
+    "trimestrales": "a4821eaa-20b7-4338-b843-967c818dd0d0",
+    "infraestructuras": "504c6ad8-8bdf-451c-9836-32d6047a8182",
 }
 
 # Rutas (RAW) ya persistidas en repo
