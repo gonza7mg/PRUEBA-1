@@ -14,7 +14,7 @@ PROVINCIAS_INE = {
     "Sevilla", "Soria", "Tarragona", "Santa Cruz de Tenerife", "Teruel",
     "Toledo", "Valencia", "Valladolid", "Bizkaia", "Zamora", "Zaragoza",
     "A Coruña", "Las Palmas", "Ceuta", "Melilla"
-
+}
 def _to_lower_str(x):
     if pd.isna(x): return x
     return str(x).strip().lower()
