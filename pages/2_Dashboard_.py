@@ -1,301 +1,145 @@
-# pages/3_Dashboard.py
+# pages/3_Dashboard_Simple.py
 import os
 import pandas as pd
 import numpy as np
 import streamlit as st
 import plotly.express as px
 
-st.set_page_config(page_title="Dashboard – DSS CNMC", layout="wide", page_icon="📊")
-st.title("📊 Dashboard – DSS Telecomunicaciones (CNMC / FINAL)")
+st.set_page_config(page_title="Dashboard (simple) – DSS CNMC", layout="wide", page_icon="📉")
+st.title("📉 Dashboard simple – CNMC (datasets FINAL)")
 
-# -----------------------------
-# Rutas a los datasets FINAL
-# -----------------------------
-FINAL = {
-    "anual_datos_generales": "data/final/anual_datos_generales_final.csv",
-    "anual_mercados":        "data/final/anual_mercados_final.csv",
-    "mensual":               "data/final/mensual_final.csv",
-    "provinciales":          "data/final/provinciales_final.csv",
-    "trimestrales":          "data/final/trimestrales_final.csv",
-    "infraestructuras":      "data/final/infraestructuras_final.csv",
-}
+# ------------------------------
+# Rutas (usamos SOLO data/final)
+# ------------------------------
+FINAL = [
+    ("Anual – Datos generales", "data/final/anual_datos_generales_final.csv"),
+    ("Anual – Mercados",        "data/final/anual_mercados_final.csv"),
+    ("Mensual",                 "data/final/mensual_final.csv"),
+    ("Provinciales",            "data/final/provinciales_final.csv"),
+    ("Trimestrales",            "data/final/trimestrales_final.csv"),
+    ("Infraestructuras",        "data/final/infraestructuras_final.csv"),
+]
 
-# -----------------------------
-# Funciones auxiliares
-# -----------------------------
 @st.cache_data(show_spinner=False)
 def load_csv(path: str) -> pd.DataFrame | None:
     if not os.path.exists(path):
         return None
     df = pd.read_csv(path)
     df.columns = [c.strip() for c in df.columns]
+    # intenta parsear "periodo" si existe
     if "periodo" in df.columns:
         df["periodo"] = pd.to_datetime(df["periodo"], errors="coerce")
     return df
 
-def available_cols(df, substrs, numeric=False):
-    cols = []
-    for c in df.columns:
-        if all(s.lower() in c.lower() for s in substrs):
-            if numeric:
-                if pd.api.types.is_numeric_dtype(df[c]):
-                    cols.append(c)
-            else:
-                cols.append(c)
-    return cols
+# ------------------------------
+# Selección de dataset y vista
+# ------------------------------
+existing = [(name, p) for name, p in FINAL if os.path.exists(p)]
+if not existing:
+    st.warning("No se han encontrado CSV en data/final/. Ejecuta el pipeline de limpieza final primero.")
+    st.stop()
 
-def pick_first(df, candidates, numeric=False):
-    for pat in candidates:
-        cols = available_cols(df, [pat], numeric=numeric)
-        if cols:
-            return cols[0]
-    return None
+name = st.sidebar.selectbox("Dataset FINAL", [n for n, _ in existing])
+path = dict(existing)[name]
+df = load_csv(path)
 
-def safe_sum(df, col):
-    try:
-        return float(pd.to_numeric(df[col], errors="coerce").sum())
-    except Exception:
-        return np.nan
+if df is None or df.empty:
+    st.warning("El CSV está vacío o no pudo cargarse.")
+    st.stop()
 
-def hhi_from_shares(share_series):
-    s = pd.to_numeric(share_series, errors="coerce").dropna()
-    if s.max() <= 1.5:
-        s = s * 100.0
-    return float((s**2).sum())
+st.success(f"{name}: {len(df):,} filas × {df.shape[1]} columnas")
+with st.expander("Vista previa (primeras 50 filas)", expanded=True):
+    st.dataframe(df.head(50), use_container_width=True)
 
-def has_periodo(df: pd.DataFrame) -> bool:
-    return df is not None and "periodo" in df.columns and pd.api.types.is_datetime64_any_dtype(df["periodo"])
-
-# -----------------------------
-# Carga de los CSV FINAL
-# -----------------------------
-dfs = {k: load_csv(p) for k,p in FINAL.items()}
-missing = [k for k,v in dfs.items() if v is None or v.empty]
-if missing:
-    st.warning(f"⚠️ Faltan datasets FINAL o están vacíos: {', '.join(missing)}")
-
-# -----------------------------
-# Filtros globales
-# -----------------------------
-st.sidebar.header("Filtros globales")
-
-all_periods = []
-for df in dfs.values():
-    if has_periodo(df) and df["periodo"].notna().any():
-        all_periods.append(df["periodo"])
-
-if all_periods:
-    mins = [s.min() for s in all_periods if s.notna().any()]
-    maxs = [s.max() for s in all_periods if s.notna().any()]
-    pmin = min(mins) if mins else None
-    pmax = max(maxs) if maxs else None
-else:
-    pmin = pmax = None
-
-if pmin is not None and pmax is not None:
-    year_min = int(pmin.year)
-    year_max = int(pmax.year)
-    default_low = max(year_min, year_max - 5)
-    if default_low > year_max:
-        default_low = year_min
-    year_range = st.sidebar.slider("Rango de años", year_min, year_max, (default_low, year_max))
-else:
-    year_range = None
-    st.sidebar.caption("No se detectó una columna de **periodo** con valores válidos en los datasets cargados.")
-
-# Listas maestras
-operadores, servicios, provincias, tecnologias = set(), set(), set(), set()
-for df in dfs.values():
-    if df is None:
-        continue
-    for cname, holder in [("operador", operadores), ("servicio", servicios), ("provincia", provincias), ("tecnologia", tecnologias)]:
-        if cname in df.columns:
-            holder.update(df[cname].dropna().astype(str).unique().tolist())
-
-oper_sel = st.sidebar.multiselect("Operadores", sorted(list(operadores)) if operadores else [])
-serv_sel = st.sidebar.multiselect("Servicios", sorted(list(servicios)) if servicios else [])
-prov_sel = st.sidebar.multiselect("Provincias", sorted(list(provincias)) if provincias else [])
-tec_sel  = st.sidebar.multiselect("Tecnologías", sorted(list(tecnologias)) if tecnologias else [])
-
-def apply_filters(df: pd.DataFrame) -> pd.DataFrame:
-    if df is None:
-        return df
-    out = df.copy()
-    if year_range and has_periodo(out):
-        out = out[(out["periodo"].dt.year >= year_range[0]) & (out["periodo"].dt.year <= year_range[1])]
-    if oper_sel and "operador" in out.columns:
-        out = out[out["operador"].astype(str).isin(oper_sel)]
-    if serv_sel and "servicio" in out.columns:
-        out = out[out["servicio"].astype(str).isin(serv_sel)]
-    if prov_sel and "provincia" in out.columns:
-        out = out[out["provincia"].astype(str).isin(prov_sel)]
-    if tec_sel and "tecnologia" in out.columns:
-        out = out[out["tecnologia"].astype(str).isin(tec_sel)]
-    return out
-
-dfs_f = {k: apply_filters(v) for k,v in dfs.items()}
-
-# -----------------------------
-# KPIs principales
-# -----------------------------
-st.subheader("KPIs principales")
+# ------------------------------
+# Panel de KPIs muy básicos
+# ------------------------------
+st.subheader("KPIs rápidos")
 c1, c2, c3, c4 = st.columns(4)
+n_rows = len(df)
+n_cols = df.shape[1]
+nulls_total = int(df.isna().sum().sum())
+num_cols = [c for c in df.columns if pd.api.types.is_numeric_dtype(df[c])]
+c1.metric("Filas", f"{n_rows:,}")
+c2.metric("Columnas", f"{n_cols}")
+c3.metric("Total nulos", f"{nulls_total:,}")
+c4.metric("Numéricas", f"{len(num_cols)}")
 
-# KPI 1 – Líneas activas (mensual)
-dfm = dfs_f.get("mensual")
-if dfm is not None:
-    col_lines = pick_first(dfm, ["linea","línea","abonados"], numeric=True) or pick_first(dfm, ["valor","total"], numeric=True)
-    if col_lines:
-        c1.metric("Líneas activas", f"{safe_sum(dfm, col_lines):,.0f}".replace(",", "."))
+st.divider()
+
+# =========================================================
+# BLOQUE 1 — Serie temporal (si hay columna fecha/periodo)
+# =========================================================
+st.subheader("1) Serie temporal (si hay fecha)")
+
+# Detecta columna temporal: periodo o cualquier datetime
+date_cols = [c for c in df.columns if pd.api.types.is_datetime64_any_dtype(df[c])]
+if not date_cols:
+    # intenta parsear columnas que "parezcan" fechas
+    candidates = [c for c in df.columns if any(k in c.lower() for k in ["periodo", "fecha", "date", "anio", "año"])]
+    parsed = []
+    for c in candidates:
+        try:
+            tmp = pd.to_datetime(df[c], errors="coerce")
+            if tmp.notna().any():
+                df[c] = tmp
+                parsed.append(c)
+        except Exception:
+            pass
+    date_cols = [c for c in df.columns if pd.api.types.is_datetime64_any_dtype(df[c])]
+
+if date_cols:
+    time_col = st.selectbox("Columna temporal", date_cols, index=0, key="time_col")
+    # numéricas agregables
+    num_cols_safe = [c for c in num_cols if c != time_col]
+    if num_cols_safe:
+        y_col = st.selectbox("Métrica (y)", num_cols_safe, key="y_time")
+        # Optional desagregación por categoría
+        cat_cols = [c for c in df.columns if df[c].dtype == "object"]
+        group_col = st.selectbox("Desagregar (opcional)", ["(sin desagregar)"] + cat_cols, key="grp_time")
+        dfi = df[[time_col, y_col] + ([group_col] if group_col != "(sin desagregar)" else [])].copy()
+        dfi = dfi.dropna(subset=[time_col])
+        agg = dfi.groupby(([time_col, group_col] if group_col != "(sin desagregar)" else [time_col]), as_index=False)[y_col].sum()
+        fig = px.line(agg, x=time_col, y=y_col, color=(group_col if group_col != "(sin desagregar)" else None), markers=True,
+                      title=f"Evolución temporal – {y_col}")
+        st.plotly_chart(fig, use_container_width=True)
     else:
-        c1.metric("Líneas activas", "NA")
+        st.info("No hay columnas numéricas para graficar en el tiempo.")
 else:
-    c1.metric("Líneas activas", "NA")
+    st.info("No se encontró ninguna columna de fecha/periodo. Este bloque se omite.")
 
-# KPI 2 – Ingresos (trimestral)
-dft = dfs_f.get("trimestrales")
-if dft is not None:
-    col_ing = pick_first(dft, ["ingres"], numeric=True)
-    if col_ing:
-        c2.metric("Ingresos totales (€)", f"{safe_sum(dft, col_ing):,.0f}".replace(",", "."))
-    else:
-        c2.metric("Ingresos totales (€)", "NA")
+st.divider()
+
+# =========================================================
+# BLOQUE 2 — Barras por categoría (top N)
+# =========================================================
+st.subheader("2) Barras por categoría")
+
+cat_cols = [c for c in df.columns if df[c].dtype == "object"]
+if cat_cols and num_cols:
+    cat = st.selectbox("Categoría", cat_cols, key="cat_bar")
+    val = st.selectbox("Métrica (y)", num_cols, key="val_bar")
+    top_n = st.slider("Top N", 5, 50, 20, key="topn_bar")
+    g = df.groupby(cat, as_index=False)[val].sum().sort_values(val, ascending=False).head(top_n)
+    fig = px.bar(g, x=cat, y=val, title=f"Top {top_n} por {cat}")
+    st.plotly_chart(fig, use_container_width=True)
 else:
-    c2.metric("Ingresos totales (€)", "NA")
+    st.info("Se necesitan al menos 1 columna categórica y 1 numérica.")
 
-# KPI 3 – Cobertura 5G
-dfi = dfs_f.get("infraestructuras")
-if dfi is not None:
-    col_cov = pick_first(dfi, ["5g","cov"], numeric=True)
-    if col_cov:
-        cov = pd.to_numeric(dfi[col_cov], errors="coerce").mean()
-        c3.metric("Cobertura 5G (%)", f"{cov:.1f}" if pd.notna(cov) else "NA")
-    else:
-        c3.metric("Cobertura 5G (%)", "NA")
+st.divider()
+
+# =========================================================
+# BLOQUE 3 — Dispersión entre numéricas
+# =========================================================
+st.subheader("3) Dispersión entre variables numéricas")
+
+if len(num_cols) >= 2:
+    x = st.selectbox("Eje X", num_cols, key="x_scatter")
+    y = st.selectbox("Eje Y", [c for c in num_cols if c != x], key="y_scatter")
+    color = st.selectbox("Color (opcional)", ["(sin color)"] + cat_cols, key="col_scatter")
+    df_plot = df[[x, y] + ([color] if color != "(sin color)" else [])].copy()
+    fig = px.scatter(df_plot, x=x, y=y, color=(color if color != "(sin color)" else None), trendline="ols",
+                     title=f"Dispersión {x} vs {y}")
+    st.plotly_chart(fig, use_container_width=True)
 else:
-    c3.metric("Cobertura 5G (%)", "NA")
-
-# KPI 4 – HHI
-dfam = dfs_f.get("anual_mercados")
-if dfam is not None and "mercado" in dfam.columns:
-    col_share = pick_first(dfam, ["cuota","share"], numeric=True)
-    if col_share:
-        sub = dfam.copy()
-        if has_periodo(sub):
-            sub = sub[sub["periodo"] == sub["periodo"].max()]
-        if not sub.empty:
-            hhi = sub.groupby("mercado")[col_share].apply(hhi_from_shares).mean()
-            c4.metric("HHI medio", f"{hhi:,.0f}".replace(",", "."))
-        else:
-            c4.metric("HHI medio", "NA")
-    else:
-        c4.metric("HHI medio", "NA")
-else:
-    c4.metric("HHI medio", "NA")
-
-# -----------------------------
-# Tabs del dashboard
-# -----------------------------
-tab1, tab2, tab3, tab4, tab5 = st.tabs([
-    "Panorama general",
-    "Mercado y competencia",
-    "Infraestructura",
-    "Territorial",
-    "Indicadores cruzados",
-])
-
-# ---- TAB 1 ----
-with tab1:
-    st.subheader("Evolución temporal")
-    dfm = dfs_f.get("mensual")
-    if dfm is not None and has_periodo(dfm):
-        ycol = pick_first(dfm, ["linea","línea","abonados","valor","total"], numeric=True)
-        if ycol:
-            g = dfm.groupby("periodo", as_index=False)[ycol].sum()
-            st.plotly_chart(px.line(g, x="periodo", y=ycol, title="Evolución mensual"), use_container_width=True)
-        else:
-            st.info("No hay columnas numéricas reconocibles para graficar.")
-    else:
-        st.info("No hay datos mensuales con 'periodo' válido para graficar.")
-
-# ---- TAB 2 ----
-with tab2:
-    st.subheader("Cuotas y concentración")
-    dfam = dfs_f.get("anual_mercados")
-    if dfam is not None and all(c in dfam.columns for c in ["mercado","operador"]):
-        cuota_col = pick_first(dfam, ["cuota","share"], numeric=True)
-        mercados = sorted(dfam["mercado"].dropna().unique()) if "mercado" in dfam.columns else []
-        if mercados and cuota_col:
-            merc_sel = st.selectbox("Mercado", mercados)
-            sub = dfam[dfam["mercado"] == merc_sel]
-            if has_periodo(sub):
-                lastp = sub["periodo"].max()
-                sub = sub[sub["periodo"] == lastp]
-            if not sub.empty:
-                fig = px.pie(sub, names="operador", values=cuota_col, title=f"Cuota de mercado – {merc_sel}")
-                st.plotly_chart(fig, use_container_width=True)
-            else:
-                st.info("No hay datos para el mercado seleccionado tras filtros.")
-        else:
-            st.info("No se han encontrado mercados o una columna de cuota.")
-    else:
-        st.info("No hay datos de mercados anuales.")
-
-# ---- TAB 3 ----
-with tab3:
-    st.subheader("Infraestructura y despliegue")
-    dfi = dfs_f.get("infraestructuras")
-    if dfi is not None:
-        col = pick_first(dfi, ["5g","cov","km","nodo","antena"], numeric=True)
-        if col and has_periodo(dfi):
-            g = dfi.groupby("periodo", as_index=False)[col].sum()
-            st.plotly_chart(px.line(g, x="periodo", y=col, title=f"Evolución {col}"), use_container_width=True)
-        elif col and not has_periodo(dfi):
-            group_dim = "provincia" if "provincia" in dfi.columns else ("operador" if "operador" in dfi.columns else None)
-            if group_dim:
-                g = dfi.groupby(group_dim, as_index=False)[col].sum().sort_values(col, ascending=False)
-                st.plotly_chart(px.bar(g.head(30), x=group_dim, y=col, title=f"{col} por {group_dim}"), use_container_width=True)
-            else:
-                st.info("No hay columna 'periodo' ni dimensión para agrupar; se muestran estadísticas simples.")
-                st.write(dfi[[col]].describe())
-        else:
-            st.info("No se encontró ninguna columna numérica relevante (5G/cobertura/nodos…).")
-    else:
-        st.info("No hay datos de infraestructura.")
-
-# ---- TAB 4 ----
-with tab4:
-    st.subheader("Distribución territorial")
-    dfp = dfs_f.get("provinciales")
-    if dfp is not None and "provincia" in dfp.columns:
-        col = pick_first(dfp, ["linea","valor","ingres","abonados"], numeric=True)
-        if col:
-            g = dfp.groupby("provincia", as_index=False)[col].mean().sort_values(col, ascending=False)
-            st.plotly_chart(px.bar(g.head(20), x="provincia", y=col, title="Top 20 provincias"), use_container_width=True)
-        else:
-            st.info("No hay columna numérica reconocible para provincias.")
-    else:
-        st.info("No hay datos provinciales para mostrar.")
-
-# ---- TAB 5 ----
-with tab5:
-    st.subheader("Relaciones entre variables (cross-dataset)")
-    dft = dfs_f.get("trimestrales")
-    dfi = dfs_f.get("infraestructuras")
-    if dft is not None and dfi is not None:
-        colx = pick_first(dft, ["ingres","ingreso","factur"], numeric=True)
-        coly = pick_first(dfi, ["5g","cov","nodo","km"], numeric=True)
-        if colx and coly and has_periodo(dft) and has_periodo(dfi):
-            gt = dft.groupby("periodo", as_index=False)[colx].sum()
-            gi = dfi.groupby("periodo", as_index=False)[coly].sum()
-            merged = pd.merge(gt, gi, on="periodo", how="inner")
-            if not merged.empty:
-                st.plotly_chart(px.scatter(merged, x=colx, y=coly, trendline="ols",
-                                           title="Ingresos vs Infraestructura"),
-                                use_container_width=True)
-            else:
-                st.info("No hay intersección temporal para correlacionar.")
-        else:
-            st.info("No se han encontrado columnas numéricas compatibles o columnas 'periodo' válidas.")
-    else:
-        st.info("No hay datos suficientes para comparar.")
+    st.info("Se necesitan al menos 2 columnas numéricas para el scatter.")
