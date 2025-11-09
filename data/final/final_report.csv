@@ -1,0 +1,55 @@
+dataset,input,output,before_rows,before_cols,before_nulls,before_duplicates,after_rows,after_cols,after_nulls,after_duplicates
+anual_datos_generales,data/clean/anual_datos_generales_clean.csv,data/final/anual_datos_generales_final.csv,"0    454
+Name: rows, dtype: int64","0    17
+Name: cols, dtype: int64","0    1108
+Name: nulls, dtype: int64","0    0
+Name: duplicates, dtype: int64","0    454
+Name: rows, dtype: int64","0    18
+Name: cols, dtype: int64","0    4086
+Name: nulls, dtype: int64","0    0
+Name: duplicates, dtype: int64"
+anual_mercados,data/clean/anual_mercados_clean.csv,data/final/anual_mercados_final.csv,"0    514
+Name: rows, dtype: int64","0    56
+Name: cols, dtype: int64","0    13048
+Name: nulls, dtype: int64","0    0
+Name: duplicates, dtype: int64","0    514
+Name: rows, dtype: int64","0    57
+Name: cols, dtype: int64","0    16962
+Name: nulls, dtype: int64","0    0
+Name: duplicates, dtype: int64"
+mensual,data/clean/mensual_clean.csv,data/final/mensual_final.csv,"0    40
+Name: rows, dtype: int64","0    17
+Name: cols, dtype: int64","0    226
+Name: nulls, dtype: int64","0    0
+Name: duplicates, dtype: int64","0    40
+Name: rows, dtype: int64","0    17
+Name: cols, dtype: int64","0    520
+Name: nulls, dtype: int64","0    0
+Name: duplicates, dtype: int64"
+provinciales,data/clean/provinciales_clean.csv,data/final/provinciales_final.csv,"0    18613
+Name: rows, dtype: int64","0    16
+Name: cols, dtype: int64","0    69833
+Name: nulls, dtype: int64","0    0
+Name: duplicates, dtype: int64","0    18613
+Name: rows, dtype: int64","0    17
+Name: cols, dtype: int64","0    204743
+Name: nulls, dtype: int64","0    0
+Name: duplicates, dtype: int64"
+trimestrales,data/clean/trimestrales_clean.csv,data/final/trimestrales_final.csv,"0    12
+Name: rows, dtype: int64","0    14
+Name: cols, dtype: int64","0    34
+Name: nulls, dtype: int64","0    0
+Name: duplicates, dtype: int64","0    12
+Name: rows, dtype: int64","0    14
+Name: cols, dtype: int64","0    108
+Name: nulls, dtype: int64","0    0
+Name: duplicates, dtype: int64"
+infraestructuras,data/clean/infraestructuras_clean.csv,data/final/infraestructuras_final.csv,"0    6
+Name: rows, dtype: int64","0    13
+Name: cols, dtype: int64","0    15
+Name: nulls, dtype: int64","0    0
+Name: duplicates, dtype: int64","0    6
+Name: rows, dtype: int64","0    13
+Name: cols, dtype: int64","0    48
+Name: nulls, dtype: int64","0    0
+Name: duplicates, dtype: int64"
