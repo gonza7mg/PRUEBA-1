@@ -1,14 +1,18 @@
 # pages/2_Dashboard_.py
 import os
-from typing import Iterable, Optional
+from typing import Optional, Iterable
 
 import numpy as np
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 import streamlit as st
 
 st.set_page_config(page_title="Dashboard – DSS CNMC (FINAL)", layout="wide")
 
+# -------------------------------------------------------------------
+# Localización de ficheros FINAL
+# -------------------------------------------------------------------
 FINAL = {
     "Anual – Datos generales": "data/final/anual_datos_generales_final.csv",
     "Anual – Mercados":        "data/final/anual_mercados_final.csv",
@@ -18,11 +22,11 @@ FINAL = {
     "Infraestructuras":        "data/final/infraestructuras_final.csv",
 }
 
-# ----------------------- Utils robustas -----------------------
+# -------------------------------------------------------------------
+# Utilidades robustas
+# -------------------------------------------------------------------
 def uniquify_columns(df: pd.DataFrame) -> pd.DataFrame:
-    """Evita nombres de columna duplicados (causan el error de 'no 1-dimensional')."""
-    seen: dict[str, int] = {}
-    new = []
+    seen, new = {}, []
     for c in df.columns:
         if c in seen:
             seen[c] += 1
@@ -40,7 +44,7 @@ def load_csv(path: str) -> Optional[pd.DataFrame]:
     df = pd.read_csv(path)
     df = uniquify_columns(df)
     df.columns = [c.strip() for c in df.columns]
-    # normalización de nombres frecuentes
+    # normalizaciones típicas
     ren = {}
     for c in df.columns:
         low = c.lower()
@@ -50,19 +54,15 @@ def load_csv(path: str) -> Optional[pd.DataFrame]:
             ren[c] = "mercado"
         if low in {"provincia", "prov"}:
             ren[c] = "provincia"
-        if low in {"tecnologia", "tecnologías", "technology"}:
+        if low in {"tecnologia", "tecnologías"}:
             ren[c] = "tecnologia"
         if low in {"cuota_pct", "cuota%"}:
             ren[c] = "cuota"
     if ren:
         df = df.rename(columns=ren)
-    # periodo a datetime si existe
     if "periodo" in df.columns:
         df["periodo"] = pd.to_datetime(df["periodo"], errors="coerce")
     return df
-
-def has(df: pd.DataFrame, cols: Iterable[str]) -> bool:
-    return all(c in df.columns for c in cols)
 
 def numeric_cols(df: pd.DataFrame, exclude: Iterable[str] = ()) -> list[str]:
     return [c for c in df.columns if pd.api.types.is_numeric_dtype(df[c]) and c not in exclude]
@@ -70,215 +70,256 @@ def numeric_cols(df: pd.DataFrame, exclude: Iterable[str] = ()) -> list[str]:
 def cat_cols(df: pd.DataFrame, exclude: Iterable[str] = ()) -> list[str]:
     return [c for c in df.columns if df[c].dtype == "object" and c not in exclude]
 
-def safe_line(df, x, y, color=None, title=""):
-    if df is not None and not df.empty:
-        fig = px.line(df, x=x, y=y, color=color, markers=True, title=title)
-        st.plotly_chart(fig, use_container_width=True)
+def pick_first(df: pd.DataFrame, candidates: Iterable[str]) -> Optional[str]:
+    for cand in candidates:
+        for c in df.columns:
+            if c.lower() == cand:
+                return c
+    return None
 
-def safe_bar(df, x, y, color=None, title=""):
-    if df is not None and not df.empty:
-        fig = px.bar(df, x=x, y=y, color=color, title=title)
-        st.plotly_chart(fig, use_container_width=True)
+def gauge(value: Optional[float], title: str, suffix: str = "", min_v: float = 0, max_v: float = 100):
+    if value is None or np.isfinite(value) is False:
+        fig = go.Figure(go.Indicator(mode="number", value=0, number={'suffix': f" {suffix}"},
+                                     title={'text': title}))
+    else:
+        fig = go.Figure(go.Indicator(
+            mode="gauge+number",
+            value=float(value),
+            number={'suffix': f" {suffix}"},
+            title={'text': title},
+            gauge={
+                'axis': {'range': [min_v, max_v]},
+                'bar': {'thickness': 0.25},
+                'bgcolor': "white",
+                'borderwidth': 1,
+                'bordercolor': "lightgray",
+            }
+        ))
+    fig.update_layout(height=190, margin=dict(l=10, r=10, t=30, b=0))
+    return fig
 
-# ----------------------- Carga de datos -----------------------
+def series_line(df: pd.DataFrame, x: str, y: str, color: Optional[str], title: str):
+    if df.empty:
+        return None
+    fig = px.line(df, x=x, y=y, color=color, markers=True, title=title)
+    fig.update_layout(height=280, margin=dict(l=10, r=10, t=40, b=10))
+    return fig
+
+def bars(df: pd.DataFrame, x: str, y: str, color: Optional[str], title: str, stacked: bool=False):
+    if df.empty:
+        return None
+    fig = px.bar(df, x=x, y=y, color=color, title=title)
+    if stacked:
+        fig.update_layout(barmode="stack")
+    fig.update_layout(height=280, margin=dict(l=10, r=10, t=40, b=10))
+    return fig
+
+def ensure_pct(c: pd.Series) -> pd.Series:
+    """Adapta 0-1 a 0-100 si procede."""
+    if c.max() <= 1.5:
+        return c * 100
+    return c
+
+# -------------------------------------------------------------------
+# Carga y selección del dataset FINAL
+# -------------------------------------------------------------------
 existing = {n: p for n, p in FINAL.items() if os.path.exists(p)}
 if not existing:
-    st.warning("No hay ficheros en data/final/. Ejecuta el pipeline para generarlos.")
+    st.warning("No hay ficheros en data/final/. Ejecuta primero el pipeline FINAL.")
     st.stop()
 
-dfs = {n: load_csv(p) for n, p in existing.items()}
-names_ok = [n for n, d in dfs.items() if d is not None and not d.empty]
+dfs = {n: load_csv(p) for n, p in existing.items() if load_csv(p) is not None}
+names_ok = list(dfs.keys())
 
-st.title("Dashboard – DSS Telecomunicaciones (CNMC / FINAL)")
+st.title("📊 Dashboard – DSS Telecomunicaciones (CNMC / FINAL)")
 
-col_sel, _ = st.columns([1, 3])
-with col_sel:
-    dataset = st.selectbox("Dataset", names_ok, index=0)
+# Filtros globales
+fl, _ = st.columns([1, 4])
+with fl:
+    dataset = st.selectbox("Fuente", names_ok, index=0)
 
-df = dfs[dataset]
-st.success(f"{dataset}: {len(df):,} filas × {df.shape[1]} columnas")
+df = dfs[dataset].copy()
+st.caption(f"{dataset}: {len(df):,} filas × {df.shape[1]} columnas")
 
-with st.expander("Vista previa (50 filas)", expanded=False):
-    st.dataframe(df.head(50), use_container_width=True)
+# -------------------------------------------------------------------
+# Detección de métricas/categorías “típicas”
+# -------------------------------------------------------------------
+col_lineas = pick_first(df, ["lineas_activas", "lineas", "abonados", "suscriptores", "lineas_totales"])
+col_ingresos = pick_first(df, ["ingresos", "ingresos_totales", "ingresos_por_operador", "revenue"])
+col_cob_5g = pick_first(df, ["cobertura_5g", "cobertura5g", "5g"])
+col_operador = "operador" if "operador" in df.columns else None
+col_prov = "provincia" if "provincia" in df.columns else None
+col_tecn = "tecnologia" if "tecnologia" in df.columns else None
 
-st.divider()
-
-# ----------------------- KPIs sencillos -----------------------
-st.subheader("KPIs")
+# -------------------------------------------------------------------
+# KPI ROW (4 tarjetas con gauge/indicador)
+# -------------------------------------------------------------------
 k1, k2, k3, k4 = st.columns(4)
 
-lineas_col = next((c for c in df.columns if c.lower() in
-                   {"lineas_activas", "lineas", "abonados", "suscriptores", "lineas_totales"}), None)
-ing_col = next((c for c in df.columns if c.lower() in
-                {"ingresos", "revenue", "ingresos_totales", "ingresos_por_operador"}), None)
-cov_col = next((c for c in df.columns if c.lower() in {"cobertura_5g", "cobertura5g", "5g"}), None)
-
+# KPI 1: Líneas activas (suma)
 try:
-    k1.metric("Líneas activas", "0" if lineas_col is None else f"{int(df[lineas_col].fillna(0).sum()):,}")
+    v = float(df[col_lineas].fillna(0).sum()) if col_lineas else None
 except Exception:
-    k1.metric("Líneas activas", "0")
+    v = None
+with k1:
+    st.plotly_chart(gauge(v if v is not None else 0, "Líneas activas (suma)", "", 0, v if v and v>0 else 100), use_container_width=True)
 
+# KPI 2: Ingresos totales
 try:
-    if ing_col:
-        total = df[ing_col].fillna(0).sum()
-        k2.metric("Ingresos totales (€)", f"{total:,.0f}" if total >= 1_000_000 else f"{total:,.2f}")
-    else:
-        k2.metric("Ingresos totales (€)", "0")
+    ing = float(df[col_ingresos].fillna(0).sum()) if col_ingresos else None
 except Exception:
-    k2.metric("Ingresos totales (€)", "0")
+    ing = None
+with k2:
+    st.plotly_chart(gauge(ing if ing is not None else 0, "Ingresos totales (€)", "", 0, ing if ing and ing>0 else 100), use_container_width=True)
 
+# KPI 3: Cobertura 5G media
 try:
-    if cov_col:
-        cov = df[cov_col].dropna()
-        k3.metric("Cobertura 5G (%)", "NA" if cov.empty else f"{cov.mean():.1f}%")
-    else:
-        k3.metric("Cobertura 5G (%)", "NA")
+    cov = df[col_cob_5g].dropna().astype(float)
+    cov = ensure_pct(cov) if not cov.empty else cov
+    cov_val = float(cov.mean()) if not cov.empty else None
 except Exception:
-    k3.metric("Cobertura 5G (%)", "NA")
+    cov_val = None
+with k3:
+    st.plotly_chart(gauge(cov_val if cov_val is not None else 0, "Cobertura 5G media", "%"), use_container_width=True)
 
-# HHI estimado si hay operador y cuotas o una métrica
-hhi_val = None
+# KPI 4: HHI aprox (si hay operador y cuota o ingresos)
+hhi = None
 try:
-    if has(df, ["operador"]) and ("cuota" in df.columns or ing_col is not None):
-        base = df.copy()
-        if "cuota" in base.columns:
-            tmp = base.groupby("operador", as_index=False)["cuota"].sum()
-            if tmp["cuota"].max() <= 1.5:
-                shares = tmp["cuota"].clip(lower=0)
+    if col_operador and ("cuota" in df.columns or col_ingresos):
+        if "cuota" in df.columns:
+            shares = df.groupby(col_operador, as_index=False)["cuota"].sum()["cuota"]
+            if shares.max() <= 1.5:
+                shares = shares
             else:
-                shares = (tmp["cuota"].clip(lower=0) / 100.0)
-            hhi_val = float((shares ** 2).sum() * 10_000)
-        elif ing_col is not None:
-            g = base.groupby("operador", as_index=False)[ing_col].sum()
-            if g[ing_col].sum() > 0:
-                shares = g[ing_col] / g[ing_col].sum()
-                hhi_val = float((shares ** 2).sum() * 10_000)
+                shares = shares / 100.0
+        else:
+            g = df.groupby(col_operador, as_index=False)[col_ingresos].sum()
+            if g[col_ingresos].sum() > 0:
+                shares = g[col_ingresos] / g[col_ingresos].sum()
+            else:
+                shares = None
+        if shares is not None:
+            hhi = float((shares.clip(lower=0) ** 2).sum() * 10_000)
 except Exception:
-    hhi_val = None
-k4.metric("HHI (aprox.)", "NA" if hhi_val is None else f"{hhi_val:,.0f}")
+    hhi = None
+
+with k4:
+    st.plotly_chart(gauge(hhi if hhi is not None else 0, "HHI (aprox.)", "", 0, 10_000), use_container_width=True)
 
 st.divider()
 
-# ----------------------- Pestañas -----------------------
-tabs = st.tabs(["Temporal", "Categorías", "Competencia", "Territorial", "Infraestructura"])
+# -------------------------------------------------------------------
+# BLOQUE 2: dos series temporales + barras (estilo “executive”)
+# -------------------------------------------------------------------
+row1_c1, row1_c2 = st.columns(2)
 
-# -------- Temporal
-with tabs[0]:
-    st.markdown("### Serie temporal")
-    if "periodo" in df.columns and pd.api.types.is_datetime64_any_dtype(df["periodo"]):
-        nums = numeric_cols(df, exclude=["periodo"])
-        if not nums:
-            st.info("No hay métricas numéricas para trazar.")
+# Serie temporal 1: si hay periodo y líneas/ingresos
+if "periodo" in df.columns and pd.api.types.is_datetime64_any_dtype(df["periodo"]):
+    # a) líneas/ingresos en el tiempo (suma por periodo)
+    if col_lineas:
+        g = df.dropna(subset=["periodo"])[["periodo", col_lineas]].groupby("periodo", as_index=False)[col_lineas].sum()
+        fig = series_line(g.sort_values("periodo"), "periodo", col_lineas, None, "Evolución líneas")
+        with row1_c1:
+            if fig: st.plotly_chart(fig, use_container_width=True)
+    elif col_ingresos:
+        g = df.dropna(subset=["periodo"])[["periodo", col_ingresos]].groupby("periodo", as_index=False)[col_ingresos].sum()
+        fig = series_line(g.sort_values("periodo"), "periodo", col_ingresos, None, "Evolución ingresos")
+        with row1_c1:
+            if fig: st.plotly_chart(fig, use_container_width=True)
+
+    # b) cuota por operador en el tiempo (si existe)
+    if col_operador and "cuota" in df.columns:
+        base = df.dropna(subset=["periodo"])[["periodo", "operador", "cuota"]].copy()
+        base["cuota"] = ensure_pct(base["cuota"])
+        g = base.groupby(["periodo", "operador"], as_index=False)["cuota"].sum()
+        fig = series_line(g.sort_values("periodo"), "periodo", "cuota", "operador", "Cuotas (%) por operador")
+        with row1_c2:
+            if fig: st.plotly_chart(fig, use_container_width=True)
+else:
+    with row1_c1:
+        st.info("No hay columna 'periodo' parseada como fecha.")
+    with row1_c2:
+        st.empty()
+
+st.divider()
+
+# -------------------------------------------------------------------
+# BLOQUE 3: Barras por operador + stacked por último periodo
+# -------------------------------------------------------------------
+row2_c1, row2_c2 = st.columns(2)
+
+# Top operadores por líneas o ingresos
+if col_operador:
+    metric = col_lineas or col_ingresos
+    if metric:
+        g = df.groupby(col_operador, as_index=False)[metric].sum().sort_values(metric, ascending=False).head(10)
+        fig = bars(g, x=col_operador, y=metric, color=None, title=f"Top 10 operadores por {metric}")
+        with row2_c1:
+            if fig: st.plotly_chart(fig, use_container_width=True)
+    else:
+        with row2_c1:
+            st.info("No hay métrica numérica para agrupar por operador.")
+else:
+    with row2_c1:
+        st.info("Este dataset no tiene 'operador'.")
+
+# Stacked por operador en último periodo (si hay periodo)
+if col_operador and "periodo" in df.columns and pd.api.types.is_datetime64_any_dtype(df["periodo"]):
+    metric = col_lineas or col_ingresos or ("cuota" if "cuota" in df.columns else None)
+    if metric:
+        dft = df.dropna(subset=["periodo"])
+        if not dft.empty:
+            last = dft["periodo"].max()
+            sub = dft[dft["periodo"] == last]
+            if metric == "cuota":
+                sub = sub.assign(cuota=ensure_pct(sub["cuota"]))
+            g = sub.groupby([col_operador], as_index=False)[metric].sum().sort_values(metric, ascending=False)
+            fig = bars(g, x=col_operador, y=metric, color=None, title=f"{metric} por operador – {last.date()}", stacked=False)
+            with row2_c2:
+                if fig: st.plotly_chart(fig, use_container_width=True)
         else:
-            y = st.selectbox("Métrica", nums, key="t_y")
-            color = st.selectbox("Desagregar por", ["(ninguna)"] + cat_cols(df), key="t_color")
-            base = df.dropna(subset=["periodo"])[["periodo", y] + ([color] if color != "(ninguna)" else [])]
-            gcols = ["periodo"] + ([color] if color != "(ninguna)" else [])
-            g = base.groupby(gcols, as_index=False)[y].sum()
-            safe_line(g.sort_values("periodo"), x="periodo", y=y, color=(color if color != "(ninguna)" else None),
-                      title=f"Evolución de {y}")
+            with row2_c2:
+                st.info("No hay registros fechados para el stacked del último periodo.")
     else:
-        st.info("No hay columna de fecha parseada como 'periodo'.")
+        with row2_c2:
+            st.info("No hay métrica numérica para el stacked por operador.")
+else:
+    with row2_c2:
+        st.info("No es posible construir el stacked (falta 'operador' o 'periodo').")
 
-# -------- Categorías (Top-N)
-with tabs[1]:
-    st.markdown("### Top categorías")
-    cats = cat_cols(df)
-    nums = numeric_cols(df)
-    if not cats or not nums:
-        st.info("Se necesita al menos 1 categórica y 1 numérica.")
+st.divider()
+
+# -------------------------------------------------------------------
+# BLOQUE 4: Territorial y tecnología
+# -------------------------------------------------------------------
+row3_c1, row3_c2 = st.columns(2)
+
+# Provincias (Top-N)
+if col_prov:
+    metric = col_lineas or col_ingresos
+    if metric:
+        g = df.groupby(col_prov, as_index=False)[metric].sum().sort_values(metric, ascending=False).head(15)
+        fig = bars(g, x=col_prov, y=metric, color=None, title=f"Top 15 provincias por {metric}")
+        with row3_c1:
+            if fig: st.plotly_chart(fig, use_container_width=True)
     else:
-        c = st.selectbox("Categoría", cats, key="c_cat")
-        v = st.selectbox("Métrica", nums, key="c_val")
-        topn = st.slider("Top N", 5, 50, 15, key="c_top")
-        # agrupar siempre con selección de columnas -> evita el error de Grouper
-        base = df[[c, v]].copy()
-        g = base.groupby(c, as_index=False)[v].sum().sort_values(v, ascending=False).head(topn)
-        safe_bar(g, x=c, y=v, title=f"Top {topn} por {c}")
+        with row3_c1:
+            st.info("No hay métrica para agrupar por provincia.")
+else:
+    with row3_c1:
+        st.info("No existe columna 'provincia'.")
 
-# -------- Competencia
-with tabs[2]:
-    st.markdown("### Cuotas por operador y HHI por periodo")
-    if "operador" not in df.columns:
-        st.info("No existe columna 'operador' en este dataset.")
+# Infraestructura por tecnología (si procede)
+if col_tecn:
+    metric = pick_first(df, ["nodos", "km_red", "capacidad", "cobertura_5g", "cobertura5g"])
+    if metric:
+        g = df.groupby(col_tecn, as_index=False)[metric].sum().sort_values(metric, ascending=False)
+        fig = bars(g, x=col_tecn, y=metric, color=None, title=f"{metric} por tecnología")
+        with row3_c2:
+            if fig: st.plotly_chart(fig, use_container_width=True)
     else:
-        # Cuotas
-        if "cuota" in df.columns:
-            base = df[["operador", "cuota"] + (["periodo"] if "periodo" in df.columns else [])].copy()
-            # normaliza a 0-100 si viene 0-1
-            if base["cuota"].max() <= 1.5:
-                base["cuota"] = base["cuota"] * 100
-            g = base.groupby("operador", as_index=False)["cuota"].sum().sort_values("cuota", ascending=False)
-            safe_bar(g, x="operador", y="cuota", title="Cuotas (%)")
-        elif ing_col is not None:
-            base = df[["operador", ing_col] + (["periodo"] if "periodo" in df.columns else [])].copy()
-            g = base.groupby("operador", as_index=False)[ing_col].sum()
-            if g[ing_col].sum() > 0:
-                g["cuota_est_%"] = g[ing_col] / g[ing_col].sum() * 100
-                safe_bar(g.sort_values("cuota_est_%", ascending=False), x="operador", y="cuota_est_%", title="Cuotas estimadas (%)")
-            else:
-                st.info("No hay datos para estimar cuotas.")
-        else:
-            st.info("No hay 'cuota' ni una métrica para estimarla.")
-
-        # HHI en el tiempo (si hay periodo)
-        if "periodo" in df.columns and pd.api.types.is_datetime64_any_dtype(df["periodo"]):
-            if "cuota" in df.columns:
-                tmp = df[["periodo", "operador", "cuota"]].dropna(subset=["periodo"]).copy()
-                if tmp["cuota"].max() <= 1.5:
-                    tmp["cuota"] = tmp["cuota"]
-                else:
-                    tmp["cuota"] = tmp["cuota"] / 100.0
-                g = tmp.groupby(["periodo", "operador"])["cuota"].sum().reset_index()
-                hhi = g.groupby("periodo")["cuota"].apply(lambda s: (s**2).sum()*10_000).reset_index(name="HHI")
-                safe_line(hhi.sort_values("periodo"), x="periodo", y="HHI", title="HHI por periodo")
-            elif ing_col is not None:
-                tmp = df[["periodo", "operador", ing_col]].dropna(subset=["periodo"]).copy()
-                g = tmp.groupby(["periodo", "operador"])[ing_col].sum().reset_index()
-                g["total"] = g.groupby("periodo")[ing_col].transform("sum")
-                g = g[g["total"] > 0]
-                g["sq"] = (g[ing_col] / g["total"]) ** 2
-                hhi = g.groupby("periodo")["sq"].sum().reset_index(name="HHI")
-                safe_line(hhi.sort_values("periodo"), x="periodo", y="HHI", title="HHI por periodo")
-        else:
-            st.caption("No hay columna temporal válida para HHI temporal.")
-
-# -------- Territorial
-with tabs[3]:
-    st.markdown("### Distribución por provincia")
-    if "provincia" not in df.columns:
-        st.info("No existe columna 'provincia' en este dataset.")
-    else:
-        nums = numeric_cols(df)
-        if not nums:
-            st.info("No hay métricas numéricas para trazar por provincia.")
-        else:
-            val = st.selectbox("Métrica", nums, key="t_val")
-            g = df.groupby("provincia", as_index=False)[val].sum().sort_values(val, ascending=False)
-            topn = st.slider("Top N", 10, 52, 20, key="t_top")
-            safe_bar(g.head(topn), x="provincia", y=val, title=f"Top {topn} provincias por {val}")
-            if "periodo" in df.columns and pd.api.types.is_datetime64_any_dtype(df["periodo"]):
-                pick = st.selectbox("Provincia (serie temporal)", sorted(df["provincia"].dropna().unique().tolist()))
-                dft = df[df["provincia"] == pick].dropna(subset=["periodo"])
-                if not dft.empty:
-                    g = dft.groupby("periodo", as_index=False)[val].sum()
-                    safe_line(g.sort_values("periodo"), x="periodo", y=val, title=f"Evolución – {pick}")
-
-# -------- Infraestructura
-with tabs[4]:
-    st.markdown("### Infraestructura por tecnología")
-    tech = "tecnologia" if "tecnologia" in df.columns else None
-    met = next((c for c in df.columns if c.lower() in
-                {"cobertura_5g", "cobertura", "nodos", "km_red", "capacidad", "unidades"}), None)
-    if not tech or not met:
-        st.info("No se han encontrado columnas de tecnología y métrica de infraestructura.")
-    else:
-        g = df.groupby(tech, as_index=False)[met].sum().sort_values(met, ascending=False)
-        safe_bar(g, x=tech, y=met, title=f"{met} por {tech}")
-        if "periodo" in df.columns and pd.api.types.is_datetime64_any_dtype(df["periodo"]):
-            pick = st.selectbox("Tecnología (serie temporal)", ["(todas)"] + sorted(df[tech].dropna().unique().tolist()))
-            dft = df.dropna(subset=["periodo"])
-            if pick != "(todas)":
-                dft = dft[dft[tech] == pick]
-            g = dft.groupby("periodo", as_index=False)[met].sum()
-            safe_line(g.sort_values("periodo"), x="periodo", y=met, title=f"Evolución {met}")
+        with row3_c2:
+            st.info("No hay métrica de infraestructura detectable para tecnología.")
+else:
+    with row3_c2:
+        st.info("No existe columna 'tecnologia' en este dataset.")
