@@ -5,16 +5,15 @@ from datetime import datetime
 # ---------- Utilidades ----------
 PROVINCIAS_INE = {
     # listado mínimo; ampliar para validación completa
-    "alava", "araba/álava", "albacete", "alicante", "almeria", "a coruña",
-    "asturias", "avila", "badajoz", "barcelona", "burgos", "caceres", "cadiz",
-    "cantabria", "castellon", "ciudad real", "cordoba", "cuenca", "girona",
-    "granada", "guadalajara", "guipuzcoa", "huelva", "huesca", "illes balears",
-    "jaen", "la rioja", "leon", "lleida", "lugo", "madrid", "malaga", "murcia",
-    "navarra", "ourense", "palencia", "pontevedra", "salamanca", "segovia",
-    "sevilla", "soria", "tarragona", "santa cruz de tenerife", "teruel",
-    "toledo", "valencia", "valladolid", "vizcaya", "zamora", "zaragoza",
-    "las palmas"
-}
+    "Álava", "Albacete", "Alicante", "Almería", "Asturias", "Ávila",
+    "Badajoz", "Barcelona", "Burgos", "Cáceres", "Cádiz", "Cantabria",
+    "Castellón", "Ciudad Real", "Córdoba", "Cuenca", "Girona", "Granada",
+    "Guadalajara", "Gipuzkoa", "Huelva", "Huesca", "Illes Balears", "Jaén",
+    "La Rioja", "León", "Lleida", "Lugo", "Madrid", "Málaga", "Murcia",
+    "Navarra", "Ourense", "Palencia", "Pontevedra", "Salamanca", "Segovia",
+    "Sevilla", "Soria", "Tarragona", "Santa Cruz de Tenerife", "Teruel",
+    "Toledo", "Valencia", "Valladolid", "Bizkaia", "Zamora", "Zaragoza",
+    "A Coruña", "Las Palmas", "Ceuta", "Melilla"
 
 def _to_lower_str(x):
     if pd.isna(x): return x
