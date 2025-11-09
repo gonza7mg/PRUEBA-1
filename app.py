@@ -11,7 +11,12 @@ from utils.cnmc_ckan import fetch_resource  # descarga CKAN
 # Los limpiadores existen pero NO se usan aquí (analizamos RAW primero)
 
 st.set_page_config(page_title="DSS Telecomunicaciones – CNMC", layout="wide", page_icon="📶")
-st.sidebar.title("Inicio")
+try:
+    st.switch_page("pages/0_Inicio.py")
+except Exception:
+    # Fallback: muestra un enlace si no existe switch_page
+    st.page_link("pages/0_Inicio.py", label="Ir a Inicio", icon="🏠")
+    st.info("Haz clic en 'Ir a Inicio' para abrir la página principal.")
 st.title(" DSS Telecomunicaciones – CNMC")
 
 # Recursos CKAN (RAW)
