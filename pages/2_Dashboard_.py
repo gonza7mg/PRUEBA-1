@@ -1,315 +1,480 @@
 # pages/3_Dashboard.py
+import os
+import io
+import json
 import pandas as pd
 import numpy as np
 import streamlit as st
 import plotly.express as px
+import plotly.graph_objects as go
+from pathlib import Path
+from datetime import datetime
 
-st.set_page_config(page_title="Dashboard DSS – CNMC", page_icon="📊", layout="wide")
+st.set_page_config(page_title="Dashboard – DSS CNMC", layout="wide", page_icon="📊")
+st.title("📊 Dashboard – DSS Telecomunicaciones (CNMC / FINAL)")
 
-# --------------------------
-# Helpers
-# --------------------------
-@st.cache_data(show_spinner=False)
-def load_csv_safe(path: str) -> pd.DataFrame:
-    try:
-        return pd.read_csv(path)
-    except Exception as e:
-        st.warning(f"No se pudo cargar {path}: {e}")
-        return pd.DataFrame()
-
-def CAGR(series: pd.Series) -> float:
-    """Crecimiento compuesto anual (suponiendo datos anuales en orden temporal)"""
-    s = series.dropna()
-    if len(s) < 2:
-        return np.nan
-    first, last = s.iloc[0], s.iloc[-1]
-    n_years = len(s) - 1
-    if first <= 0:
-        return np.nan
-    return (last / first) ** (1 / n_years) - 1
-
-def hhi(shares: pd.Series) -> float:
-    """Índice HHI (shares en % o 0-1). Devuelve 0-10000 en escala estándar."""
-    s = shares.dropna().astype(float)
-    if s.max() <= 1.0:  # si viene en proporciones
-        s = s * 100
-    return float(((s) ** 2).sum())
-
-def pct_change(series: pd.Series) -> float:
-    s = series.dropna()
-    if len(s) < 2:
-        return np.nan
-    return (s.iloc[-1] - s.iloc[-2]) / abs(s.iloc[-2]) if s.iloc[-2] != 0 else np.nan
-
-# --------------------------
-# Datos CLEAN (rutas)
-# --------------------------
-PATHS = {
-    "anual_dg": "data/clean/anual_datos_generales_clean.csv",
-    "anual_merc": "data/clean/anual_mercados_clean.csv",
-    "mensual": "data/clean/mensual_clean.csv",
-    "prov": "data/clean/provinciales_clean.csv",
-    "trim": "data/clean/trimestrales_clean.csv",
-    "infra": "data/clean/infraestructuras_clean.csv",
+# -----------------------------
+# Rutas fijas a los FINAL CSVs
+# -----------------------------
+FINAL = {
+    "anual_datos_generales": "data/final/anual_datos_generales_final.csv",
+    "anual_mercados":        "data/final/anual_mercados_final.csv",
+    "mensual":               "data/final/mensual_final.csv",
+    "provinciales":          "data/final/provinciales_final.csv",
+    "trimestrales":          "data/final/trimestrales_final.csv",
+    "infraestructuras":      "data/final/infraestructuras_final.csv",
 }
 
-dg   = load_csv_safe(PATHS["anual_dg"])      # anual – datos generales
-merc = load_csv_safe(PATHS["anual_merc"])    # anual – mercados
-mens = load_csv_safe(PATHS["mensual"])       # mensual
-prov = load_csv_safe(PATHS["prov"])          # provinciales
-tri  = load_csv_safe(PATHS["trim"])          # trimestrales
-inf  = load_csv_safe(PATHS["infra"])         # infraestructuras
+# -----------------------------
+# Helpers
+# -----------------------------
+@st.cache_data(show_spinner=False)
+def load_csv(path: str) -> pd.DataFrame | None:
+    if not os.path.exists(path):
+        return None
+    df = pd.read_csv(path)
+    # asegurar 'periodo' datetime si existe
+    if "periodo" in df.columns:
+        try:
+            df["periodo"] = pd.to_datetime(df["periodo"], errors="coerce")
+        except Exception:
+            pass
+    # normalizar columnas a lower snake básico para búsqueda flexible
+    # pero conservamos originales para display
+    df.columns = [c.strip() for c in df.columns]
+    return df
 
-# Normalizaciones suaves por si cambian nombres
-for df in [dg, merc, mens, prov, tri, inf]:
-    if "anno" in df.columns:
-        df.rename(columns={"anno": "anio"}, inplace=True)
-    if "año" in df.columns:
-        df.rename(columns={"año": "anio"}, inplace=True)
+def available_cols(df, substrs, numeric=False):
+    cols = []
+    for c in df.columns:
+        if all(s.lower() in c.lower() for s in substrs):
+            if numeric:
+                if pd.api.types.is_numeric_dtype(df[c]):
+                    cols.append(c)
+            else:
+                cols.append(c)
+    return cols
 
-# --------------------------
-# Filtros globales
-# --------------------------
-st.title("📊 Dashboard DSS – CNMC (CLEAN)")
-st.caption("Todos los gráficos se alimentan de data/clean/*.csv tras la limpieza y normalización.")
+def pick_first(df, candidates, numeric=False):
+    for pat in candidates:
+        cols = available_cols(df, [pat], numeric=numeric)
+        if cols:
+            return cols[0]
+    return None
 
-# inferencia rápida de rangos
-years_candidates = []
-for df in [dg, merc, mens, prov, tri, inf]:
-    if "anio" in df.columns:
-        y = pd.to_numeric(df["anio"], errors="coerce")
-        years_candidates.extend(y.dropna().astype(int).tolist())
-if years_candidates:
-    min_year, max_year = int(np.min(years_candidates)), int(np.max(years_candidates))
+def pick_many(df, candidates):
+    out=[]
+    for pat in candidates:
+        cols = available_cols(df, [pat], numeric=False)
+        out += cols
+    # unique preserving order
+    seen=set(); res=[]
+    for c in out:
+        if c not in seen:
+            seen.add(c); res.append(c)
+    return res
+
+def safe_sum(df, col):
+    try:
+        return float(pd.to_numeric(df[col], errors="coerce").sum())
+    except Exception:
+        return np.nan
+
+def yoy_growth(series: pd.Series):
+    """Calcula crecimiento interanual por índice temporal (freq anual/mensual/trimestral)."""
+    s = pd.to_numeric(series, errors="coerce")
+    return (s - s.shift(12)) / s.shift(12) * 100
+
+def hhi_from_shares(share_series):
+    """HHI asumiendo share en 0-100 o 0-1."""
+    s = pd.to_numeric(share_series, errors="coerce").dropna()
+    if s.max() <= 1.5:
+        s = s * 100.0
+    return float((s**2).sum())
+
+# -----------------------------------
+# Carga de todos los datasets FINAL
+# -----------------------------------
+dfs = {k: load_csv(p) for k,p in FINAL.items()}
+
+missing = [k for k,v in dfs.items() if v is None or v.empty]
+if missing:
+    st.warning(f"Faltan datasets FINAL o están vacíos: {', '.join(missing)}. El dashboard mostrará lo disponible.")
+
+# -----------------------------------
+# Filtros globales (sidebar)
+# -----------------------------------
+st.sidebar.header("Filtros globales")
+
+# Determinar conjunto de periodos disponible (mínimo común denominador)
+all_periods = []
+for df in dfs.values():
+    if isinstance(df, pd.DataFrame) and "periodo" in df.columns and pd.api.types.is_datetime64_any_dtype(df["periodo"]):
+        all_periods.append(df["periodo"])
+if all_periods:
+    pmin = min([s.min() for s in all_periods if s.notna().any()])
+    pmax = max([s.max() for s in all_periods if s.notna().any()])
 else:
-    min_year, max_year = 2000, 2025
+    pmin = None; pmax = None
 
-c1, c2, c3 = st.columns([1,1,2])
-with c1:
-    year_from, year_to = st.slider("Rango de años", min_year, max_year, (max(min_year, max_year-5), max_year))
-with c2:
-    operador_sel = st.selectbox(
-        "Operador (opcional)", 
-        sorted(list(set(dg.get("operador", pd.Series([])).dropna().unique()) 
-                    | set(merc.get("operador", pd.Series([])).dropna().unique())
-                    | set(tri.get("operador", pd.Series([])).dropna().unique())) ) or ["(Todos)"]
-    )
-with c3:
-    tecnologia_sel = st.multiselect(
-        "Tecnología (opcional)",
-        sorted(list(set(mens.get("tecnologia", pd.Series([])).dropna().unique()) 
-                    | set(prov.get("tecnologia", pd.Series([])).dropna().unique())
-                    | set(inf.get("tecnologia", pd.Series([])).dropna().unique()))),
-        []
-    )
+if pmin is not None and pmax is not None:
+    year_min = int(pmin.year); year_max = int(pmax.year)
+    year_range = st.sidebar.slider("Rango de años", min_value=year_min, max_value=year_max,
+                                   value=(max(year_min, year_max-5), year_max))
+else:
+    year_range = None
 
-def apply_filters(df: pd.DataFrame) -> pd.DataFrame:
+# Listas maestras de dimensiones comunes
+operadores = set()
+servicios = set()
+provincias = set()
+tecnologias = set()
+
+for name, df in dfs.items():
+    if df is None: 
+        continue
+    for cset, holder in [
+        (["operador"], operadores),
+        (["servicio"], servicios),
+        (["provincia"], provincias),
+        (["tecnologia","tecnología"], tecnologias),
+    ]:
+        for c in cset:
+            if c in df.columns:
+                holder.update(df[c].dropna().astype(str).unique().tolist())
+
+oper_sel = st.sidebar.multiselect("Operadores", sorted(list(operadores)) if operadores else [])
+serv_sel = st.sidebar.multiselect("Servicios", sorted(list(servicios)) if servicios else [])
+prov_sel = st.sidebar.multiselect("Provincias", sorted(list(provincias)) if provincias else [])
+tec_sel  = st.sidebar.multiselect("Tecnologías", sorted(list(tecnologias)) if tecnologias else [])
+
+def apply_global_filters(df: pd.DataFrame) -> pd.DataFrame:
+    if df is None: 
+        return df
     out = df.copy()
-    if "anio" in out.columns:
-        out = out[(out["anio"] >= year_from) & (out["anio"] <= year_to)]
-    if operador_sel and operador_sel != "(Todos)" and "operador" in out.columns:
-        out = out[out["operador"] == operador_sel]
-    if tecnologia_sel and "tecnologia" in out.columns:
-        out = out[out["tecnologia"].isin(tecnologia_sel)]
+    if year_range and "periodo" in out.columns and pd.api.types.is_datetime64_any_dtype(out["periodo"]):
+        out = out[(out["periodo"].dt.year >= year_range[0]) & (out["periodo"].dt.year <= year_range[1])]
+    if oper_sel and "operador" in out.columns:
+        out = out[out["operador"].astype(str).isin(oper_sel)]
+    if serv_sel and "servicio" in out.columns:
+        out = out[out["servicio"].astype(str).isin(serv_sel)]
+    if prov_sel and "provincia" in out.columns:
+        out = out[out["provincia"].astype(str).isin(prov_sel)]
+    if tec_sel and ("tecnologia" in out.columns or "tecnología" in out.columns):
+        tcol = "tecnologia" if "tecnologia" in out.columns else "tecnología"
+        out = out[out[tcol].astype(str).isin(tec_sel)]
     return out
 
-dg_f   = apply_filters(dg)
-merc_f = apply_filters(merc)
-mens_f = apply_filters(mens)
-prov_f = apply_filters(prov)
-tri_f  = apply_filters(tri)
-inf_f  = apply_filters(inf)
+dfs_f = {k: apply_global_filters(v) for k,v in dfs.items()}
 
-# --------------------------
-# PESTAÑAS
-# --------------------------
-tabs = st.tabs(["📌 Resumen", "💶 Económico", "🏷️ Mercado", "🗺️ Territorial", "📈 Operativo", "🧪 Calidad"])
+# -----------------------------------
+# KPIs principales (Top)
+# -----------------------------------
+st.subheader("KPIs principales")
 
-# ==========================
-# 1) RESUMEN
-# ==========================
-with tabs[0]:
-    st.subheader("Resumen ejecutivo")
+c1, c2, c3, c4 = st.columns(4)
 
-    # KPIs básicos (robustos: intentan distintas columnas si varían nombres)
-    def first_col(df, candidates):
-        for c in candidates:
-            if c in df.columns:
-                return c
-        return None
-
-    col_ingresos = first_col(dg_f, ["ingresos", "ingresos_total", "ingresos_por_operador"])
-    col_inv      = first_col(tri_f, ["inversiones", "capex", "inversion"])
-    col_lineas   = first_col(mens_f, ["lineas_activas", "lineas"])
-    col_hogares  = first_col(prov_f, ["penetracion", "lineas"])  # proxy territorial
-
-    total_ingresos = dg_f[col_ingresos].sum() if col_ingresos else np.nan
-    total_inversion = tri_f[col_inv].sum() if col_inv else np.nan
-    total_lineas = mens_f[col_lineas].iloc[-1] if (col_lineas and not mens_f.empty) else np.nan
-
-    # CAGR de ingresos anuales (si hay columna de anio e ingresos)
-    cagr_ing = np.nan
-    if col_ingresos and "anio" in dg_f.columns:
-        by_year = dg_f.groupby("anio")[col_ingresos].sum().sort_index()
-        cagr_ing = CAGR(by_year)
-
-    cA, cB, cC, cD = st.columns(4)
-    with cA: st.metric("Ingresos (periodo filtrado)", f"{total_ingresos:,.0f}")
-    with cB: st.metric("Inversión total", f"{total_inversion:,.0f}" if not np.isnan(total_inversion) else "—")
-    with cC: st.metric("Líneas activas (último mes)", f"{total_lineas:,.0f}" if not np.isnan(total_lineas) else "—")
-    with cD: st.metric("CAGR Ingresos", f"{cagr_ing*100:,.2f}%" if not np.isnan(cagr_ing) else "—")
-
-    # Evolución temporal (ingresos) y líneas
-    if col_ingresos and "anio" in dg_f.columns:
-        by_year = dg_f.groupby("anio")[col_ingresos].sum().reset_index().sort_values("anio")
-        fig = px.line(by_year, x="anio", y=col_ingresos, markers=True, title="Evolución de ingresos (anual)")
-        st.plotly_chart(fig, use_container_width=True)
-
-    if col_lineas and "anio" not in mens_f.columns and not mens_f.empty:
-        # Si mensual tiene 'fecha' o 'mes'
-        time_col = "fecha" if "fecha" in mens_f.columns else ("mes" if "mes" in mens_f.columns else None)
-        if time_col:
-            by_month = mens_f.groupby(time_col)[col_lineas].sum().reset_index()
-            fig2 = px.line(by_month, x=time_col, y=col_lineas, markers=False, title="Evolución de líneas activas (mensual)")
-            st.plotly_chart(fig2, use_container_width=True)
-
-# ==========================
-# 2) ECONÓMICO (Trimestral / Anual)
-# ==========================
-with tabs[1]:
-    st.subheader("Desempeño económico-financiero")
-
-    col_ing_trim = first_col(tri_f, ["ingresos", "ingresos_totales"])
-    col_inv_trim = first_col(tri_f, ["inversiones", "capex", "inversion"])
-    col_ebitda   = first_col(tri_f, ["ebitda"])
-
-    if not tri_f.empty and col_ing_trim:
-        fig = px.line(tri_f.sort_values(["anio"]), x="anio", y=col_ing_trim, color="operador" if "operador" in tri_f.columns else None,
-                      markers=True, title="Ingresos por operador (trimestral/anualizado)")
-        st.plotly_chart(fig, use_container_width=True)
-
-    c1, c2 = st.columns(2)
-    with c1:
-        if not tri_f.empty and col_inv_trim:
-            figi = px.bar(tri_f, x="anio", y=col_inv_trim, color="operador" if "operador" in tri_f.columns else None,
-                          barmode="group", title="Inversión (CAPEX) por año")
-            st.plotly_chart(figi, use_container_width=True)
-    with c2:
-        if not tri_f.empty and col_ebitda:
-            figm = px.line(tri_f.sort_values(["anio"]), x="anio", y=col_ebitda,
-                           color="operador" if "operador" in tri_f.columns else None,
-                           markers=True, title="EBITDA por operador")
-            st.plotly_chart(figm, use_container_width=True)
-
-# ==========================
-# 3) MERCADO (Cuotas, HHI)
-# ==========================
-with tabs[2]:
-    st.subheader("Estructura de mercado y competencia")
-
-    # Cuotas por año y operador
-    cuota_col = first_col(merc_f, ["cuota_mercado", "cuota", "participacion"])
-    if not merc_f.empty and cuota_col:
-        # Último año del filtro
-        last_year = merc_f["anio"].dropna().max() if "anio" in merc_f.columns else None
-        if last_year is not None:
-            df_last = merc_f[merc_f["anio"] == last_year]
-            fig = px.bar(df_last.sort_values(cuota_col, ascending=False),
-                         x="operador" if "operador" in df_last.columns else None,
-                         y=cuota_col, color="operador" if "operador" in df_last.columns else None,
-                         title=f"Cuotas de mercado – {int(last_year)}")
-            st.plotly_chart(fig, use_container_width=True)
-
-        # HHI por año
-        if "anio" in merc_f.columns and "operador" in merc_f.columns:
-            hhi_by_year = (merc_f.groupby("anio")
-                                   .apply(lambda g: hhi(g[cuota_col]))
-                                   .reset_index(name="HHI"))
-            fig_hhi = px.line(hhi_by_year, x="anio", y="HHI", markers=True, title="Índice HHI (concentración del mercado)")
-            st.plotly_chart(fig_hhi, use_container_width=True)
-
-# ==========================
-# 4) TERRITORIAL (Provinciales + Infra)
-# ==========================
-with tabs[3]:
-    st.subheader("Distribución territorial y despliegue")
-
-    # Penetración media por provincia (si existe)
-    pen_col = first_col(prov_f, ["penetracion", "lineas_por_100_hab", "lineas_per_capita"])
-    if not prov_f.empty and pen_col:
-        # Top / bottom provincias
-        topn = st.slider("Top/Bottom provincias", 3, 20, 10)
-        last_year = prov_f["anio"].max() if "anio" in prov_f.columns else None
-        dfp = prov_f if last_year is None else prov_f[prov_f["anio"] == last_year]
-        if "provincia" in dfp.columns:
-            c1, c2 = st.columns(2)
-            with c1:
-                top = dfp.sort_values(pen_col, ascending=False).head(topn)
-                fig_top = px.bar(top, x="provincia", y=pen_col, title=f"Top {topn} provincias por penetración")
-                st.plotly_chart(fig_top, use_container_width=True)
-            with c2:
-                bot = dfp.sort_values(pen_col, ascending=True).head(topn)
-                fig_bot = px.bar(bot, x="provincia", y=pen_col, title=f"Bottom {topn} provincias por penetración")
-                st.plotly_chart(fig_bot, use_container_width=True)
-
-    # Infraestructuras por tecnología
-    acc_col = first_col(inf_f, ["accesos", "nodos", "km_red", "unidades"])
-    if not inf_f.empty and acc_col:
-        fig_inf = px.bar(inf_f, x="anio" if "anio" in inf_f.columns else None,
-                         y=acc_col, color="tecnologia" if "tecnologia" in inf_f.columns else None,
-                         barmode="group", title="Despliegue de infraestructuras por tecnología")
-        st.plotly_chart(fig_inf, use_container_width=True)
-
-# ==========================
-# 5) OPERATIVO (Mensual)
-# ==========================
-with tabs[4]:
-    st.subheader("Dinámica operativa (mensual)")
-
-    alt_col  = first_col(mens_f, ["altas", "altas_mensuales"])
-    baj_col  = first_col(mens_f, ["bajas", "bajas_mensuales"])
-    lin_col  = first_col(mens_f, ["lineas_activas", "lineas"])
-
-    # Identificar la columna temporal (fecha/mes)
-    time_col = "fecha" if "fecha" in mens_f.columns else ("mes" if "mes" in mens_f.columns else None)
-
-    if time_col and (alt_col or baj_col or lin_col):
-        c1, c2 = st.columns(2)
+# KPI 1: Líneas activas (busca columna por patrones)
+if dfs_f["mensual"] is not None:
+    dfm = dfs_f["mensual"]
+    # heurística para elegir métrica de líneas
+    line_col = pick_first(dfm, ["linea", "línea", "abonados", "suscrip"], numeric=True) or \
+               pick_first(dfm, ["valor", "total"], numeric=True)
+    if line_col and "periodo" in dfm.columns:
+        total_lines = safe_sum(dfm, line_col)
         with c1:
-            if alt_col and baj_col:
-                tmp = mens_f[[time_col, alt_col, baj_col]].groupby(time_col).sum().reset_index()
-                tmp["netas"] = tmp[alt_col] - tmp[baj_col]
-                fig_ops = px.line(tmp, x=time_col, y=["netas", alt_col, baj_col],
-                                  title="Altas, bajas y netas", markers=True)
-                st.plotly_chart(fig_ops, use_container_width=True)
+            st.metric("Líneas activas (mensual, filtro aplicado)", f"{total_lines:,.0f}".replace(",", "."))
+else:
+    with c1:
+        st.metric("Líneas activas", "NA")
+
+# KPI 2: Ingresos (trimestrales)
+if dfs_f["trimestrales"] is not None:
+    dft = dfs_f["trimestrales"]
+    inc_col = pick_first(dft, ["ingres"], numeric=True) or pick_first(dft, ["valor","importe"], numeric=True)
+    if inc_col:
+        total_rev = safe_sum(dft, inc_col)
         with c2:
-            if lin_col:
-                tmp2 = mens_f[[time_col, lin_col]].groupby(time_col).sum().reset_index()
-                fig_lin = px.line(tmp2, x=time_col, y=lin_col, title="Líneas activas (mensual)")
-                st.plotly_chart(fig_lin, use_container_width=True)
+            st.metric("Ingresos (trimestral)", f"{total_rev:,.0f} €".replace(",", "."))
+else:
+    with c2:
+        st.metric("Ingresos", "NA")
 
-# ==========================
-# 6) CALIDAD (resumen rápido)
-# ==========================
-with tabs[5]:
-    st.subheader("Calidad de datos (resumen)")
+# KPI 3: Cobertura 5G (infraestructuras)
+if dfs_f["infraestructuras"] is not None:
+    dfi = dfs_f["infraestructuras"]
+    cov5g_col = pick_first(dfi, ["5g", "cobertura5", "poblacion_5g", "población_5g", "cov_5g"], numeric=True)
+    if cov5g_col:
+        cov5g = pd.to_numeric(dfi[cov5g_col], errors="coerce")
+        with c3:
+            st.metric("Cobertura 5G (media)", f"{cov5g.mean():.1f}%")
+    else:
+        with c3:
+            st.metric("Cobertura 5G", "NA")
+else:
+    with c3:
+        st.metric("Cobertura 5G", "NA")
 
-    # Indicadores sencillos por dataset
-    def quick_quality(df: pd.DataFrame, nombre: str):
-        n_rows, n_cols = df.shape
-        n_nulls = int(df.isna().sum().sum())
-        n_dups  = int(df.duplicated().sum())
-        c1, c2, c3, c4 = st.columns(4)
-        with c1: st.metric(f"{nombre}: filas", f"{n_rows:,}")
-        with c2: st.metric(f"{nombre}: columnas", f"{n_cols}")
-        with c3: st.metric(f"{nombre}: nulos", f"{n_nulls:,}")
-        with c4: st.metric(f"{nombre}: duplicados", f"{n_dups:,}")
+# KPI 4: HHI (anual_mercados)
+if dfs_f["anual_mercados"] is not None:
+    dfam = dfs_f["anual_mercados"]
+    cuota_col = pick_first(dfam, ["cuota"], numeric=True) or pick_first(dfam, ["share"], numeric=True)
+    group_cols = [c for c in ["periodo","mercado"] if c in dfam.columns]
+    if cuota_col and group_cols:
+        # HHI del último periodo disponible
+        lastp = dfam["periodo"].max() if "periodo" in dfam.columns else None
+        sub = dfam.copy()
+        if lastp is not None:
+            sub = sub[sub["periodo"] == lastp]
+        hhi = sub.groupby([c for c in group_cols if c != "periodo"])[cuota_col].apply(hhi_from_shares).mean()
+        with c4:
+            st.metric("HHI medio (últ. periodo)", f"{hhi:,.0f}".replace(",", "."))
+    else:
+        with c4:
+            st.metric("HHI", "NA")
+else:
+    with c4:
+        st.metric("HHI", "NA")
 
-    quick_quality(dg_f,   "Anual – Datos generales")
-    quick_quality(merc_f, "Anual – Mercados")
-    quick_quality(mens_f, "Mensual")
-    quick_quality(prov_f, "Provinciales")
-    quick_quality(tri_f,  "Trimestrales")
-    quick_quality(inf_f,  "Infraestructuras")
+st.caption("Los KPIs dependen de las columnas detectadas automáticamente. Puedes afinar con los filtros o las selecciones de cada bloque.")
 
-    st.caption("Para detalle completo, usa la página 'Calidad de Datos' con la suite de evaluación.")
+# -----------------------------------
+# Tabs por bloque analítico
+# -----------------------------------
+tab1, tab2, tab3, tab4, tab5 = st.tabs([
+    "Panorama general",
+    "Mercado y competencia",
+    "Infraestructura y despliegue",
+    "Análisis territorial",
+    "Indicadores cruzados",
+])
+
+# ========== TAB 1: PANORAMA GENERAL ==========
+with tab1:
+    st.subheader("Evolución temporal de variables clave")
+    colA, colB = st.columns(2)
+
+    # Mensual: líneas (o valor)
+    if dfs_f["mensual"] is not None and "periodo" in dfs_f["mensual"].columns:
+        dfm = dfs_f["mensual"].copy()
+        num_cols = [c for c in dfm.columns if pd.api.types.is_numeric_dtype(dfm[c])]
+        ycol = pick_first(dfm, ["linea","línea","abonados","valor"], numeric=True) or st.selectbox(
+            "Mensual: elige métrica numérica", num_cols, key="m_ycol")
+        if ycol:
+            g = dfm.groupby("periodo", as_index=False)[ycol].sum()
+            fig = px.line(g, x="periodo", y=ycol, title=f"Mensual – {ycol} (agregado)")
+            st.plotly_chart(fig, use_container_width=True)
+    else:
+        with colA:
+            st.info("Mensual no disponible.")
+
+    # Trimestral: ingresos
+    if dfs_f["trimestrales"] is not None and "periodo" in dfs_f["trimestrales"].columns:
+        dft = dfs_f["trimestrales"].copy()
+        ycol = pick_first(dft, ["ingres"], numeric=True) or pick_first(dft, ["valor","importe"], numeric=True)
+        if not ycol:
+            num_cols = [c for c in dft.columns if pd.api.types.is_numeric_dtype(dft[c])]
+            ycol = st.selectbox("Trimestral: elige métrica numérica", num_cols, key="t_ycol")
+        if ycol:
+            g = dft.groupby("periodo", as_index=False)[ycol].sum()
+            fig = px.area(g, x="periodo", y=ycol, title=f"Trimestral – {ycol} (agregado)")
+            st.plotly_chart(fig, use_container_width=True)
+    else:
+        with colB:
+            st.info("Trimestrales no disponible.")
+
+# ========== TAB 2: MERCADO Y COMPETENCIA ==========
+with tab2:
+    st.subheader("Cuotas y concentración")
+
+    dfam = dfs_f["anual_mercados"]
+    if dfam is None:
+        st.info("No hay datos en Anual – Mercados.")
+    else:
+        # Selectores
+        c1, c2, c3 = st.columns([2,1,1])
+        mercado_col = "mercado" if "mercado" in dfam.columns else None
+        operador_col = "operador" if "operador" in dfam.columns else None
+        cuota_col = pick_first(dfam, ["cuota", "share"], numeric=True)
+
+        if not all([mercado_col, operador_col, cuota_col]):
+            st.warning("No se detectaron columnas estándar para cuotas. Revisa el CSV final.")
+        else:
+            mercados = sorted(dfam[mercado_col].dropna().unique().tolist())
+            merc_sel = c1.selectbox("Mercado", mercados)
+            last_or_all = c2.radio("Periodo", ["Último", "Todos"], horizontal=True)
+            topn = int(c3.number_input("Top operadores (para gráfico)", 3, 10, 5))
+
+            sub = dfam[dfam[mercado_col] == merc_sel].copy()
+            if "periodo" in sub.columns and last_or_all == "Último":
+                lastp = sub["periodo"].max()
+                sub = sub[sub["periodo"] == lastp]
+
+            # Market share (barras apiladas o pie si es un único periodo)
+            if sub["periodo"].nunique() == 1 if "periodo" in sub.columns else True:
+                fig = px.pie(sub.sort_values(cuota_col, ascending=False).head(topn),
+                             names=operador_col, values=cuota_col,
+                             title=f"Cuota de mercado – {merc_sel}")
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                g = sub.groupby(["periodo", operador_col], as_index=False)[cuota_col].sum()
+                top_ops = g.groupby(operador_col)[cuota_col].mean().nlargest(topn).index
+                g = g[g[operador_col].isin(top_ops)]
+                fig = px.area(g, x="periodo", y=cuota_col, color=operador_col,
+                              title=f"Evolución cuota – {merc_sel}")
+                st.plotly_chart(fig, use_container_width=True)
+
+            # HHI por periodo
+            if "periodo" in sub.columns:
+                g = sub.groupby("periodo").apply(lambda d: hhi_from_shares(d[cuota_col])).reset_index(name="HHI")
+                fig2 = px.line(g, x="periodo", y="HHI", title=f"HHI – {merc_sel}")
+                st.plotly_chart(fig2, use_container_width=True)
+
+# ========== TAB 3: INFRAESTRUCTURA Y DESPLIEGUE ==========
+with tab3:
+    st.subheader("Cobertura y capacidades de red")
+
+    dfi = dfs_f["infraestructuras"]
+    if dfi is None:
+        st.info("Infraestructuras no disponible.")
+    else:
+        # Selección de métrica
+        num_cols = [c for c in dfi.columns if pd.api.types.is_numeric_dtype(dfi[c])]
+        guess = pick_first(dfi, ["5g","cobertura","km","nodos","estaciones","hogares"], numeric=True)
+        metrica = st.selectbox("Métrica (infraestructura)", num_cols, index=(num_cols.index(guess) if guess in num_cols else 0) if num_cols else 0)
+
+        dims = [c for c in ["periodo","tecnologia","operador","provincia"] if c in dfi.columns]
+        col1, col2 = st.columns([2,1])
+
+        if "periodo" in dfi.columns:
+            g = dfi.groupby("periodo", as_index=False)[metrica].sum()
+            fig = px.line(g, x="periodo", y=metrica, title=f"Evolución {metrica}")
+            col1.plotly_chart(fig, use_container_width=True)
+
+        cat = None
+        for cand in ["tecnologia","operador"]:
+            if cand in dfi.columns:
+                cat = cand; break
+        if cat:
+            g2 = dfi.groupby(cat, as_index=False)[metrica].sum().sort_values(metrica, ascending=False).head(12)
+            fig2 = px.bar(g2, x=cat, y=metrica, title=f"{metrica} por {cat}")
+            col2.plotly_chart(fig2, use_container_width=True)
+
+# ========== TAB 4: ANÁLISIS TERRITORIAL ==========
+with tab4:
+    st.subheader("Comparativa provincial")
+
+    dfp = dfs_f["provinciales"]
+    if dfp is None:
+        st.info("Provinciales no disponible.")
+    else:
+        if "provincia" not in dfp.columns:
+            st.warning("No existe columna 'provincia' en provinciales_final.csv")
+        else:
+            num_cols = [c for c in dfp.columns if pd.api.types.is_numeric_dtype(dfp[c])]
+            metrica = pick_first(dfp, ["linea","línea","penetr","valor","ingres"], numeric=True) or \
+                      st.selectbox("Elige métrica provincial", num_cols, key="prov_metrica")
+            if metrica:
+                # Ranking
+                g = dfp.groupby("provincia", as_index=False)[metrica].mean().sort_values(metrica, ascending=False)
+                st.plotly_chart(px.bar(g.head(20), x="provincia", y=metrica, title=f"Top 20 provincias por {metrica}"),
+                                use_container_width=True)
+
+                # Intento de mapa: si hay geojson o centroides
+                geojson_path = "data/geo/provincias.geojson"
+                centroids_path = "data/geo/provincias_centroides.csv"
+
+                if os.path.exists(geojson_path):
+                    try:
+                        with open(geojson_path, "r", encoding="utf-8") as f:
+                            gj = json.load(f)
+                        # Suponiendo que las features tienen 'provincia' o 'name'
+                        figmap = px.choropleth(
+                            g,
+                            geojson=gj,
+                            locations="provincia",
+                            color=metrica,
+                            featureidkey="properties.name",
+                            title=f"Mapa provincial – {metrica}",
+                            color_continuous_scale="Viridis"
+                        )
+                        figmap.update_geos(fitbounds="locations", visible=False)
+                        st.plotly_chart(figmap, use_container_width=True)
+                    except Exception as e:
+                        st.info(f"No se pudo dibujar el mapa con GeoJSON ({e}). Se muestra ranking.")
+                elif os.path.exists(centroids_path):
+                    try:
+                        cen = pd.read_csv(centroids_path)
+                        # columnas esperadas: provincia, lat, lon
+                        merged = pd.merge(
+                            g, cen[["provincia","lat","lon"]],
+                            on="provincia", how="inner"
+                        )
+                        st.map(merged.rename(columns={"lat":"latitude","lon":"longitude"})[["latitude","longitude"]])
+                    except Exception as e:
+                        st.info(f"No se pudo usar centroides ({e}). Se muestra ranking.")
+                else:
+                    st.caption("Para el mapa, añade `data/geo/provincias.geojson` o `data/geo/provincias_centroides.csv` (provincia, lat, lon).")
+
+# ========== TAB 5: INDICADORES CRUZADOS ==========
+with tab5:
+    st.subheader("Relaciones entre variables (cross-dataset)")
+
+    dft = dfs_f["trimestrales"]
+    dfi = dfs_f["infraestructuras"]
+
+    if dft is None or dfi is None:
+        st.info("Se requieren 'trimestrales_final.csv' e 'infraestructuras_final.csv' para este apartado.")
+    else:
+        # Elegir métricas
+        inc_col = pick_first(dft, ["ingres"], numeric=True) or pick_first(dft, ["valor","importe"], numeric=True)
+        infra_col = pick_first(dfi, ["5g","cov","km","nodos","estaciones","hogares"], numeric=True)
+
+        colL, colR = st.columns(2)
+        with colL:
+            inc_col = st.selectbox("Métrica de ingresos (trimestral)", 
+                                   [c for c in dft.columns if pd.api.types.is_numeric_dtype(dft[c])],
+                                   index=([c for c in dft.columns if c==inc_col].index(inc_col) if inc_col in dft.columns else 0))
+        with colR:
+            infra_col = st.selectbox("Métrica de infraestructura", 
+                                     [c for c in dfi.columns if pd.api.types.is_numeric_dtype(dfi[c])],
+                                     index=([c for c in dfi.columns if c==infra_col].index(infra_col) if infra_col in dfi.columns else 0))
+
+        # Agregación por periodo y (si existe) operador
+        keys_t = [c for c in ["periodo","operador"] if c in dft.columns]
+        keys_i = [c for c in ["periodo","operador"] if c in dfi.columns]
+        gt = dft.groupby(keys_t, as_index=False)[inc_col].sum() if keys_t else None
+        gi = dfi.groupby(keys_i, as_index=False)[infra_col].sum() if keys_i else None
+
+        if gt is not None and gi is not None:
+            on = [c for c in ["periodo","operador"] if c in gt.columns and c in gi.columns]
+            if not on:
+                # si no hay claves comunes, agregamos solo por periodo
+                if "periodo" in dft.columns and "periodo" in dfi.columns:
+                    gt2 = dft.groupby("periodo", as_index=False)[inc_col].sum()
+                    gi2 = dfi.groupby("periodo", as_index=False)[infra_col].sum()
+                    merged = pd.merge(gt2, gi2, on="periodo", how="inner")
+                else:
+                    merged = None
+            else:
+                merged = pd.merge(gt, gi, on=on, how="inner")
+
+            if merged is not None and not merged.empty:
+                xcol = inc_col; ycol = infra_col
+                title = f"Relación {inc_col} vs {infra_col}"
+                color = "operador" if "operador" in merged.columns else None
+                fig = px.scatter(merged, x=xcol, y=ycol, color=color, hover_data=on,
+                                 trendline="ols", title=title)
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.info("No fue posible cruzar métricas con claves comunes; revisa las columnas disponibles.")
+        else:
+            st.info("No hay columnas numéricas detectadas para el cruce.")
+
+# -----------------------------------
+# Nota final
+# -----------------------------------
+st.caption("""
+Este dashboard usa **datasets FINAL** y heurísticas para detectar columnas estándar (ej.: *periodo, operador, servicio, provincia, cuota, ingresos, líneas, tecnología*).
+Si una métrica no aparece bien, elige la columna desde los selectores del bloque correspondiente o ajusta los nombres en el CSV final.
+""")
