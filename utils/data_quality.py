@@ -2,9 +2,8 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 
-# ---------- Utilidades ----------
+# ---------- Catálogo oficial de provincias (INE) ----------
 PROVINCIAS_INE = {
-    # listado mínimo; ampliar para validación completa
     "Álava", "Albacete", "Alicante", "Almería", "Asturias", "Ávila",
     "Badajoz", "Barcelona", "Burgos", "Cáceres", "Cádiz", "Cantabria",
     "Castellón", "Ciudad Real", "Córdoba", "Cuenca", "Girona", "Granada",
@@ -15,8 +14,11 @@ PROVINCIAS_INE = {
     "Toledo", "Valencia", "Valladolid", "Bizkaia", "Zamora", "Zaragoza",
     "A Coruña", "Las Palmas", "Ceuta", "Melilla"
 }
+
+# ---------- Utilidades ----------
 def _to_lower_str(x):
-    if pd.isna(x): return x
+    if pd.isna(x): 
+        return x
     return str(x).strip().lower()
 
 def _is_num_col(s: pd.Series) -> bool:
@@ -34,6 +36,52 @@ def _rolling_zscore(s: pd.Series, window=6):
     z = (s - mu) / sd.replace(0, np.nan)
     return z
 
+def ensure_periodo(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Garantiza una columna datetime 'periodo' a partir de:
+    - 'periodo' parseable
+    - 'fecha' / 'mes'
+    - 'trimestre' (p.ej. 2023Q1, 2023-T1) → primer día del trimestre
+    - 'anio' solo → 1 de enero de ese año
+    """
+    if "periodo" in df.columns and pd.api.types.is_datetime64_any_dtype(df["periodo"]):
+        return df
+
+    if "periodo" in df.columns:
+        p = pd.to_datetime(df["periodo"], errors="coerce", dayfirst=True)
+        if p.notna().any():
+            df = df.copy()
+            df["periodo"] = p
+            return df
+
+    for cand in ["fecha", "mes"]:
+        if cand in df.columns:
+            p = pd.to_datetime(df[cand], errors="coerce", dayfirst=True)
+            if p.notna().any():
+                df = df.copy()
+                df["periodo"] = p
+                return df
+
+    if "trimestre" in df.columns:
+        s = df["trimestre"].astype(str)
+        year = pd.to_numeric(s.str.extract(r"(\d{4})")[0], errors="coerce")
+        q = pd.to_numeric(s.str.extract(r"Q(\d)")[0].fillna(s.str.extract(r"[Tt](\d)")[0]), errors="coerce")
+        month = q.map({1:1, 2:4, 3:7, 4:10})
+        p = pd.to_datetime(dict(year=year, month=month, day=1), errors="coerce")
+        if p.notna().any():
+            df = df.copy()
+            df["periodo"] = p
+            return df
+
+    if "anio" in df.columns:
+        y = pd.to_numeric(df["anio"], errors="coerce")
+        p = pd.to_datetime(dict(year=y, month=1, day=1), errors="coerce")
+        df = df.copy()
+        df["periodo"] = p
+        return df
+
+    return df
+
 # ---------- Chequeos por dimensión ----------
 def check_completeness(df: pd.DataFrame):
     rows = []
@@ -48,13 +96,11 @@ def check_completeness(df: pd.DataFrame):
             "notes": ""
         })
     # Huecos temporales si existe periodo
+    df = ensure_periodo(df)
     if "periodo" in df.columns and pd.api.types.is_datetime64_any_dtype(df["periodo"]):
         years = sorted(df["periodo"].dt.year.dropna().unique())
         if len(years) >= 2:
-            missing_years = []
-            for y in range(years[0], years[-1]+1):
-                if y not in years:
-                    missing_years.append(y)
+            missing_years = [y for y in range(int(years[0]), int(years[-1])+1) if y not in years]
             rows.append({
                 "dimension": "completitud",
                 "check": "huecos_anuales",
@@ -78,6 +124,7 @@ def check_validity(df: pd.DataFrame):
                 "notes": "valores negativos donde no deberían"
             })
     # fechas razonables
+    df = ensure_periodo(df)
     if "periodo" in df.columns:
         if pd.api.types.is_datetime64_any_dtype(df["periodo"]):
             y = df["periodo"].dt.year.dropna()
@@ -101,6 +148,7 @@ def check_validity(df: pd.DataFrame):
 
 def check_consistency_business(df: pd.DataFrame):
     rows = []
+    df = ensure_periodo(df)
     # Si hay cuotas de mercado, chequear ~100%
     if all(c in df.columns for c in ["periodo","mercado","operador"]) and ("cuota" in df.columns or "valor" in df.columns):
         col = "cuota" if "cuota" in df.columns else "valor"
@@ -135,14 +183,15 @@ def check_uniqueness(df: pd.DataFrame, keys):
 def check_integrity_refs(df: pd.DataFrame):
     rows = []
     if "provincia" in df.columns:
-        prov = df["provincia"].astype(str).str.strip().str.lower()
-        bad = int(~prov.isin(PROVINCIAS_INE).sum()) if len(prov) else 0
+        # SOLO validación contra el catálogo canónico (exacto, con acentos/case).
+        prov = df["provincia"].astype(str).str.strip()
+        bad = int((~prov.isin(PROVINCIAS_INE)).sum()) if len(prov) else 0
         rows.append({
             "dimension": "integridad",
             "check": "provincia_catalogo_INE",
             "affected": bad,
             "pct_rows": (bad/len(df) if len(df) else 0),
-            "notes": "normalizar nombres si procede"
+            "notes": "nombres no reconocidos por catálogo INE (validación estricta)"
         })
     return pd.DataFrame(rows)
 
@@ -164,6 +213,7 @@ def check_accuracy_outliers(df: pd.DataFrame, value_cols=None, time_col="periodo
             "notes": "posibles valores atípicos"
         })
         # z-score temporal por clave (si hay fecha)
+        df = ensure_periodo(df)
         if time_col in df.columns and pd.api.types.is_datetime64_any_dtype(df[time_col]) and key_cols:
             try:
                 affected = 0; total = 0
@@ -187,6 +237,7 @@ def check_accuracy_outliers(df: pd.DataFrame, value_cols=None, time_col="periodo
 
 def check_timeliness(df: pd.DataFrame):
     rows = []
+    df = ensure_periodo(df)
     if "periodo" in df.columns and pd.api.types.is_datetime64_any_dtype(df["periodo"]):
         last = df["periodo"].max()
         rows.append({
@@ -208,6 +259,9 @@ DEFAULT_KEYS = {
 }
 
 def run_quality_suite(df: pd.DataFrame, dataset_hint: str | None = None):
+    # Asegurar columna temporal estándar para las pruebas que la usan
+    df = ensure_periodo(df)
+
     # inferir claves
     keys = None
     if dataset_hint:
