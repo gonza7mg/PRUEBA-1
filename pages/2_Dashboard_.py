@@ -28,6 +28,7 @@ FINAL_FILES: Dict[str, str] = {
 # Utilidades de carga y ayuda
 # -------------------------------------------------------------------
 
+
 @st.cache_data
 def load_final(name: str) -> pd.DataFrame:
     path = FINAL_FILES[name]
@@ -47,6 +48,8 @@ def pick_first(df: pd.DataFrame, candidates: Iterable[str]) -> Optional[str]:
 def ensure_pct(series: pd.Series) -> pd.Series:
     """Devuelve serie en porcentaje (0–100) asumiendo que puede venir 0–1 o 0–100."""
     s = series.astype(float)
+    if len(s) == 0:
+        return s
     if s.max() <= 1.0:
         return s * 100.0
     return s
@@ -109,7 +112,6 @@ PROV_COORDS: Dict[str, Tuple[float, float]] = {
     "Melilla": (35.29, -2.94),
 }
 
-
 # -------------------------------------------------------------------
 # Carga de datos
 # -------------------------------------------------------------------
@@ -122,14 +124,13 @@ df_trim = load_final("trimestrales")
 df_infra = load_final("infraestructuras")
 
 # Años disponibles (para filtros globales)
-all_years = sorted(
-    pd.concat(
-        [
-            df_anual_mercados["periodo"].dt.year.dropna(),
-            df_prov["periodo"].dt.year.dropna(),
-        ]
-    ).unique()
-)
+all_years_series = []
+if "periodo" in df_anual_mercados.columns:
+    all_years_series.append(df_anual_mercados["periodo"].dt.year.dropna())
+if "periodo" in df_prov.columns:
+    all_years_series.append(df_prov["periodo"].dt.year.dropna())
+
+all_years = sorted(pd.concat(all_years_series).unique())
 min_year, max_year = int(all_years[0]), int(all_years[-1])
 
 # -------------------------------------------------------------------
@@ -169,13 +170,15 @@ ops_sel = st.sidebar.multiselect(
 st.sidebar.markdown("---")
 st.sidebar.caption("Datos CNMC (capas CLEAN → FINAL).")
 
-
 # -------------------------------------------------------------------
 # Filtro base sobre anual_mercados
 # -------------------------------------------------------------------
 
 df_anual = df_anual_mercados.copy()
-df_anual["anio"] = df_anual["periodo"].dt.year.astype("Int64")
+if "periodo" in df_anual.columns:
+    df_anual["anio"] = df_anual["periodo"].dt.year.astype("Int64")
+else:
+    df_anual["anio"] = np.nan
 
 mask_year = df_anual["anio"].between(year_range[0], year_range[1])
 df_anual = df_anual[mask_year]
@@ -185,7 +188,6 @@ if servicio_sel != "Todos":
 
 if ops_sel:
     df_anual = df_anual[df_anual["operador"].isin(ops_sel)]
-
 
 # -------------------------------------------------------------------
 # Layout principal
@@ -211,14 +213,23 @@ st.divider()
 # BLOQUE 1: KPIs ejecutivos (anual_mercados)
 # -------------------------------------------------------------------
 
-latest_year = int(df_anual["anio"].max())
-df_latest = df_anual[df_anual["anio"] == latest_year]
+if df_anual.empty:
+    latest_year = year_range[1]
+    df_latest = df_anual_mercados.copy()
+    df_latest["anio"] = df_latest["periodo"].dt.year.astype("Int64")
+    df_latest = df_latest[df_latest["anio"] == latest_year]
+else:
+    latest_year = int(df_anual["anio"].max())
+    df_latest = df_anual[df_anual["anio"] == latest_year]
 
 total_ingresos_latest = df_latest["ingresos_por_operador"].sum()
 
 prev_year = latest_year - 1
 df_prev = df_anual_mercados.copy()
-df_prev["anio"] = df_prev["periodo"].dt.year.astype("Int64")
+if "periodo" in df_prev.columns:
+    df_prev["anio"] = df_prev["periodo"].dt.year.astype("Int64")
+else:
+    df_prev["anio"] = np.nan
 df_prev = df_prev[df_prev["anio"] == prev_year]
 if servicio_sel != "Todos":
     df_prev = df_prev[df_prev["servicio"] == servicio_sel]
@@ -246,7 +257,8 @@ else:
 
 # HHI medio
 if "hhi_ingresos" in df_latest.columns:
-    hhi_latest = float(df_latest["hhi_ingresos"].dropna().mean()) * 10_000
+    hhi_latest_series = df_latest["hhi_ingresos"].dropna()
+    hhi_latest = float(hhi_latest_series.mean() * 10_000) if not hhi_latest_series.empty else None
 else:
     hhi_latest = None
 
@@ -348,9 +360,11 @@ st.divider()
 
 st.subheader("Cobertura y penetración por provincia")
 
-# Filtros específicos provinciales
 df_prov = df_prov.copy()
-df_prov["anio"] = df_prov["periodo"].dt.year.astype("Int64")
+if "periodo" in df_prov.columns:
+    df_prov["anio"] = df_prov["periodo"].dt.year.astype("Int64")
+else:
+    df_prov["anio"] = np.nan
 
 prov_years = sorted(df_prov["anio"].dropna().unique().tolist())
 year_prov_sel = st.slider(
@@ -374,7 +388,6 @@ if serv_prov_sel != "Todos":
 
 row2_c1, row2_c2 = st.columns((1.5, 1))
 
-# Construir dataframe para mapa
 if not dfp.empty:
     g = (
         dfp.groupby("provincia", as_index=False)[["tasa_de_penetracion", "lineas_o_accesos"]]
@@ -390,12 +403,11 @@ if not dfp.empty:
         if g.empty:
             st.info("No hay coordenadas definidas para las provincias de este conjunto.")
         else:
-            map_df = g.rename(columns={"lat": "latitude", "lon": "longitude"})
-            st.map(
-                map_df[["latitude", "longitude", "tasa_de_penetracion"]],
-                size=map_df["tasa_de_penetracion"],
-            )
-            st.caption("Tamaño del punto proporcional a la tasa de penetración.")
+            map_df = g.rename(columns={"lat": "latitude", "lon": "longitude"}).copy()
+            map_df = map_df.dropna(subset=["latitude", "longitude"])
+            # Para evitar errores, solo pasamos lat/lon a st.map
+            st.map(map_df[["latitude", "longitude"]])
+            st.caption("Distribución geográfica de provincias con datos disponibles.")
 
     with row2_c2:
         fig_prov = px.bar(
@@ -430,7 +442,10 @@ row3_c1, row3_c2 = st.columns(2)
 with row3_c1:
     if not df_mensual.empty:
         dfm = df_mensual.copy()
-        dfm["anio"] = dfm["periodo"].dt.year.astype("Int64")
+        if "periodo" in dfm.columns:
+            dfm["anio"] = dfm["periodo"].dt.year.astype("Int64")
+        else:
+            dfm["anio"] = np.nan
         mask_m = dfm["anio"].between(year_range[0], year_range[1])
         dfm = dfm[mask_m]
         if ops_sel:
@@ -460,7 +475,10 @@ with row3_c1:
 with row3_c2:
     if not df_trim.empty:
         dft = df_trim.copy()
-        dft["anio"] = dft["periodo"].dt.year.astype("Int64")
+        if "periodo" in dft.columns:
+            dft["anio"] = dft["periodo"].dt.year.astype("Int64")
+        else:
+            dft["anio"] = np.nan
         mask_t = dft["anio"].between(year_range[0], year_range[1])
         dft = dft[mask_t]
         if ops_sel:
@@ -503,7 +521,7 @@ else:
         ["lineas_o_accesos", "estaciones_base", "trafico_de_datos", "nodos_radio"],
     )
 
-    if col_tecn and metric_infra:
+    if col_tecn is not None and metric_infra is not None:
         g_inf = (
             df_infra.groupby(col_tecn, as_index=False)[metric_infra]
             .sum()
