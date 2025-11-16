@@ -1,13 +1,13 @@
-operador,servicio,id,trimestre,pais,tipo_de_mercado,concepto,tipo_de_ingreso,tipo_de_paquete,unidades,ingresos,ingresos_por_operador,empleados_por_operador,paquetes
-,,119298,,,,,,,,0.0,0.0,85960.0,0.0
-,,343997,,,,,,,,0.0,3578.77,112355.0,0.0
-,,279108,,,,,,,,0.0,16459.05,30471.0,0.0
-,,37380,,,,,,,,0.0,8224.87,25861.0,0.0
-,,361371,,,,,,,,0.0,327467.16000000003,2047788.0,0.0
-,,22671,,,,,,,,0.0,0.0,132315.0,0.0
-,,325517,,,,,,,,0.0,88740.38,334929.0,0.0
-,,119776,,,,,,,,0.0,0.0,530008.0,0.0
-,,363213,,,,,,,,0.0,149088.26,1257800.0,0.0
-,,119856,,,,,,,,0.0,0.0,174235.0,0.0
-,,363613,,,,,,,,0.0,108625.51,351264.0,0.0
-,,2662600,,,,,,,,702183.91,0.0,0.0,762568272.0
+operador,servicio,id,trimestre,pais,tipo_de_mercado,concepto,tipo_de_ingreso,tipo_de_paquete,unidades,ingresos,ingresos_por_operador,empleados_por_operador,paquetes,periodo,key_periodo_operador_servicio,cuota_ingresos,hhi_ingresos
+Canal Sur (Rtva),Datos generales,119298,2005T1,España,,Número de empleados,,,,0.0,0.0,85960.0,0.0,2005-03-31,2005-03-31|Canal Sur (Rtva)|Datos generales,,
+Digi,Datos generales,343997,2010T1,España,,Número de empleados,,,,0.0,3578.77,112355.0,0.0,2010-03-31,2010-03-31|Digi|Datos generales,,
+Grupo Masmovil,Datos generales,279108,2009T2,España,,Número de empleados,,,,0.0,16459.05,30471.0,0.0,2009-06-30,2009-06-30|Grupo Masmovil|Datos generales,,
+Masorange,Datos generales,37380,2024T2,España,,Número de empleados,,,,0.0,8224.87,25861.0,0.0,2024-06-30,2024-06-30|Masorange|Datos generales,,
+Movistar,Datos generales,361371,2005T1,España,,Número de empleados,,,,0.0,327467.16000000003,2047788.0,0.0,2005-03-31,2005-03-31|Movistar|Datos generales,,
+Otros,Datos generales,22671,2005T1,España,,Número de empleados,,,,0.0,0.0,132315.0,0.0,2005-03-31,2005-03-31|Otros|Datos generales,,
+Otros,Datos generales,325517,2005T1,España,,Número de empleados,,,,0.0,88740.38,334929.0,0.0,2005-03-31,2005-03-31|Otros|Datos generales,,
+Otros,Datos generales,119776,2005T1,España,,Número de empleados,,,,0.0,0.0,530008.0,0.0,2005-03-31,2005-03-31|Otros|Datos generales,,
+Otros,Datos generales,363213,2005T1,España,,Número de empleados,,,,0.0,149088.26,1257800.0,0.0,2005-03-31,2005-03-31|Otros|Datos generales,,
+Otros,Datos generales,119856,2005T1,España,,Número de empleados,,,,0.0,0.0,174235.0,0.0,2005-03-31,2005-03-31|Otros|Datos generales,,
+Otros,Datos generales,363613,2005T1,España,,Número de empleados,,,,0.0,108625.51,351264.0,0.0,2005-03-31,2005-03-31|Otros|Datos generales,,
+Otros,Datos generales,2662600,2005T1,España,Servicio mayorista,Ingresos,Alquiler de circuitos,,,702183.91,0.0,0.0,762568272.0,2005-03-31,2005-03-31|Otros|Datos generales,,0.0
