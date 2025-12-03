@@ -1241,28 +1241,36 @@ palancas claras: tamaño de mercado, portabilidades y base de clientes móvil/BA
 """
 )
 
-# 1) dataset fusionado
 df_fused = build_fused_for_scenarios(df)
-
-# 2) modelo global
 global_model, feat_cols_global = train_global_scenario_model(df_fused)
-
-# 3) foto de mercado post-fusión (último trimestre por operador)
 snapshot = get_latest_snapshot_postfusion(df_fused)
 
-# 4) FEATURES BASE (¡¡NO se deben modificar nunca!!)
-snapshot_features_base = snapshot[feat_cols_global].copy()
+# Features base que usaremos solo para que el modelo calcule los escenarios
+snapshot_features = snapshot[feat_cols_global].copy()
 
-# 5) predicción base y cuotas base
-baseline_pred = global_model.predict(snapshot_features_base.values)
-baseline_total = baseline_pred.sum()
-baseline_shares = baseline_pred / baseline_total
+# ⚠️ Ingresos base = dato real del dataset fusionado, no predicho
+ingresos_base = (
+    snapshot[TARGET_COL]
+    .fillna(0.0)
+    .to_numpy()
+    .astype(float)
+)
+
+# Por si hubiera algún valor raro en origen, nunca dejamos que sea negativo
+ingresos_base = np.maximum(ingresos_base, 0.0)
+
+baseline_total = ingresos_base.sum()
+if baseline_total <= 0:
+    baseline_shares = np.zeros_like(ingresos_base)
+else:
+    baseline_shares = ingresos_base / baseline_total
+
 baseline_hhi = compute_hhi(baseline_shares)
 
-# tabla base (empleada en TODOS los escenarios)
 snapshot_base = snapshot[[GROUP_COL, YEAR_COL, DATE_COL]].copy()
-snapshot_base["ingresos_base"] = baseline_pred
+snapshot_base["ingresos_base"] = ingresos_base
 snapshot_base["cuota_base"] = baseline_shares
+
 
 tabs = st.tabs([
     "Plan de inversión agresivo",
@@ -1272,7 +1280,6 @@ tabs = st.tabs([
     "Fusión y HHI",
     "Shock macro mercado",
 ])
-
 
 # ------------------ Escenario 1 ------------------ #
 with tabs[0]:
