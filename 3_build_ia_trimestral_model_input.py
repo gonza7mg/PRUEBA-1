@@ -5,17 +5,22 @@
 #
 # Salida: data/model_input/ia_trimestral_model.csv
 # Columnas principales:
-#   - trimestre
+#   - trimestre (YYYYTQ)
 #   - anno
+#   - num_trim (1..4)
 #   - operador
 #   - valor  (ingresos minoristas por operador y trimestre)
 #   - + features de infraestructuras, mensual, anual, provinciales...
+#   - + variables derivadas: lags, ARPU, ratios...
+
+from __future__ import annotations
 
 from pathlib import Path
 from functools import reduce
 
 import numpy as np
 import pandas as pd
+
 
 # ==========================
 # CONFIGURACIÓN DE RUTAS
@@ -75,11 +80,10 @@ def build_ia_trimestral_model_input(
     # Variable objetivo (target) para el modelo
     base["valor"] = base["ingresos_por_operador"]
 
-    # Año a partir de "2005T1" -> 2005
-    base["anno"] = base["trimestre"].astype(str).str.slice(0, 4).astype(int)
-
-    # Número de trimestre (1–4) a partir de "2005T1"
-    base["num_trim"] = base["trimestre"].astype(str).str[-1].astype(int)
+    # Año y num_trim a partir de "2005T1" -> anno=2005, num_trim=1
+    base["trimestre"] = base["trimestre"].astype(str)
+    base["anno"] = base["trimestre"].str.slice(0, 4).astype(int)
+    base["num_trim"] = base["trimestre"].str[-1].astype(int)
 
     # Ingresos totales del trimestre (suma de operadores)
     tot = (
@@ -94,17 +98,17 @@ def build_ia_trimestral_model_input(
         base["valor"] / base["tri_ingresos_total_trimestre"]
     )
 
-    # (Opcional) filtrar años muy antiguos si hiciera falta
-    # base = base[base["anno"] >= 2010].copy()
-
     # ============================================================
     # 3. INFRAESTRUCTURAS: líneas BAM, tráfico datos, estaciones, nodos
     # ============================================================
 
-    inf_feat_list = []
+    inf_feat_list: list[pd.DataFrame] = []
 
     # Líneas de Banda Ancha móvil
-    m_lines_bam = (inf["servicio"] == "Banda Ancha móvil") & (inf["concepto"] == "Líneas")
+    m_lines_bam = (
+        (inf["servicio"] == "Banda Ancha móvil")
+        & (inf["concepto"] == "Líneas")
+    )
     inf_lines_bam = (
         inf[m_lines_bam]
         .groupby(["trimestre", "operador"], as_index=False)["lineas_o_accesos"]
@@ -114,8 +118,9 @@ def build_ia_trimestral_model_input(
     inf_feat_list.append(inf_lines_bam)
 
     # Tráfico de datos de Banda Ancha móvil
-    m_traf_bam = (inf["servicio"] == "Banda Ancha móvil") & (
-        inf["concepto"] == "Tráfico - datos"
+    m_traf_bam = (
+        (inf["servicio"] == "Banda Ancha móvil")
+        & (inf["concepto"] == "Tráfico - datos")
     )
     inf_traf_bam = (
         inf[m_traf_bam]
@@ -147,7 +152,9 @@ def build_ia_trimestral_model_input(
 
     if inf_feat_list:
         inf_feats = reduce(
-            lambda left, right: pd.merge(left, right, on=["trimestre", "operador"], how="outer"),
+            lambda left, right: pd.merge(
+                left, right, on=["trimestre", "operador"], how="outer"
+            ),
             inf_feat_list,
         )
     else:
@@ -166,8 +173,9 @@ def build_ia_trimestral_model_input(
     men2["trimestre"] = men2["anno"].astype(str) + "T" + men2["trim"].astype(str)
 
     # Portabilidades de Telefonía móvil (suma de 3 meses)
-    m_port = (men2["servicio"] == "Telefonía móvil") & (
-        men2["concepto"] == "Portabilidades"
+    m_port = (
+        (men2["servicio"] == "Telefonía móvil")
+        & (men2["concepto"] == "Portabilidades")
     )
     men_port = (
         men2[m_port]
@@ -177,8 +185,9 @@ def build_ia_trimestral_model_input(
     )
 
     # Líneas de BAF minorista (media trimestral)
-    m_baf = (men2["servicio"] == "Banda ancha fija minorista") & (
-        men2["concepto"] == "Líneas"
+    m_baf = (
+        (men2["servicio"] == "Banda ancha fija minorista")
+        & (men2["concepto"] == "Líneas")
     )
     men_baf = (
         men2[m_baf]
@@ -194,9 +203,11 @@ def build_ia_trimestral_model_input(
     # 5. ANUAL DATOS GENERALES: ingresos, empleados, inversiones
     # ============================================================
 
-    m_ag_ing = (ag["concepto"] == "Ingresos") & (
-        ag["tipo_de_mercado"] == "Servicio minorista"
-    ) & (ag["operador"].notna())
+    m_ag_ing = (
+        (ag["concepto"] == "Ingresos")
+        & (ag["tipo_de_mercado"] == "Servicio minorista")
+        & (ag["operador"].notna())
+    )
     ag_ing = (
         ag[m_ag_ing]
         .groupby(["anno", "operador"], as_index=False)["ingresos_por_operador"]
@@ -213,9 +224,9 @@ def build_ia_trimestral_model_input(
     )
 
     m_ag_inv = (
-        ag["concepto"]
-        == "Inversiones en infraestr. de telec. y serv. audiov."
-    ) & (ag["operador"].notna())
+        (ag["concepto"] == "Inversiones en infraestr. de telec. y serv. audiov.")
+        & (ag["operador"].notna())
+    )
     ag_inv = (
         ag[m_ag_inv]
         .groupby(["anno", "operador"], as_index=False)["inversiones_por_operador"]
@@ -229,7 +240,7 @@ def build_ia_trimestral_model_input(
     base = base.merge(ag_feats, on=["anno", "operador"], how="left")
 
     # ============================================================
-    # 6. ANUAL MERCADOS: líneas y clientes por servicio
+    # 6. ANUAL MERCADOS: líneas, clientes e ingresos móviles (ARPU)
     # ============================================================
 
     def agg_lineas(servicio: str, concepto: str, col_in: str, newname: str) -> pd.DataFrame:
@@ -245,6 +256,7 @@ def build_ia_trimestral_model_input(
             .rename(columns={col_in: newname})
         )
 
+    # Líneas BAF minorista
     am_baf_lines = agg_lineas(
         "Banda ancha fija minorista",
         "Líneas",
@@ -252,6 +264,7 @@ def build_ia_trimestral_model_input(
         "an_merc_baf_lineas",
     )
 
+    # Líneas móviles
     am_mov_lines = agg_lineas(
         "Telefonía móvil",
         "Líneas",
@@ -259,6 +272,7 @@ def build_ia_trimestral_model_input(
         "an_merc_mov_lineas",
     )
 
+    # Líneas BAM
     am_bam_lines = agg_lineas(
         "Banda Ancha móvil",
         "Líneas",
@@ -266,6 +280,7 @@ def build_ia_trimestral_model_input(
         "an_merc_bam_lineas",
     )
 
+    # Clientes móviles anuales
     m_am_mov_cli = (
         (am["servicio"] == "Telefonía móvil")
         & (am["concepto"] == "Clientes")
@@ -278,9 +293,22 @@ def build_ia_trimestral_model_input(
         .rename(columns={"clientes_por_operador": "an_merc_mov_clientes"})
     )
 
+    # Ingresos móviles anuales (para ARPU)
+    m_am_mov_ing = (
+        (am["servicio"] == "Telefonía móvil")
+        & (am["concepto"] == "Ingresos")
+        & (am["operador"].notna())
+    )
+    am_mov_ing = (
+        am[m_am_mov_ing]
+        .groupby(["anno", "operador"], as_index=False)["ingresos_por_operador"]
+        .sum()
+        .rename(columns={"ingresos_por_operador": "an_merc_mov_ingresos"})
+    )
+
     am_feats = reduce(
         lambda l, r: pd.merge(l, r, on=["anno", "operador"], how="outer"),
-        [am_baf_lines, am_mov_lines, am_bam_lines, am_mov_clients],
+        [am_baf_lines, am_mov_lines, am_bam_lines, am_mov_clients, am_mov_ing],
     )
 
     base = base.merge(am_feats, on=["anno", "operador"], how="left")
@@ -306,10 +334,34 @@ def build_ia_trimestral_model_input(
     base = base.merge(prov_feats, on=["anno", "operador"], how="left")
 
     # ============================================================
-    # 8. Selección final de columnas + imputación de NaN
+    # 8. VARIABLES DERIVADAS (ARPU, ratios, lags...)
     # ============================================================
 
-    base_feature_cols = [
+    # ARPU móvil anual = ingresos móviles anuales / clientes móviles anuales
+    base["arpu_mov_anual"] = np.where(
+        base["an_merc_mov_clientes"].fillna(0) > 0,
+        base["an_merc_mov_ingresos"] / base["an_merc_mov_clientes"],
+        np.nan,
+    )
+
+    # Tráfico de datos por línea BAM (a nivel trimestral)
+    base["trafico_datos_por_linea_bam"] = np.where(
+        base["inf_bam_lineas"].fillna(0) > 0,
+        base["inf_bam_trafico_datos"] / base["inf_bam_lineas"],
+        np.nan,
+    )
+
+    # Ordenamos por operador y trimestre para calcular lags del target
+    base = base.sort_values(["operador", "anno", "num_trim"]).reset_index(drop=True)
+
+    base["valor_lag1"] = base.groupby("operador")["valor"].shift(1)
+    base["valor_lag4"] = base.groupby("operador")["valor"].shift(4)
+
+    # ============================================================
+    # 9. Selección final de columnas + imputación de NaN mejorada
+    # ============================================================
+
+    feature_cols = [
         "tri_ingresos_total_trimestre",
         "tri_cuota_ingresos_trimestre",
         "num_trim",
@@ -329,91 +381,42 @@ def build_ia_trimestral_model_input(
         "prov_baf_lineas_total",
         "prov_baf_pen_media",
         "prov_baf_pen_std",
-    ]
-
-    final_cols = ["trimestre", "anno", "operador", "valor"] + base_feature_cols
-    ia_df = base[final_cols].copy()
-
-    ia_df[base_feature_cols] = ia_df[base_feature_cols].fillna(0.0)
-
-    # ============================================================
-    # 9. Unificar Orange + Grupo MASMOVIL -> MASORANGE en TODO el histórico
-    # ============================================================
-
-    mask_om = ia_df["operador"].isin(["Orange", "Grupo MASMOVIL"])
-    df_om = ia_df[mask_om].copy()
-    df_rest = ia_df[~mask_om].copy()
-
-    if not df_om.empty:
-        # sumamos todas las columnas numéricas excepto 'anno' (clave)
-        num_cols = [
-            c
-            for c in df_om.select_dtypes(include=[np.number]).columns
-            if c != "anno"
-        ]
-
-        fused = (
-            df_om.groupby(["trimestre", "anno"], as_index=False)[num_cols]
-            .sum()
-        )
-        fused["operador"] = "MASORANGE"
-
-        ia_df = pd.concat([df_rest, fused], ignore_index=True)
-
-    # ============================================================
-    # 10. Features adicionales: log_valor, lags y ratios
-    # ============================================================
-
-    # Ordenar por operador y trimestre
-    ia_df = ia_df.sort_values(["operador", "trimestre"]).reset_index(drop=True)
-
-    # Logaritmo de los ingresos (para posibles modelos lineales)
-    ia_df["log_valor"] = np.log1p(ia_df["valor"])
-
-    # Lags del target por operador
-    ia_df["valor_lag1"] = (
-        ia_df.groupby("operador")["valor"]
-        .shift(1)
-    )
-    ia_df["valor_lag4"] = (
-        ia_df.groupby("operador")["valor"]
-        .shift(4)
-    )
-    ia_df[["valor_lag1", "valor_lag4"]] = ia_df[["valor_lag1", "valor_lag4"]].fillna(0.0)
-
-    # Ratios: ARPU móvil anual aproximado y tráfico por línea BAM
-    denom_cli = ia_df["an_merc_mov_clientes"].replace({0: np.nan})
-    ia_df["arpu_mov_anual"] = ia_df["an_gen_ingresos_minorista"] / denom_cli
-
-    denom_bam = ia_df["inf_bam_lineas"].replace({0: np.nan})
-    ia_df["trafico_datos_por_linea_bam"] = ia_df["inf_bam_trafico_datos"] / denom_bam
-
-    ia_df[["arpu_mov_anual", "trafico_datos_por_linea_bam"]] = ia_df[
-        ["arpu_mov_anual", "trafico_datos_por_linea_bam"]
-    ].fillna(0.0)
-
-    # Actualizamos lista de features incluyendo las nuevas
-    feature_cols = base_feature_cols + [
         "valor_lag1",
         "valor_lag4",
         "arpu_mov_anual",
         "trafico_datos_por_linea_bam",
     ]
 
+    final_cols = ["trimestre", "anno", "operador", "valor"] + feature_cols
+    ia_df = base[final_cols].copy()
+
+    # Imputación:
+    # 1) ffill + bfill por operador (evita saltos a 0 cuando falta un año)
+    ia_df = ia_df.sort_values(["operador", "anno", "num_trim"]).reset_index(drop=True)
+    ia_df[feature_cols] = (
+        ia_df.groupby("operador", group_keys=False)[feature_cols]
+        .apply(lambda g: g.ffill().bfill())
+    )
+
+    # 2) cualquier NaN residual (operadores sin info nunca) se rellena a 0
+    ia_df[feature_cols] = ia_df[feature_cols].fillna(0.0)
+
+    # Orden final por operador y trimestre
+    ia_df = ia_df.sort_values(["operador", "trimestre"]).reset_index(drop=True)
+
     # ============================================================
-    # 11. Guardar
+    # 10. Guardado
     # ============================================================
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     ia_df.to_csv(out_path, index=False)
 
-    print("Columnas de features:", ", ".join(feature_cols))
+    print(f"✅ Dataset de IA generado en: {out_path}")
+    print(f"   Filas: {len(ia_df)}, columnas: {len(ia_df.columns)}")
+    print("   Columnas:", ", ".join(ia_df.columns))
 
     return ia_df
 
 
 if __name__ == "__main__":
-    df = build_ia_trimestral_model_input()
-    print(f"✅ Dataset de IA generado en: {OUT_PATH}")
-    print(f"   Filas: {len(df)}, columnas: {len(df.columns)}")
-    print("   Columnas:", ", ".join(df.columns))
+    df_out = build_ia_trimestral_model_input()
