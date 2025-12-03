@@ -327,11 +327,12 @@ def get_snapshot_prefusion(df: pd.DataFrame, year_max: int = 2023) -> pd.DataFra
 def build_fused_for_scenarios(df: pd.DataFrame) -> pd.DataFrame:
     """
     Devuelve un dataset donde Orange + Grupo MASMOVIL se sustituyen por MASORANGE
-    en todo el histórico. Se agregan todas las columnas numéricas a nivel
-    (operador, anno, trimestre).
+    en todo el histórico. Se agregan columnas por operador, pero el tamaño total
+    de mercado (tri_ingresos_total_trimestre) se mantiene coherente por trimestre.
     """
     df = df.copy()
 
+    # 1) Fusionar Orange + Grupo MASMOVIL -> MASORANGE
     mask_om = df[GROUP_COL].isin(["Orange", "Grupo MASMOVIL"])
     sub_om = df[mask_om].copy()
     rest = df[~mask_om].copy()
@@ -340,6 +341,7 @@ def build_fused_for_scenarios(df: pd.DataFrame) -> pd.DataFrame:
         df2 = df.copy()
     else:
         num_cols = df.select_dtypes(include=[np.number]).columns.tolist()
+        # agregamos SOLO numéricos para la pareja fusionada
         fused = (
             sub_om.groupby([YEAR_COL, DATE_COL], as_index=False)[num_cols]
             .sum()
@@ -347,15 +349,27 @@ def build_fused_for_scenarios(df: pd.DataFrame) -> pd.DataFrame:
         fused[GROUP_COL] = "MASORANGE"
         df2 = pd.concat([rest, fused], ignore_index=True)
 
+    # 2) Evitar sumar tri_ingresos_total_trimestre al agrupar por operador
     num_cols2 = df2.select_dtypes(include=[np.number]).columns.tolist()
     grp_cols = [GROUP_COL, YEAR_COL, DATE_COL]
 
+    cols_sum = [c for c in num_cols2 if c != "tri_ingresos_total_trimestre"]
+
     df_agg = (
-        df2.groupby(grp_cols, as_index=False)[num_cols2]
+        df2.groupby(grp_cols, as_index=False)[cols_sum]
         .sum()
     )
 
+    # 3) Recuperar el tamaño total de mercado original por trimestre
+    tri_tot = (
+        df[[DATE_COL, "tri_ingresos_total_trimestre"]]
+        .drop_duplicates(subset=[DATE_COL])
+    )
+
+    df_agg = df_agg.merge(tri_tot, on=DATE_COL, how="left")
+
     return df_agg
+
 
 
 @st.cache_data
@@ -1731,16 +1745,23 @@ Permite analizar:
     )
 
 
-# ------------------ Escenario 4 ------------------ #
+# ------------------ Escenario 4 – Recorte de inversión ------------------ #
 with tabs[3]:
     st.subheader("Escenario 4 – Recorte de inversión / austeridad")
 
     st.markdown(
         """
-Recorte de inversión modelizado como el inverso del escenario 3:
+En este escenario se modeliza un **recorte de inversión** como el caso simétrico
+del Escenario 1:
 
-- menos inversión ⇒ menos líneas ⇒ menos portabilidades.
-- se aplica solo al **operador seleccionado**, el resto permanece igual.
+- Se aplica **solo al operador seleccionado**; el resto permanece constante.  
+- Usamos una regla de negocio sencilla sobre los ingresos trimestrales:  
+
+> **Recorte −X% ⇒ ingresos operador ≈ ingresos_base × (1 − 0,5·X)**  
+
+- La elasticidad 0,5 garantiza que:
+  - si recorta inversión, **sus ingresos llevan siempre la dirección correcta** (bajan);
+  - los ingresos nunca se vuelven negativos.
 """
     )
 
@@ -1755,33 +1776,33 @@ Recorte de inversión modelizado como el inverso del escenario 3:
         min_value=0,
         max_value=80,
         value=30,
-        step=10,
+        step=5,
         key="esc4_rec",
     ) / 100.0
 
-    # --- aplicar recorte sobre las features del operador seleccionado ---
-    scen_feat4 = snapshot_features.copy()
-    mask_rec = snapshot_base[GROUP_COL] == op_rec
-
-    if "an_merc_mov_lineas" in scen_feat4.columns:
-        scen_feat4.loc[mask_rec, "an_merc_mov_lineas"] *= (1.0 - 0.5 * delta_rec)
-    if "an_merc_bam_lineas" in scen_feat4.columns:
-        scen_feat4.loc[mask_rec, "an_merc_bam_lineas"] *= (1.0 - 0.5 * delta_rec)
-    if "men_portab_moviles" in scen_feat4.columns:
-        scen_feat4.loc[mask_rec, "men_portab_moviles"] *= (1.0 - 0.3 * delta_rec)
-
-    # --- predicción de ingresos en el escenario de recorte ---
-    scen_pred4 = global_model.predict(scen_feat4.values)
-    scen_total4 = scen_pred4.sum()
-    scen_shares4 = scen_pred4 / scen_total4
-    scen_hhi4 = compute_hhi(scen_shares4)
+    # Elasticidad simétrica a la del escenario 1
+    elasticidad_rec = 0.5
 
     scen_table4 = snapshot_base.copy()
-    scen_table4["ingresos_escenario"] = scen_pred4
-    scen_table4["cuota_escenario"] = scen_shares4
+    mask_rec = scen_table4[GROUP_COL] == op_rec
+
+    # Ingresos escenario: iguales a los base salvo para el operador que recorta
+    scen_table4["ingresos_escenario"] = scen_table4["ingresos_base"]
+    scen_table4.loc[mask_rec, "ingresos_escenario"] *= (1.0 - elasticidad_rec * delta_rec)
+
+    # Nunca ingresos negativos (por seguridad numérica, aunque aquí no debería ocurrir)
+    scen_table4["ingresos_escenario"] = scen_table4["ingresos_escenario"].clip(lower=0.0)
+
+    scen_total4 = scen_table4["ingresos_escenario"].sum()
+    scen_table4["cuota_escenario"] = scen_table4["ingresos_escenario"] / scen_total4
+
+    scen_shares4 = scen_table4["cuota_escenario"].values
+    scen_hhi4 = compute_hhi(scen_shares4)
+
     scen_table4 = scen_table4.sort_values("ingresos_escenario", ascending=False)
 
-    # --- tabla + métricas HHI ---
+    # --- Tabla y métricas ---
+
     col_left, col_right = st.columns([2, 1])
 
     with col_left:
@@ -1791,67 +1812,74 @@ Recorte de inversión modelizado como el inverso del escenario 3:
         st.metric("HHI base", f"{baseline_hhi:,.0f}")
         st.metric("HHI escenario", f"{scen_hhi4:,.0f}")
 
-    # ==========================
-    # GRÁFICA SOLO DEL OPERADOR SELECCIONADO (barras apiladas)
-    # ==========================
-
-    st.markdown("### Operador seleccionado: " + str(op_rec))
-
-    fila_op = scen_table4[scen_table4[GROUP_COL] == op_rec]
-    if not fila_op.empty:
-        fila_op = fila_op.iloc[0]
-
-        base_ing = float(fila_op["ingresos_base"])
-        esc_ing = float(fila_op["ingresos_escenario"])
-        delta_ing = esc_ing - base_ing  # efecto neto del recorte (suele ser negativo)
-
-        # DataFrame para barras apiladas
-        df_bar4 = pd.DataFrame(
-            {
-                "tipo": ["Base", "Escenario", "Escenario"],
-                "componente": ["Ingresos base", "Ingresos base", "Efecto recorte"],
-                "valor": [base_ing, base_ing, delta_ing],
-            }
+        base_q = float(
+            scen_table4.loc[scen_table4[GROUP_COL] == op_rec, "cuota_base"]
         )
-
-        chart4 = (
-            alt.Chart(df_bar4)
-            .mark_bar()
-            .encode(
-                x=alt.X("tipo:N", title=""),
-                y=alt.Y("valor:Q", title="Ingresos trimestrales"),
-                color=alt.Color("componente:N", title="Componente"),
-                tooltip=["tipo", "componente", "valor"],
-            )
-            .properties(height=320)
+        scen_q = float(
+            scen_table4.loc[scen_table4[GROUP_COL] == op_rec, "cuota_escenario"]
         )
+        st.metric(f"Δ cuota {op_rec}", f"{(scen_q - base_q) * 100:,.2f} p.p.")
 
-        st.altair_chart(chart4, use_container_width=True)
+    # --- Gráfico para el operador seleccionado (solo él, barras apiladas) ---
 
-        st.markdown(
-            """
-En la barra **Base** se muestran los ingresos actuales del operador.  
-En la barra **Escenario**, el segmento “Ingresos base” refleja el nivel original
-y el segmento “Efecto recorte” (normalmente negativo) muestra la pérdida asociada
-al recorte de inversión.
+    st.markdown("#### Operador seleccionado: " + str(op_rec))
+
+    op_row = scen_table4[scen_table4[GROUP_COL] == op_rec].iloc[0]
+
+    base_ing = float(op_row["ingresos_base"])
+    esc_ing = float(op_row["ingresos_escenario"])
+    delta_ing = esc_ing - base_ing
+
+    chart_df = pd.DataFrame(
+        {
+            "escenario": ["Base", "Escenario"],
+            "Base": [base_ing, base_ing],
+            "Variación por recorte": [0.0, delta_ing],
+        }
+    )
+
+    chart_df = chart_df.melt(
+        id_vars="escenario",
+        value_vars=["Base", "Variación por recorte"],
+        var_name="componente",
+        value_name="ingresos",
+    )
+
+    st.bar_chart(
+        chart_df.pivot(index="escenario", columns="componente", values="ingresos"),
+        height=320,
+    )
+
+    st.markdown(
+        """
+En el gráfico se ve cómo el recorte de inversión afecta a los **ingresos trimestrales
+del operador seleccionado**, manteniendo constante el resto del mercado.
 """
-        )
-    else:
-        st.info("No se ha encontrado la fila del operador seleccionado en la tabla del escenario.")
+    )
 
 
-# ------------------ Escenario 5 ------------------ #
+# ------------------ Escenario 5 – Fusión o joint-venture (cambio en HHI) ------------------ #
 with tabs[4]:
     st.subheader("Escenario 5 – Fusión o joint-venture (cambio en HHI)")
 
     st.markdown(
         """
-Permite simular **futuras fusiones adicionales** (por ejemplo MASORANGE+Vodafone),
-sumando ingresos y recalculando el HHI.
+En este escenario se simula una **fusión futura adicional** (por ejemplo, MASORANGE + Vodafone),
+partiendo de un mercado donde MASORANGE ya existe.
+
+La mecánica es:
+
+- Se eligen dos operadores A y B.  
+- Se crea un operador combinado **A+B** cuyos ingresos son:  
+
+> ingresos(A+B) = (ingresos_A + ingresos_B) × (1 + sinergias%)
+
+- Se recalculan las **cuotas de mercado** y el **HHI** con el nuevo mapa de operadores.
 """
     )
 
     ops_pref = sorted(snapshot_base[GROUP_COL].unique().tolist())
+
     op_f1 = st.selectbox("Operador A", ops_pref, key="esc5_op1")
     op_f2 = st.selectbox(
         "Operador B",
@@ -1868,23 +1896,26 @@ sumando ingresos y recalculando el HHI.
         key="esc5_sin",
     ) / 100.0
 
+    # --- Construcción mecánica del escenario de fusión sobre ingresos_base (reales) ---
+
     base_ops = snapshot_base[GROUP_COL].tolist()
     base_ing = snapshot_base["ingresos_base"].tolist()
 
-    scen_ing_dict = {}
+    scen_ing_dict: dict[str, float] = {}
     for op, y in zip(base_ops, base_ing):
         if op in (op_f1, op_f2):
             continue
-        scen_ing_dict[op] = y
+        scen_ing_dict[op] = float(y)
 
     y1 = float(snapshot_base.loc[snapshot_base[GROUP_COL] == op_f1, "ingresos_base"])
     y2 = float(snapshot_base.loc[snapshot_base[GROUP_COL] == op_f2, "ingresos_base"])
     y_fus = (y1 + y2) * (1.0 + delta_sin)
     op_fus = f"{op_f1}+{op_f2}"
+
     scen_ing_dict[op_fus] = y_fus
 
     scen_ops = list(scen_ing_dict.keys())
-    scen_ing = np.array(list(scen_ing_dict.values()))
+    scen_ing = np.array(list(scen_ing_dict.values()), dtype=float)
     scen_total5 = scen_ing.sum()
     scen_shares5 = scen_ing / scen_total5
     scen_hhi5 = compute_hhi(scen_shares5)
@@ -1895,19 +1926,170 @@ sumando ingresos y recalculando el HHI.
         "cuota_escenario": scen_shares5,
     }).sort_values("ingresos_escenario", ascending=False)
 
-    st.metric("HHI base (post-fusión actual)", f"{baseline_hhi:,.0f}")
-    st.metric("HHI tras nueva fusión", f"{scen_hhi5:,.0f}")
-    st.dataframe(scen_table5, use_container_width=True)
+    # --- Tabla + métricas HHI ---
 
-# ------------------ Escenario 6 ------------------ #
+    col_left, col_right = st.columns([2, 1])
+
+    with col_left:
+        st.dataframe(scen_table5, use_container_width=True)
+
+    with col_right:
+        st.metric("HHI base (mercado actual)", f"{baseline_hhi:,.0f}")
+        st.metric("HHI post-fusión", f"{scen_hhi5:,.0f}")
+
+    # =========================
+    # GRÁFICOS DE MERCADO – BURBUJAS (CUOTAS)
+    # =========================
+
+    st.markdown("### Cuotas de mercado: antes vs después de la fusión (gráficos de burbujas)")
+
+    # Cuotas base (antes de la fusión)
+    base_chart = snapshot_base[[GROUP_COL, "cuota_base"]].rename(
+        columns={GROUP_COL: "operador", "cuota_base": "cuota"}
+    )
+    base_chart["escenario"] = "Base"
+
+    # Cuotas escenario (después de la fusión)
+    scen_chart = scen_table5[["operador", "cuota_escenario"]].rename(
+        columns={"cuota_escenario": "cuota"}
+    )
+    scen_chart["escenario"] = "Post-fusión"
+
+    # Para escalar bien el tamaño de las burbujas
+    all_shares = pd.concat([base_chart, scen_chart], ignore_index=True)
+    max_share = all_shares["cuota"].max() if len(all_shares) > 0 else 0.0
+
+    # Gráfico de burbujas "antes"
+    bubble_base = (
+        alt.Chart(base_chart)
+        .mark_circle()
+        .encode(
+            x=alt.X("operador:N", title="Operador"),
+            y=alt.value(0),  # todos en una línea horizontal
+            size=alt.Size(
+                "cuota:Q",
+                title="Cuota de mercado",
+                scale=alt.Scale(domain=[0, max_share]),
+            ),
+            tooltip=[
+                alt.Tooltip("operador:N"),
+                alt.Tooltip("cuota:Q", format=".2%"),
+            ],
+            color=alt.value("#1f77b4"),
+        )
+        .properties(
+            title="Cuotas de mercado ANTES de la fusión",
+            height=180,
+        )
+    )
+
+    # Gráfico de burbujas "después"
+    bubble_scen = (
+        alt.Chart(scen_chart)
+        .mark_circle()
+        .encode(
+            x=alt.X("operador:N", title="Operador"),
+            y=alt.value(0),
+            size=alt.Size(
+                "cuota:Q",
+                title="Cuota de mercado",
+                scale=alt.Scale(domain=[0, max_share]),
+            ),
+            tooltip=[
+                alt.Tooltip("operador:N"),
+                alt.Tooltip("cuota:Q", format=".2%"),
+            ],
+            color=alt.value("#ff7f0e"),
+        )
+        .properties(
+            title="Cuotas de mercado DESPUÉS de la fusión",
+            height=180,
+        )
+    )
+
+    st.altair_chart(bubble_base, use_container_width=True)
+    st.altair_chart(bubble_scen, use_container_width=True)
+
+    st.markdown(
+        """
+En estos gráficos, el **tamaño de la burbuja** representa la **cuota de mercado**
+de cada operador. El segundo gráfico muestra el operador combinado **A+B** tras la fusión.
+"""
+    )
+
+    # =========================
+    # GRÁFICOS DE INGRESOS – DOS BARRAS SEPARADAS
+    # =========================
+
+    st.markdown("### Ingresos trimestrales por operador: antes vs post-fusión")
+
+    base_ing_chart = snapshot_base[[GROUP_COL, "ingresos_base"]].rename(
+        columns={GROUP_COL: "operador", "ingresos_base": "ingresos"}
+    )
+
+    scen_ing_chart = scen_table5[["operador", "ingresos_escenario"]].rename(
+        columns={"ingresos_escenario": "ingresos"}
+    )
+
+    chart_ing_base = (
+        alt.Chart(base_ing_chart)
+        .mark_bar()
+        .encode(
+            x=alt.X("operador:N", title="Operador"),
+            y=alt.Y("ingresos:Q", title="Ingresos trimestrales"),
+            tooltip=[
+                alt.Tooltip("operador:N"),
+                alt.Tooltip("ingresos:Q", format=",.0f"),
+            ],
+            color=alt.value("#1f77b4"),
+        )
+        .properties(
+            title="Ingresos ANTES de la fusión",
+            height=260,
+        )
+    )
+
+    chart_ing_scen = (
+        alt.Chart(scen_ing_chart)
+        .mark_bar()
+        .encode(
+            x=alt.X("operador:N", title="Operador"),
+            y=alt.Y("ingresos:Q", title="Ingresos trimestrales"),
+            tooltip=[
+                alt.Tooltip("operador:N"),
+                alt.Tooltip("ingresos:Q", format=",.0f"),
+            ],
+            color=alt.value("#ff7f0e"),
+        )
+        .properties(
+            title="Ingresos DESPUÉS de la fusión",
+            height=260,
+        )
+    )
+
+    st.altair_chart(chart_ing_base, use_container_width=True)
+    st.altair_chart(chart_ing_scen, use_container_width=True)
+
+    st.markdown(
+        """
+En estos dos gráficos de barras se comparan los **ingresos trimestrales**
+por operador antes y después de la fusión.  
+No se superponen: cada gráfico muestra un escenario distinto, lo que facilita
+la lectura para el TFM.
+"""
+    )
+
+# ------------------ Escenario 6 – Shock macro / regulación (tamaño de mercado) ------------------ #
 with tabs[5]:
     st.subheader("Escenario 6 – Shock macro / regulación (tamaño de mercado)")
 
     st.markdown(
         """
-Simula un **shock global** (crisis, regulación de precios, etc.) que cambia el
-tamaño total del mercado (`tri_ingresos_total_trimestre`). El modelo global reparte
-ese ajuste entre operadores.
+Simula un **shock global** (crisis económica, regulación de precios, etc.)
+que afecta al tamaño total del mercado (`tri_ingresos_total_trimestre`).
+
+El modelo global reparte ese shock entre operadores según sus características
+(histórico de portabilidades, base de clientes, etc.).
 """
     )
 
@@ -1915,25 +2097,123 @@ ese ajuste entre operadores.
         "Variación del tamaño total del mercado (%)",
         min_value=-40,
         max_value=40,
-        value=-10,
+        value=0,     # por defecto 0 %
         step=5,
         key="esc6_macro",
     ) / 100.0
 
-    scen_feat6 = snapshot_features.copy()
-    if "tri_ingresos_total_trimestre" in scen_feat6.columns:
-        scen_feat6["tri_ingresos_total_trimestre"] *= (1.0 + delta_macro)
+    # Tamaño de mercado base
+    total_base = snapshot_base["ingresos_base"].sum()
 
-    scen_pred6 = global_model.predict(scen_feat6.values)
-    scen_total6 = scen_pred6.sum()
-    scen_shares6 = scen_pred6 / scen_total6
-    scen_hhi6 = compute_hhi(scen_shares6)
+    # ====== Construimos escenario ======
+    if abs(delta_macro) < 1e-9:
+        # Caso shock 0 % → escenario = base EXACTAMENTE
+        scen_table6 = snapshot_base.copy()
+        scen_table6["ingresos_escenario"] = scen_table6["ingresos_base"]
+        scen_table6["cuota_escenario"] = scen_table6["cuota_base"]
+        scen_total6 = total_base
+        scen_hhi6 = baseline_hhi
+    else:
+        # Caso shock ≠ 0 → aplicamos el shock al tamaño de mercado y dejamos que el modelo reparta
+        scen_feat6 = snapshot_features.copy()
+        if "tri_ingresos_total_trimestre" in scen_feat6.columns:
+            scen_feat6["tri_ingresos_total_trimestre"] *= (1.0 + delta_macro)
 
-    scen_table6 = snapshot_base.copy()
-    scen_table6["ingresos_escenario"] = scen_pred6
-    scen_table6["cuota_escenario"] = scen_shares6
+        scen_pred6 = global_model.predict(scen_feat6.values)
+        scen_total6 = scen_pred6.sum()
+        scen_shares6 = scen_pred6 / scen_total6
+        scen_hhi6 = compute_hhi(scen_shares6)
+
+        scen_table6 = snapshot_base.copy()
+        scen_table6["ingresos_escenario"] = scen_pred6
+        scen_table6["cuota_escenario"] = scen_shares6
+
     scen_table6 = scen_table6.sort_values("ingresos_escenario", ascending=False)
 
-    st.dataframe(scen_table6, use_container_width=True)
-    st.metric("HHI base", f"{baseline_hhi:,.0f}")
-    st.metric("HHI escenario", f"{scen_hhi6:,.0f}")
+    col_left, col_right = st.columns([2, 1])
+
+    with col_left:
+        st.dataframe(scen_table6, use_container_width=True)
+
+    with col_right:
+        st.metric("HHI base", f"{baseline_hhi:,.0f}")
+        st.metric("HHI escenario", f"{scen_hhi6:,.0f}")
+        st.metric("Tamaño mercado base", f"{total_base:,.0f}")
+        st.metric("Tamaño mercado escenario", f"{scen_total6:,.0f}")
+
+    # =========================
+    # GRÁFICAS DEL SHOCK MACRO
+    # =========================
+
+    st.markdown("### Shock macro sobre el tamaño de mercado y el reparto por operador")
+
+    # 1) Tamaño total de mercado (antes vs después)
+    total_df = pd.DataFrame({
+        "escenario": ["Base", "Shock"],
+        "ingresos_total": [total_base, scen_total6],
+    })
+
+    chart_total = (
+        alt.Chart(total_df)
+        .mark_bar()
+        .encode(
+            x=alt.X("escenario:N", title="Escenario"),
+            y=alt.Y("ingresos_total:Q", title="Ingresos totales del mercado"),
+            color=alt.Color("escenario:N", legend=None),
+            tooltip=[
+                alt.Tooltip("escenario:N"),
+                alt.Tooltip("ingresos_total:Q", format=",.0f"),
+            ],
+        )
+        .properties(
+            title="Tamaño total del mercado antes vs después del shock",
+            height=220,
+        )
+    )
+    st.altair_chart(chart_total, use_container_width=True)
+
+    # 2) Diferencia de ingresos por operador (Escenario – Base)
+    delta_df = snapshot_base[[GROUP_COL, "ingresos_base"]].merge(
+        scen_table6[[GROUP_COL, "ingresos_escenario"]],
+        on=GROUP_COL,
+        how="inner",
+    )
+    delta_df["delta_ingresos"] = (
+        delta_df["ingresos_escenario"] - delta_df["ingresos_base"]
+    )
+
+    chart_delta = (
+        alt.Chart(delta_df)
+        .mark_bar()
+        .encode(
+            x=alt.X(GROUP_COL + ":N", title="Operador"),
+            y=alt.Y("delta_ingresos:Q", title="Δ Ingresos (escenario − base)"),
+            color=alt.condition(
+                "datum.delta_ingresos >= 0",
+                alt.value("#2ca02c"),  # verde si gana
+                alt.value("#d62728"),  # rojo si pierde
+            ),
+            tooltip=[
+                alt.Tooltip(GROUP_COL + ":N", title="Operador"),
+                alt.Tooltip("ingresos_base:Q", format=",.0f", title="Ingresos base"),
+                alt.Tooltip("ingresos_escenario:Q", format=",.0f", title="Ingresos escenario"),
+                alt.Tooltip("delta_ingresos:Q", format=",.0f", title="Δ ingresos"),
+            ],
+        )
+        .properties(
+            title="Impacto del shock macro por operador (solo diferencia)",
+            height=280,
+        )
+    )
+
+    st.altair_chart(chart_delta, use_container_width=True)
+
+    st.markdown(
+        """
+Con **shock = 0 %**, el escenario coincide exactamente con la foto base
+(mismos ingresos, cuotas y HHI).  
+Para shocks positivos o negativos, el primer gráfico enseña el cambio en el
+**tamaño total del mercado**, y el segundo muestra la **variación de ingresos**
+de cada operador respecto a la situación base.
+"""
+    )
