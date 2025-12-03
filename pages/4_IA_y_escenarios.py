@@ -5,9 +5,11 @@ from typing import List, Tuple
 import numpy as np
 import pandas as pd
 import streamlit as st
+import altair as alt
 
 from sklearn.ensemble import RandomForestRegressor, IsolationForest
 from sklearn.metrics import mean_absolute_error, mean_squared_error
+from sklearn.linear_model import LinearRegression
 from statsmodels.tsa.arima.model import ARIMA
 
 
@@ -22,8 +24,35 @@ YEAR_COL = "anno"
 GROUP_COL = "operador"
 TARGET_COL = "valor"
 
-# nº de retardos del target que usaremos como features
+# nº de retardos para el modelo autoregresivo simple
 N_LAGS = 4
+
+# Lista de features pensada para el dataset nuevo (modelo explicable)
+ML_BASE_FEATURES = [
+    "tri_ingresos_total_trimestre",
+    "tri_cuota_ingresos_trimestre",
+    "num_trim",
+    "inf_bam_lineas",
+    "inf_bam_trafico_datos",
+    "inf_estaciones_base",
+    "inf_nodos_radio",
+    "men_portab_moviles",
+    "men_baf_lineas_media",
+    "an_gen_ingresos_minorista",
+    "an_gen_empleados",
+    "an_gen_inversiones",
+    "an_merc_baf_lineas",
+    "an_merc_mov_lineas",
+    "an_merc_bam_lineas",
+    "an_merc_mov_clientes",
+    "prov_baf_lineas_total",
+    "prov_baf_pen_media",
+    "prov_baf_pen_std",
+    "valor_lag1",
+    "valor_lag4",
+    "arpu_mov_anual",
+    "trafico_datos_por_linea_bam",
+]
 
 
 # =====================================================
@@ -38,17 +67,19 @@ def load_ia_dataset(path: str) -> pd.DataFrame:
             f"Asegúrate de haber ejecutado 3_build_ia_trimestral_model_input.py."
         )
     df = pd.read_csv(path)
+
+    # por si acaso, garantizamos num_trim y lags básicos si no existen
+    if "num_trim" not in df.columns:
+        df["num_trim"] = df[DATE_COL].astype(str).str[-1].astype(int)
+
+    df = df.sort_values([GROUP_COL, YEAR_COL, "num_trim"]).reset_index(drop=True)
+
+    if "valor_lag1" not in df.columns:
+        df["valor_lag1"] = df.groupby(GROUP_COL)[TARGET_COL].shift(1).fillna(0.0)
+    if "valor_lag4" not in df.columns:
+        df["valor_lag4"] = df.groupby(GROUP_COL)[TARGET_COL].shift(4).fillna(0.0)
+
     return df
-
-
-def get_exog_columns(df: pd.DataFrame) -> List[str]:
-    """
-    Devuelve las columnas de features exógenas (todas las numéricas excepto target y claves).
-    """
-    key_cols = {DATE_COL, YEAR_COL, GROUP_COL, TARGET_COL}
-    num_cols = df.select_dtypes(include=[np.number]).columns.tolist()
-    exog_cols = [c for c in num_cols if c not in key_cols]
-    return exog_cols
 
 
 def compute_hhi(shares: np.ndarray) -> float:
@@ -60,139 +91,171 @@ def compute_hhi(shares: np.ndarray) -> float:
     return float(np.sum(shares_pct ** 2))
 
 
+def get_feature_cols(df: pd.DataFrame) -> List[str]:
+    """Devuelve solo las columnas de ML_BASE_FEATURES que existen en df."""
+    return [c for c in ML_BASE_FEATURES if c in df.columns]
+
+
 # =====================================================
-# FUNCIONES PARA MODELO ML POR OPERADOR (DINÁMICO)
+# FUNCIONES AUXILIARES PARA FORECAST ML AUTORREGRESIVO
 # =====================================================
 
-def prepare_series(df: pd.DataFrame, operador: str) -> Tuple[pd.DataFrame, List[str]]:
+def build_ar_lag_dataset(y: np.ndarray, n_lags: int = 4):
     """
-    Filtra por operador y ordena por trimestre.
-    Devuelve un DataFrame 'ts' con:
-      periodo, anno, operador, y (target) + exog_cols
-    y la lista de columnas exógenas.
+    Construye un dataset autoregresivo:
+    X[i] = [y_{t-1}, ..., y_{t-n_lags}], y[i] = y_t
     """
+    X, target = [], []
+    for t in range(n_lags, len(y)):
+        X.append(y[t - n_lags: t])
+        target.append(y[t])
+    return np.array(X), np.array(target)
+
+
+def iterative_forecast_ar(
+    history_y: np.ndarray,
+    model,
+    n_lags: int,
+    horizon: int,
+    shock_first: float | None = None,
+):
+    """
+    Forecast iterativo autoregresivo puro (solo lags del propio ingreso).
+    Si shock_first está definido → se aplica solo al primer trimestre futuro.
+    """
+    hist = list(history_y.astype(float))
+    preds = []
+
+    for step in range(horizon):
+        window = np.array(hist[-n_lags:]).reshape(1, -1)
+        y_pred = float(model.predict(window)[0])
+
+        if step == 0 and shock_first is not None:
+            y_pred *= (1.0 + shock_first)
+
+        preds.append(y_pred)
+        hist.append(y_pred)
+
+    return preds
+
+
+def generate_future_quarters(df_op: pd.DataFrame, horizon: int) -> list[str]:
+    """
+    Genera etiquetas de trimestre reales para el forecast:
+    2024T4 → 2025T1 → 2025T2 → ...
+    Se basa en la última etiqueta de trimestre del operador (columna DATE_COL).
+    """
+    last = df_op.iloc[-1]
+    tri_str = str(last[DATE_COL])  # ej. '2024T3'
+    anno = int(tri_str[:4])
+    num_trim = int(tri_str[-1])
+
+    labels: list[str] = []
+    for _ in range(horizon):
+        num_trim += 1
+        if num_trim > 4:
+            num_trim = 1
+            anno += 1
+        labels.append(f"{anno}T{num_trim}")
+    return labels
+
+
+# =====================================================
+# MODELO ML POR OPERADOR (EXPLICABLE + FORECAST)
+# =====================================================
+
+def prepare_df_operator(df: pd.DataFrame, operador: str) -> pd.DataFrame:
+    """Filtra y ordena el histórico de un operador."""
     sub = df[df[GROUP_COL] == operador].copy()
     if sub.empty:
         raise ValueError("No hay datos para el operador seleccionado.")
-
-    sub = sub.sort_values(DATE_COL)
-
-    exog_cols = get_exog_columns(sub)
-
-    cols = [DATE_COL, YEAR_COL, GROUP_COL, TARGET_COL] + exog_cols
-    ts = sub[cols].copy()
-    ts = ts.rename(columns={DATE_COL: "periodo", TARGET_COL: "y"})
-
-    # Índice temporal artificial
-    ts = ts.reset_index(drop=True)
-    ts["t"] = np.arange(len(ts))
-
-    return ts, exog_cols
+    sub = sub.sort_values([YEAR_COL, "num_trim"]).reset_index(drop=True)
+    return sub
 
 
-def build_ml_dataset(
-    ts: pd.DataFrame,
-    exog_cols: List[str],
-    n_lags: int
-) -> Tuple[pd.DataFrame, List[str], List[str]]:
-    """
-    Añade lags del target y devuelve:
-      - ts_ml: dataset listo para ML
-      - lag_cols: lista de columnas lag_*
-      - feature_cols: lag_cols + exog_cols
-    """
-    ts_ml = ts.copy()
-    for lag in range(1, n_lags + 1):
-        ts_ml[f"lag_{lag}"] = ts_ml["y"].shift(lag)
+def train_rf_for_operator(
+    df: pd.DataFrame,
+    operador: str,
+    feature_cols: List[str],
+) -> Tuple[RandomForestRegressor, pd.DataFrame]:
+    """Entrena un RandomForest para un operador y devuelve (modelo, df_op)."""
+    df_op = prepare_df_operator(df, operador)
 
-    # quitar filas con NA por los lags
-    ts_ml = ts_ml.dropna().reset_index(drop=True)
-
-    lag_cols = [f"lag_{lag}" for lag in range(1, n_lags + 1)]
-    feature_cols = lag_cols + exog_cols
-
-    return ts_ml, lag_cols, feature_cols
-
-
-def train_rf_model(ts_ml: pd.DataFrame, feature_cols: List[str]):
-    """
-    Entrena un RandomForestRegressor con las columnas indicadas.
-    Devuelve el modelo y predicciones in-sample.
-    """
-    X = ts_ml[feature_cols].values
-    y = ts_ml["y"].values
+    X = df_op[feature_cols].values
+    y = df_op[TARGET_COL].values
 
     model = RandomForestRegressor(
-        n_estimators=500,
+        n_estimators=400,
         random_state=42,
+        max_depth=None,
         min_samples_leaf=2,
+        n_jobs=-1,
     )
     model.fit(X, y)
 
-    y_hat = model.predict(X)
-
-    return model, y_hat
+    return model, df_op
 
 
-def rolling_forecast_rf(
-    model,
-    history_y: List[float],
-    exog_vector: np.ndarray,
-    lag_cols: List[str],
-    exog_cols: List[str],
+def next_quarter(anno: int, num_trim: int) -> Tuple[int, int]:
+    """Devuelve (año, num_trim) del trimestre siguiente."""
+    if num_trim < 4:
+        return anno, num_trim + 1
+    return anno + 1, 1
+
+
+def iterative_forecast(
+    model: RandomForestRegressor,
+    df_op: pd.DataFrame,
+    feature_cols: List[str],
     horizon: int,
+    shock_first: float | None = None,
 ):
     """
-    Forecast iterativo con RandomForest.
-    - history_y: lista con el histórico del target
-    - exog_vector: valores exógenos que usaremos para todos los pasos futuros
+    Forecast iterativo por operador usando RF y lags valor_lag1 / valor_lag4.
+
+    - horizon: nº de trimestres a futuro.
+    - shock_first: si no es None, aplica multiplicador (1 + shock_first)
+      SOLO al primer paso.
     """
-    preds = []
-    hist = history_y.copy()
-    n_lags = len(lag_cols)
+    df_op = df_op.sort_values([YEAR_COL, "num_trim"]).reset_index(drop=True)
+    history_vals = df_op[TARGET_COL].tolist()
 
-    for _ in range(horizon):
-        if len(hist) < n_lags:
-            break
-        lags = np.array(hist[-n_lags:])
-        x = np.concatenate([lags, exog_vector]).reshape(1, -1)
-        y_hat = model.predict(x)[0]
-        preds.append(y_hat)
-        hist.append(y_hat)
+    last_row = df_op.iloc[-1].copy()
+    anno = int(last_row[YEAR_COL])
+    num_trim = int(last_row["num_trim"])
 
-    return preds
+    future_tris = []
+    future_vals = []
 
+    for step in range(horizon):
+        anno, num_trim = next_quarter(anno, num_trim)
+        trimestre_str = f"{anno}T{num_trim}"
 
-def rolling_forecast_rf_scenario(
-    model,
-    history_y: List[float],
-    exog_vector: np.ndarray,
-    lag_cols: List[str],
-    exog_cols: List[str],
-    horizon: int,
-    shock_pct: float,
-):
-    """
-    Igual que rolling_forecast_rf, pero aplicando un shock al último valor
-    histórico (escenario de negocio muy simple).
-    """
-    preds = []
-    hist = history_y.copy()
-    n_lags = len(lag_cols)
+        new_row = last_row.copy()
+        new_row[YEAR_COL] = anno
+        new_row["num_trim"] = num_trim
+        new_row[DATE_COL] = trimestre_str
 
-    if len(hist) >= 1:
-        hist[-1] = hist[-1] * (1 + shock_pct)
+        # actualizamos lags en función del histórico + predicciones
+        new_row["valor_lag1"] = history_vals[-1]
+        if len(history_vals) >= 4:
+            new_row["valor_lag4"] = history_vals[-4]
+        else:
+            new_row["valor_lag4"] = history_vals[0]
 
-    for _ in range(horizon):
-        if len(hist) < n_lags:
-            break
-        lags = np.array(hist[-n_lags:])
-        x = np.concatenate([lags, exog_vector]).reshape(1, -1)
-        y_hat = model.predict(x)[0]
-        preds.append(y_hat)
-        hist.append(y_hat)
+        X_new = new_row[feature_cols].values.reshape(1, -1)
+        y_pred = float(model.predict(X_new)[0])
 
-    return preds
+        if step == 0 and shock_first is not None:
+            y_pred = y_pred * (1.0 + shock_first)
+
+        history_vals.append(y_pred)
+        future_tris.append(trimestre_str)
+        future_vals.append(y_pred)
+
+        last_row = new_row
+
+    return future_tris, future_vals
 
 
 def train_arima(ts: pd.Series, order=(1, 1, 1)):
@@ -212,36 +275,90 @@ def detect_anomalies(residuals: np.ndarray, contamination: float = 0.15):
 
 
 # =====================================================
-# MODELO GLOBAL PARA SIMULADOR (SIN LAGS)
+# MODELO GLOBAL PARA SIMULADOR (MUNDO POST-FUSIÓN)
 # =====================================================
 
+def get_snapshot_prefusion(df: pd.DataFrame, year_max: int = 2023) -> pd.DataFrame:
+    """
+    Foto de mercado PRE-FUSIÓN para el simulador global:
+      - solo años <= year_max
+      - excluye MASORANGE
+      - toma la última observación de cada operador en ese periodo
+    """
+    df_pref = df.copy()
+    df_pref = df_pref[df_pref[YEAR_COL] <= year_max]
+    df_pref = df_pref[df_pref[GROUP_COL] != "MASORANGE"]
+    df_pref = df_pref.sort_values([GROUP_COL, YEAR_COL, DATE_COL])
+    snap = df_pref.groupby(GROUP_COL, as_index=False).tail(1)
+    return snap.reset_index(drop=True)
+
+
 @st.cache_data
-def train_global_rf(df: pd.DataFrame):
+def build_fused_for_scenarios(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Entrena un modelo RandomForest global (todos los operadores, todos los trimestres)
-    usando SOLO features exógenas (sin lags) para escenarios estáticos.
+    Devuelve un dataset donde Orange + Grupo MASMOVIL se sustituyen por MASORANGE
+    en todo el histórico. Se agregan todas las columnas numéricas a nivel
+    (operador, anno, trimestre).
     """
-    exog_cols_glob = get_exog_columns(df)
-    X = df[exog_cols_glob].values
-    y = df[TARGET_COL].values
+    df = df.copy()
 
-    model = RandomForestRegressor(
-        n_estimators=600,
-        random_state=42,
-        min_samples_leaf=3,
+    mask_om = df[GROUP_COL].isin(["Orange", "Grupo MASMOVIL"])
+    sub_om = df[mask_om].copy()
+    rest = df[~mask_om].copy()
+
+    if sub_om.empty:
+        df2 = df.copy()
+    else:
+        num_cols = df.select_dtypes(include=[np.number]).columns.tolist()
+        fused = (
+            sub_om.groupby([YEAR_COL, DATE_COL], as_index=False)[num_cols]
+            .sum()
+        )
+        fused[GROUP_COL] = "MASORANGE"
+        df2 = pd.concat([rest, fused], ignore_index=True)
+
+    num_cols2 = df2.select_dtypes(include=[np.number]).columns.tolist()
+    grp_cols = [GROUP_COL, YEAR_COL, DATE_COL]
+
+    df_agg = (
+        df2.groupby(grp_cols, as_index=False)[num_cols2]
+        .sum()
     )
+
+    return df_agg
+
+
+@st.cache_data
+def train_global_scenario_model(df_fused: pd.DataFrame):
+    """
+    Modelo global sencillo para el simulador (regresión lineal).
+    Solo usa unas pocas variables de escenario con buena señal.
+    """
+    scenario_features = [
+        "tri_ingresos_total_trimestre",
+        "men_portab_moviles",
+        "an_merc_mov_lineas",
+        "an_merc_bam_lineas",
+    ]
+    feat_cols = [c for c in scenario_features if c in df_fused.columns]
+    if not feat_cols:
+        raise ValueError("No se han encontrado las columnas de escenario esperadas.")
+
+    df_train = df_fused.dropna(subset=feat_cols + [TARGET_COL]).copy()
+    X = df_train[feat_cols].values
+    y = df_train[TARGET_COL].values
+
+    model = LinearRegression()
     model.fit(X, y)
-    return model, exog_cols_glob
+
+    return model, feat_cols
 
 
-def get_latest_by_operator(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Obtiene la última observación disponible por operador.
-    Esto sirve como "base" para escenarios (punto de partida).
-    """
-    df_sorted = df.sort_values([GROUP_COL, YEAR_COL, DATE_COL])
-    latest = df_sorted.groupby(GROUP_COL, as_index=False).tail(1)
-    return latest.reset_index(drop=True)
+def get_latest_snapshot_postfusion(df_fused: pd.DataFrame) -> pd.DataFrame:
+    """Última observación por operador en el dataset fusionado (mundo post-fusión)."""
+    df_sorted = df_fused.sort_values([GROUP_COL, YEAR_COL, DATE_COL])
+    snap = df_sorted.groupby(GROUP_COL, as_index=False).tail(1)
+    return snap.reset_index(drop=True)
 
 
 # =====================================================
@@ -255,9 +372,10 @@ st.markdown(
 Esta página utiliza el dataset integrado **ia_trimestral_model.csv** para:
 
 1. Entrenar un **modelo ML explicable (RandomForest, scikit-learn)** por operador.  
-2. Generar **escenarios de negocio** modificando variables clave (inversión, portabilidades, infra…).  
+2. Generar un **forecast temporal autoregresivo** con escenario simple.  
 3. Producir un **forecast clásico ARIMA** con bandas de confianza.  
-4. Detectar **anomalías** en la evolución histórica (IsolationForest).
+4. Detectar **anomalías** en la evolución histórica (IsolationForest).  
+5. Simular **escenarios de negocio** en un mercado post-fusión (MASORANGE).
 """
 )
 
@@ -269,6 +387,8 @@ except Exception as e:
     st.error(f"Error cargando el dataset de IA: {e}")
     st.stop()
 
+feature_cols_global = get_feature_cols(df)
+
 # ------------------ sidebar -------------------------
 
 st.sidebar.header("Configuración IA (modelo temporal por operador)")
@@ -278,16 +398,16 @@ operador_sel = st.sidebar.selectbox("Operador", operadores)
 
 horizon = st.sidebar.slider(
     "Horizonte de predicción (trimestres)",
-    min_value=1,
-    max_value=8,
-    value=4,
+    min_value=4,
+    max_value=12,
+    value=8,
 )
 
 shock_pct = st.sidebar.slider(
-    "Shock sobre el último valor histórico (%)",
+    "Shock sobre el primer trimestre del forecast (%)",
     min_value=-30,
-    max_value=30,
-    value=0,
+    max_value=50,
+    value=10,
     step=5,
 ) / 100.0
 
@@ -307,14 +427,14 @@ q = st.sidebar.number_input("q", min_value=0, max_value=5, value=1, step=1)
 # ------------------ preparar serie por operador ------------------
 
 try:
-    ts, exog_cols = prepare_series(df, operador_sel)
+    df_op = prepare_df_operator(df, operador_sel)
 except Exception as e:
     st.error(f"Error preparando la serie temporal: {e}")
     st.stop()
 
-if len(ts) < N_LAGS + 4:
+if len(df_op) < 8:
     st.warning(
-        f"La serie tiene pocas observaciones ({len(ts)}). "
+        f"La serie tiene pocas observaciones ({len(df_op)}). "
         "Las predicciones pueden no ser muy estables."
     )
 
@@ -324,17 +444,19 @@ col1, col2 = st.columns([2, 1])
 
 with col1:
     st.dataframe(
-        ts[["periodo", "anno", "y"]].rename(columns={"y": "ingresos_trimestrales"}),
+        df_op[[DATE_COL, YEAR_COL, TARGET_COL]].rename(
+            columns={DATE_COL: "periodo", TARGET_COL: "ingresos_trimestrales"}
+        ),
         use_container_width=True,
     )
 
 with col2:
-    st.metric("Observaciones", len(ts))
-    st.metric("Mínimo ingresos", f"{ts['y'].min():,.0f}")
-    st.metric("Máximo ingresos", f"{ts['y'].max():,.0f}")
+    st.metric("Observaciones", len(df_op))
+    st.metric("Mínimo ingresos", f"{df_op[TARGET_COL].min():,.0f}")
+    st.metric("Máximo ingresos", f"{df_op[TARGET_COL].max():,.0f}")
 
 st.line_chart(
-    ts.set_index("periodo")["y"],
+    df_op.set_index(DATE_COL)[TARGET_COL],
     height=260,
 )
 
@@ -345,18 +467,14 @@ st.line_chart(
 st.markdown("---")
 st.header("1. Modelo ML explicable (RandomForest por operador)")
 
-ts_ml, lag_cols, feature_cols = build_ml_dataset(ts, exog_cols, N_LAGS)
+rf_model, df_op = train_rf_for_operator(df, operador_sel, feature_cols_global)
 
-if ts_ml.empty:
-    st.error("No hay suficientes datos para construir lags para el modelo ML.")
-    st.stop()
+X_op = df_op[feature_cols_global].values
+y_op = df_op[TARGET_COL].values
+y_hat_in = rf_model.predict(X_op)
 
-rf_model, y_hat_in = train_rf_model(ts_ml, feature_cols)
-
-y_true = ts_ml["y"].values
-
-mae = mean_absolute_error(y_true, y_hat_in)
-rmse = math.sqrt(mean_squared_error(y_true, y_hat_in))
+mae = mean_absolute_error(y_op, y_hat_in)
+rmse = math.sqrt(mean_squared_error(y_op, y_hat_in))
 
 colm1, colm2 = st.columns(2)
 with colm1:
@@ -364,18 +482,20 @@ with colm1:
 with colm2:
     st.metric("RMSE (in-sample)", f"{rmse:,.2f}")
 
-plot_df = ts_ml[["periodo"]].copy()
-plot_df["Real"] = y_true
-plot_df["Predicho_ML"] = y_hat_in
+plot_df = pd.DataFrame({
+    "periodo": df_op[DATE_COL].astype(str),
+    "Real": y_op,
+    "Predicho_ML": y_hat_in,
+}).set_index("periodo")
 
 st.line_chart(
-    plot_df.set_index("periodo")[["Real", "Predicho_ML"]],
+    plot_df[["Real", "Predicho_ML"]],
     height=320,
 )
 
 # Importancias de variables
 importances = rf_model.feature_importances_
-imp_df = pd.DataFrame({"feature": feature_cols, "importance": importances})
+imp_df = pd.DataFrame({"feature": feature_cols_global, "importance": importances})
 imp_df = imp_df.sort_values("importance", ascending=False)
 
 st.subheader("Importancia de variables (IA explicable)")
@@ -385,55 +505,92 @@ st.bar_chart(
 )
 
 # =====================================================
-# 2. FORECAST Y ESCENARIOS TEMPORALES CON ML
+# 2. FORECAST TEMPORAL Y ESCENARIO SIMPLE (modelo ML autoregresivo)
 # =====================================================
 
 st.markdown("---")
 st.header("2. Forecast temporal y escenario simple (modelo ML por operador)")
 
-history_y = ts["y"].tolist()
-# Usamos los exógenos del último trimestre como referencia futura
-last_exog_vector = ts.iloc[-1][exog_cols].values.astype(float)
-
-baseline_preds = rolling_forecast_rf(
-    rf_model,
-    history_y,
-    last_exog_vector,
-    lag_cols,
-    exog_cols,
-    horizon=horizon,
-)
-
-scenario_preds = rolling_forecast_rf_scenario(
-    rf_model,
-    history_y,
-    last_exog_vector,
-    lag_cols,
-    exog_cols,
-    horizon=horizon,
-    shock_pct=shock_pct,
-)
-
-future_labels = [f"Futuro_{i+1}" for i in range(len(baseline_preds))]
-
-fc_df = pd.DataFrame({
-    "periodo": list(ts["periodo"]) + future_labels,
-    "Histórico": list(ts["y"]) + [np.nan] * len(baseline_preds),
-    "Baseline_ML": [np.nan] * len(ts) + baseline_preds,
-    "Escenario_ML": [np.nan] * len(ts) + scenario_preds,
-})
-
-st.line_chart(
-    fc_df.set_index("periodo")[["Histórico", "Baseline_ML", "Escenario_ML"]],
-    height=340,
-)
-
 st.markdown(
     """
-- **Baseline ML**: predicción iterativa utilizando el modelo RandomForest y los exógenos del último trimestre.  
-- **Escenario ML**: mismo modelo, pero aplicando un *shock* multiplicativo al último dato histórico de ingresos.
+En este apartado se construye un **forecast autoregresivo ML** por operador:
+
+- El modelo solo usa como entrada los **últimos 4 trimestres de ingresos** (lags).  
+- No se usan exógenos futuros (BAM, portabilidades, etc.), para evitar supuestos
+  fuertes que no podemos justificar.  
+- Se muestran dos curvas:
+  - **Baseline_ML**: forecast “inercial” del modelo.  
+  - **Escenario_ML**: mismo forecast, pero aplicando un **shock** multiplicativo
+    al primer trimestre futuro (el del slider lateral).
 """
 )
+
+# Serie histórica de ingresos del operador
+y_hist = df_op[TARGET_COL].values.astype(float)
+
+# Dataset autoregresivo: X = [y_{t-1}..y_{t-4}], y = y_t
+X_ar, y_ar = build_ar_lag_dataset(y_hist, n_lags=N_LAGS)
+
+if len(y_ar) < 5:
+    st.warning("Hay muy pocos datos para un forecast autoregresivo estable.")
+else:
+    # Modelo ML autoregresivo (RandomForest pequeño)
+    rf_ar = RandomForestRegressor(
+        n_estimators=300,
+        random_state=42,
+        min_samples_leaf=2,
+        n_jobs=-1,
+    )
+    rf_ar.fit(X_ar, y_ar)
+
+    # Forecast baseline (sin shock) y escenario (con shock en el primer paso)
+    baseline_preds = iterative_forecast_ar(
+        history_y=y_hist,
+        model=rf_ar,
+        n_lags=N_LAGS,
+        horizon=horizon,
+        shock_first=None,
+    )
+    scenario_preds = iterative_forecast_ar(
+        history_y=y_hist,
+        model=rf_ar,
+        n_lags=N_LAGS,
+        horizon=horizon,
+        shock_first=shock_pct,
+    )
+
+    future_labels = generate_future_quarters(df_op, len(baseline_preds))
+
+    # DF para gráfico: histórico + futuro
+    fc_df = pd.DataFrame({
+        "periodo": list(df_op[DATE_COL].astype(str)) + future_labels,
+        "Historico": list(y_hist) + [np.nan] * len(baseline_preds),
+        "Baseline_ML": [np.nan] * len(y_hist) + baseline_preds,
+        "Escenario_ML": [np.nan] * len(y_hist) + scenario_preds,
+    })
+
+    st.line_chart(
+        fc_df.set_index("periodo")[["Historico", "Baseline_ML", "Escenario_ML"]],
+        height=340,
+    )
+
+    st.markdown("### Detalle numérico del forecast ML (autoregresivo)")
+    st.dataframe(
+        pd.DataFrame({
+            "trimestre": future_labels,
+            "Baseline_ML": baseline_preds,
+            "Escenario_ML": scenario_preds,
+        }),
+        use_container_width=True,
+    )
+
+    st.markdown(
+        """
+- **Baseline_ML**: forecast autoregresivo puro (RandomForest sobre lags 1–4).  
+- **Escenario_ML**: mismo forecast, pero aplicando un *shock* multiplicativo al
+  **primer trimestre futuro**, que se propaga por los lags.
+"""
+    )
 
 # =====================================================
 # 3. FORECAST CLÁSICO ARIMA
@@ -443,7 +600,7 @@ st.markdown("---")
 st.header("3. Forecast clásico con ARIMA (con bandas de confianza)")
 
 try:
-    arima_results = train_arima(ts["y"], order=(p, d, q))
+    arima_results = train_arima(df_op[TARGET_COL], order=(p, d, q))
 except Exception as e:
     st.error(f"No se ha podido ajustar ARIMA({p},{d},{q}): {e}")
     arima_results = None
@@ -456,11 +613,11 @@ if arima_results is not None:
     future_labels_arima = [f"Fut_ARIMA_{i+1}" for i in range(len(mean_fc))]
 
     arima_df = pd.DataFrame({
-        "periodo": list(ts["periodo"]) + future_labels_arima,
-        "Histórico": list(ts["y"]) + [np.nan] * len(mean_fc),
-        "Forecast_ARIMA": [np.nan] * len(ts) + mean_fc.tolist(),
-        "Lower_95": [np.nan] * len(ts) + conf_int.iloc[:, 0].tolist(),
-        "Upper_95": [np.nan] * len(ts) + conf_int.iloc[:, 1].tolist(),
+        "periodo": list(df_op[DATE_COL].astype(str)) + future_labels_arima,
+        "Histórico": list(df_op[TARGET_COL]) + [np.nan] * len(mean_fc),
+        "Forecast_ARIMA": [np.nan] * len(df_op) + mean_fc.tolist(),
+        "Lower_95": [np.nan] * len(df_op) + conf_int.iloc[:, 0].tolist(),
+        "Upper_95": [np.nan] * len(df_op) + conf_int.iloc[:, 1].tolist(),
     })
 
     st.line_chart(
@@ -481,14 +638,16 @@ if arima_results is not None:
 st.markdown("---")
 st.header("4. Detección de anomalías (IsolationForest sobre residuales ML)")
 
-resid = y_true - y_hat_in
+resid = y_op - y_hat_in
 labels = detect_anomalies(resid, contamination=contamination)
 anom_flags = np.where(labels == -1, "Anómalo", "Normal")
 
-anom_df = ts_ml[["periodo"]].copy()
-anom_df["y"] = y_true
-anom_df["residual"] = resid
-anom_df["estado"] = anom_flags
+anom_df = pd.DataFrame({
+    "periodo": df_op[DATE_COL].astype(str),
+    "y": y_op,
+    "residual": resid,
+    "estado": anom_flags,
+})
 
 ts_anom_plot = anom_df.copy()
 ts_anom_plot["y_anomalo"] = np.where(
@@ -516,41 +675,37 @@ st.dataframe(
 )
 
 # =====================================================
-# 5. SIMULADOR DE ESCENARIOS DE NEGOCIO (MODELO GLOBAL)
+# 5. SIMULADOR DE ESCENARIOS DE NEGOCIO (MUNDO POST-FUSIÓN)
 # =====================================================
 
 st.markdown("---")
-st.header("5. Simulador de escenarios de negocio (RandomForest global)")
+st.header("5. Simulador de escenarios de negocio (mundo post-fusión MASORANGE)")
 
 st.markdown(
     """
-En esta sección se utiliza un **RandomForest global** (entrenado con todos los operadores
-y todos los trimestres, solo con features exógenas) para simular distintos escenarios
-de decisión de negocio:
+En esta sección se construye un **mercado post-fusión**, donde **Orange y Grupo MASMOVIL
+se agregan como MASORANGE en todo el histórico**. Así, todos los escenarios se interpretan
+ya en un contexto futuro con la fusión completada.
 
-- cambios en inversión,
-- campañas agresivas de portabilidades,
-- expansión de operadores low-cost,
-- recortes de inversión,
-- fusiones y shocks macro en el tamaño del mercado.
-
-En todos los casos se parte de las **últimas observaciones disponibles** por operador.
+El motor del simulador es un **modelo global sencillo (regresión lineal)** con pocas
+palancas claras: tamaño de mercado, portabilidades y base de clientes móvil/BAM.
 """
 )
 
-# Entrenamos el modelo global y preparamos la base de escenarios
-rf_global, exog_cols_global = train_global_rf(df)
-latest = get_latest_by_operator(df)
+df_fused = build_fused_for_scenarios(df)
+global_model, feat_cols_global = train_global_scenario_model(df_fused)
+snapshot = get_latest_snapshot_postfusion(df_fused)
 
-# predicción base (situación actual)
-baseline_pred = rf_global.predict(latest[exog_cols_global].values)
+snapshot_features = snapshot[feat_cols_global].copy()
+
+baseline_pred = global_model.predict(snapshot_features.values)
 baseline_total = baseline_pred.sum()
 baseline_shares = baseline_pred / baseline_total
 baseline_hhi = compute_hhi(baseline_shares)
 
-latest_base = latest[[GROUP_COL, YEAR_COL, DATE_COL]].copy()
-latest_base["ingresos_base"] = baseline_pred
-latest_base["cuota_base"] = baseline_shares
+snapshot_base = snapshot[[GROUP_COL, YEAR_COL, DATE_COL]].copy()
+snapshot_base["ingresos_base"] = baseline_pred
+snapshot_base["cuota_base"] = baseline_shares
 
 tabs = st.tabs([
     "Plan de inversión agresivo",
@@ -561,336 +716,255 @@ tabs = st.tabs([
     "Shock macro mercado",
 ])
 
-# ------------------ Escenario 1: Plan de inversión agresivo ------------------ #
+# ------------------ Escenario 1 ------------------ #
 with tabs[0]:
     st.subheader("Escenario 1 – Plan de inversión agresivo")
 
     st.markdown(
         """
-Simula el impacto de **aumentar la inversión** de un operador en sus ingresos
-y en su cuota de mercado, manteniendo al resto constantes.
-Se modifica la variable `an_gen_inversiones` (y opcionalmente infra básica).
+Se modeliza la inversión con una **regla de negocio**:
+
+> Inversión +X% ⇒ ingresos operador ≈ ingresos_base × (1 + 0,5·X)
+
+- elasticidad positiva (0,5),
+- el resto de operadores permanece constante.
 """
     )
 
     op_inv = st.selectbox(
         "Operador que incrementa la inversión",
-        operadores,
+        sorted(snapshot_base[GROUP_COL].unique().tolist()),
         key="esc1_operador",
     )
+
     delta_inv = st.slider(
-        "Incremento de inversión anual (%)",
-        min_value=-50,
+        "Incremento de inversión (%)",
+        min_value=0,
         max_value=100,
         value=20,
         step=5,
         key="esc1_inv",
     ) / 100.0
-    delta_infra = st.slider(
-        "Incremento en infraestructuras básicas (%)",
-        min_value=0,
-        max_value=50,
-        value=10,
-        step=5,
-        key="esc1_infra",
-    ) / 100.0
 
-    scen_df = latest.copy()
+    elasticidad_ing = 0.5
 
-    mask_op = scen_df[GROUP_COL] == op_inv
-    if "an_gen_inversiones" in scen_df.columns:
-        scen_df.loc[mask_op, "an_gen_inversiones"] *= (1.0 + delta_inv)
-    # subimos estaciones base y líneas BAM como proxy de despliegue
-    if "inf_estaciones_base" in scen_df.columns:
-        scen_df.loc[mask_op, "inf_estaciones_base"] *= (1.0 + delta_infra)
-    if "inf_bam_lineas" in scen_df.columns:
-        scen_df.loc[mask_op, "inf_bam_lineas"] *= (1.0 + delta_infra)
+    scen_table = snapshot_base.copy()
+    scen_table["ingresos_escenario"] = scen_table["ingresos_base"]
+    scen_table.loc[scen_table[GROUP_COL] == op_inv, "ingresos_escenario"] *= (
+        1 + elasticidad_ing * delta_inv
+    )
 
-    scen_pred = rf_global.predict(scen_df[exog_cols_global].values)
-    scen_total = scen_pred.sum()
-    scen_shares = scen_pred / scen_total
+    scen_total = scen_table["ingresos_escenario"].sum()
+    scen_table["cuota_escenario"] = scen_table["ingresos_escenario"] / scen_total
+    scen_shares = scen_table["cuota_escenario"].values
     scen_hhi = compute_hhi(scen_shares)
 
-    scen_table = scen_df[[GROUP_COL, YEAR_COL, DATE_COL]].copy()
-    scen_table["ingresos_base"] = baseline_pred
-    scen_table["cuota_base"] = baseline_shares
-    scen_table["ingresos_escenario"] = scen_pred
-    scen_table["cuota_escenario"] = scen_shares
     scen_table = scen_table.sort_values("ingresos_escenario", ascending=False)
 
     col_left, col_right = st.columns([2, 1])
-
     with col_left:
-        st.dataframe(
-            scen_table,
-            use_container_width=True,
-        )
-
+        st.dataframe(scen_table, use_container_width=True)
     with col_right:
         st.metric("HHI base", f"{baseline_hhi:,.0f}")
         st.metric("HHI escenario", f"{scen_hhi:,.0f}")
-        st.metric(
-            f"Δ cuota {op_inv}",
-            f"{float(scen_table.loc[scen_table[GROUP_COL] == op_inv, 'cuota_escenario']) * 100 - float(scen_table.loc[scen_table[GROUP_COL] == op_inv, 'cuota_base']) * 100:,.2f} p.p."
-            if op_inv in scen_table[GROUP_COL].values
-            else "N/A",
-        )
+        base_q = float(scen_table.loc[scen_table[GROUP_COL] == op_inv, "cuota_base"])
+        scen_q = float(scen_table.loc[scen_table[GROUP_COL] == op_inv, "cuota_escenario"])
+        st.metric(f"Δ cuota {op_inv}", f"{(scen_q - base_q)*100:,.2f} p.p.")
 
-    st.markdown(
-        """
-**Lectura para el TFM**: este escenario permite analizar cómo cambios en la inversión
-se traducen, según el modelo, en aumentos o reducciones de cuota de mercado y en la
-concentración del mercado (HHI).
-"""
-    )
-
-# ------------------ Escenario 2: Guerra de portabilidades ------------------ #
+# ------------------ Escenario 2 ------------------ #
 with tabs[1]:
     st.subheader("Escenario 2 – Guerra de portabilidades")
 
     st.markdown(
         """
 Simula una **campaña agresiva de captación**:
-un operador aumenta sus portabilidades (`men_portab_moviles`) y, opcionalmente,
-se detrae parte de esa captación de un competidor concreto.
+
+- un operador aumenta sus portabilidades,
+- opcionalmente otro sufre una reducción.
 """
     )
 
     op_pro = st.selectbox(
-        "Operador que lanza la campaña",
-        operadores,
+        "Operador protagonista",
+        sorted(snapshot_base[GROUP_COL].unique().tolist()),
         key="esc2_op_pro",
     )
     op_vic = st.selectbox(
-        "Operador que pierde portabilidades (opcional)",
-        ["(Ninguno)"] + operadores,
+        "Operador víctima (opcional)",
+        ["(Ninguno)"] + sorted(snapshot_base[GROUP_COL].unique().tolist()),
         key="esc2_op_vic",
     )
-    delta_porta_pro = st.slider(
-        "Incremento portabilidades operador protagonista (%)",
+
+    delta_pro = st.slider(
+        "Incremento portabilidades protagonista (%)",
         min_value=0,
-        max_value=100,
-        value=30,
+        max_value=120,
+        value=40,
         step=5,
         key="esc2_delta_pro",
     ) / 100.0
-    delta_porta_vic = st.slider(
-        "Reducción portabilidades operador víctima (%)",
+    delta_vic = st.slider(
+        "Reducción portabilidades víctima (%)",
         min_value=0,
-        max_value=50,
-        value=10,
+        max_value=60,
+        value=20,
         step=5,
         key="esc2_delta_vic",
     ) / 100.0
 
-    scen_df2 = latest.copy()
-
-    if "men_portab_moviles" in scen_df2.columns:
-        scen_df2.loc[scen_df2[GROUP_COL] == op_pro, "men_portab_moviles"] *= (1.0 + delta_porta_pro)
+    scen_feat2 = snapshot_features.copy()
+    if "men_portab_moviles" in scen_feat2.columns:
+        scen_feat2.loc[snapshot_base[GROUP_COL] == op_pro, "men_portab_moviles"] *= (1.0 + delta_pro)
         if op_vic != "(Ninguno)":
-            scen_df2.loc[scen_df2[GROUP_COL] == op_vic, "men_portab_moviles"] *= (1.0 - delta_porta_vic)
+            scen_feat2.loc[snapshot_base[GROUP_COL] == op_vic, "men_portab_moviles"] *= (1.0 - delta_vic)
 
-    scen_pred2 = rf_global.predict(scen_df2[exog_cols_global].values)
+    scen_pred2 = global_model.predict(scen_feat2.values)
     scen_total2 = scen_pred2.sum()
     scen_shares2 = scen_pred2 / scen_total2
     scen_hhi2 = compute_hhi(scen_shares2)
 
-    scen_table2 = scen_df2[[GROUP_COL, YEAR_COL, DATE_COL]].copy()
-    scen_table2["ingresos_base"] = baseline_pred
-    scen_table2["cuota_base"] = baseline_shares
+    scen_table2 = snapshot_base.copy()
     scen_table2["ingresos_escenario"] = scen_pred2
     scen_table2["cuota_escenario"] = scen_shares2
     scen_table2 = scen_table2.sort_values("ingresos_escenario", ascending=False)
 
-    st.dataframe(
-        scen_table2,
-        use_container_width=True,
-    )
-
+    st.dataframe(scen_table2, use_container_width=True)
     st.metric("HHI base", f"{baseline_hhi:,.0f}")
     st.metric("HHI escenario", f"{scen_hhi2:,.0f}")
 
-    st.markdown(
-        """
-Este escenario ilustra el efecto de una **guerra comercial de portabilidades**:
-cómo cambia la distribución de ingresos y cuotas si un operador incrementa su
-capacidad de captación a costa de otros.
-"""
-    )
-
-# ------------------ Escenario 3: Expansión operador low-cost ------------------ #
+# ------------------ Escenario 3 ------------------ #
 with tabs[2]:
-    st.subheader("Escenario 3 – Expansión de operador low-cost")
+    st.subheader("Escenario 3 – Expansión operador low-cost")
 
     st.markdown(
         """
-Pensado para operadores tipo **Digi / Grupo MASMOVIL**: se incrementan simultáneamente
-portabilidades, líneas de BAM e inversiones, simulando una fase de expansión agresiva.
+Pensado para operadores tipo **Digi** o similares: se incrementan portabilidades
+y base de líneas (móvil y BAM), simulando una fase de expansión agresiva.
 """
     )
 
-    # Filtramos una lista orientativa de "low-cost" (puedes cambiar nombres según tu dataset)
-    posibles_lowcost = [op for op in operadores if "Digi" in op or "MAS" in op or "Resto" in op] or operadores
+    low_candidates = [op for op in snapshot_base[GROUP_COL].unique().tolist()
+                      if "Digi" in op or "Resto" in op or "Low" in op]
+    if not low_candidates:
+        low_candidates = snapshot_base[GROUP_COL].unique().tolist()
+
     op_low = st.selectbox(
         "Operador low-cost / retador",
-        posibles_lowcost,
+        sorted(low_candidates),
         key="esc3_op_low",
     )
 
     delta_porta = st.slider(
         "Incremento portabilidades (%)",
         min_value=0,
-        max_value=150,
-        value=40,
+        max_value=200,
+        value=60,
         step=10,
         key="esc3_porta",
     ) / 100.0
-    delta_lineas_bam = st.slider(
-        "Incremento líneas BAM (%)",
+    delta_lineas = st.slider(
+        "Incremento base de líneas (%)",
         min_value=0,
-        max_value=150,
-        value=40,
+        max_value=200,
+        value=60,
         step=10,
-        key="esc3_bam",
-    ) / 100.0
-    delta_inv_low = st.slider(
-        "Incremento inversiones (%)",
-        min_value=0,
-        max_value=100,
-        value=20,
-        step=10,
-        key="esc3_inv",
+        key="esc3_lineas",
     ) / 100.0
 
-    scen_df3 = latest.copy()
-    mask_low = scen_df3[GROUP_COL] == op_low
+    scen_feat3 = snapshot_features.copy()
+    mask_low = snapshot_base[GROUP_COL] == op_low
 
-    if "men_portab_moviles" in scen_df3.columns:
-        scen_df3.loc[mask_low, "men_portab_moviles"] *= (1.0 + delta_porta)
-    if "inf_bam_lineas" in scen_df3.columns:
-        scen_df3.loc[mask_low, "inf_bam_lineas"] *= (1.0 + delta_lineas_bam)
-    if "an_gen_inversiones" in scen_df3.columns:
-        scen_df3.loc[mask_low, "an_gen_inversiones"] *= (1.0 + delta_inv_low)
+    if "men_portab_moviles" in scen_feat3.columns:
+        scen_feat3.loc[mask_low, "men_portab_moviles"] *= (1.0 + delta_porta)
+    if "an_merc_mov_lineas" in scen_feat3.columns:
+        scen_feat3.loc[mask_low, "an_merc_mov_lineas"] *= (1.0 + delta_lineas)
+    if "an_merc_bam_lineas" in scen_feat3.columns:
+        scen_feat3.loc[mask_low, "an_merc_bam_lineas"] *= (1.0 + delta_lineas)
 
-    scen_pred3 = rf_global.predict(scen_df3[exog_cols_global].values)
+    scen_pred3 = global_model.predict(scen_feat3.values)
     scen_total3 = scen_pred3.sum()
     scen_shares3 = scen_pred3 / scen_total3
     scen_hhi3 = compute_hhi(scen_shares3)
 
-    scen_table3 = scen_df3[[GROUP_COL, YEAR_COL, DATE_COL]].copy()
-    scen_table3["ingresos_base"] = baseline_pred
-    scen_table3["cuota_base"] = baseline_shares
+    scen_table3 = snapshot_base.copy()
     scen_table3["ingresos_escenario"] = scen_pred3
     scen_table3["cuota_escenario"] = scen_shares3
     scen_table3 = scen_table3.sort_values("ingresos_escenario", ascending=False)
 
-    st.dataframe(
-        scen_table3,
-        use_container_width=True,
-    )
-
+    st.dataframe(scen_table3, use_container_width=True)
     st.metric("HHI base", f"{baseline_hhi:,.0f}")
     st.metric("HHI escenario", f"{scen_hhi3:,.0f}")
 
-    st.markdown(
-        """
-Escenario directamente interpretable como **expansión de un operador low-cost**,
-con impacto tanto en su cuota como en la concentración global del mercado.
-"""
-    )
-
-# ------------------ Escenario 4: Recorte de inversión ------------------ #
+# ------------------ Escenario 4 ------------------ #
 with tabs[3]:
     st.subheader("Escenario 4 – Recorte de inversión / austeridad")
 
     st.markdown(
         """
-Simula un escenario de **austeridad** en el que un operador reduce fuertemente
-sus inversiones, y posiblemente deja de ampliar infraestructuras.
+Recorte de inversión modelizado como el inverso del escenario 3:
+
+- menos inversión ⇒ menos líneas ⇒ menos portabilidades.
 """
     )
 
     op_rec = st.selectbox(
         "Operador que recorta inversión",
-        operadores,
+        sorted(snapshot_base[GROUP_COL].unique().tolist()),
         key="esc4_op_rec",
     )
-    delta_rec_inv = st.slider(
-        "Reducción de inversión (%)",
+    delta_rec = st.slider(
+        "Recorte de inversión (%)",
         min_value=0,
         max_value=80,
         value=30,
         step=10,
-        key="esc4_rec_inv",
-    ) / 100.0
-    delta_rec_infra = st.slider(
-        "Reducción en crecimiento de infra (%)",
-        min_value=0,
-        max_value=50,
-        value=20,
-        step=10,
-        key="esc4_rec_infra",
+        key="esc4_rec",
     ) / 100.0
 
-    scen_df4 = latest.copy()
-    mask_rec = scen_df4[GROUP_COL] == op_rec
+    scen_feat4 = snapshot_features.copy()
+    mask_rec = snapshot_base[GROUP_COL] == op_rec
 
-    if "an_gen_inversiones" in scen_df4.columns:
-        scen_df4.loc[mask_rec, "an_gen_inversiones"] *= (1.0 - delta_rec_inv)
-    if "inf_estaciones_base" in scen_df4.columns:
-        scen_df4.loc[mask_rec, "inf_estaciones_base"] *= (1.0 - delta_rec_infra)
-    if "inf_bam_lineas" in scen_df4.columns:
-        scen_df4.loc[mask_rec, "inf_bam_lineas"] *= (1.0 - delta_rec_infra)
+    if "an_merc_mov_lineas" in scen_feat4.columns:
+        scen_feat4.loc[mask_rec, "an_merc_mov_lineas"] *= (1.0 - 0.5 * delta_rec)
+    if "an_merc_bam_lineas" in scen_feat4.columns:
+        scen_feat4.loc[mask_rec, "an_merc_bam_lineas"] *= (1.0 - 0.5 * delta_rec)
+    if "men_portab_moviles" in scen_feat4.columns:
+        scen_feat4.loc[mask_rec, "men_portab_moviles"] *= (1.0 - 0.3 * delta_rec)
 
-    scen_pred4 = rf_global.predict(scen_df4[exog_cols_global].values)
+    scen_pred4 = global_model.predict(scen_feat4.values)
     scen_total4 = scen_pred4.sum()
     scen_shares4 = scen_pred4 / scen_total4
     scen_hhi4 = compute_hhi(scen_shares4)
 
-    scen_table4 = scen_df4[[GROUP_COL, YEAR_COL, DATE_COL]].copy()
-    scen_table4["ingresos_base"] = baseline_pred
-    scen_table4["cuota_base"] = baseline_shares
+    scen_table4 = snapshot_base.copy()
     scen_table4["ingresos_escenario"] = scen_pred4
     scen_table4["cuota_escenario"] = scen_shares4
     scen_table4 = scen_table4.sort_values("ingresos_escenario", ascending=False)
 
-    st.dataframe(
-        scen_table4,
-        use_container_width=True,
-    )
-
+    st.dataframe(scen_table4, use_container_width=True)
     st.metric("HHI base", f"{baseline_hhi:,.0f}")
     st.metric("HHI escenario", f"{scen_hhi4:,.0f}")
 
-    st.markdown(
-        """
-Útil para discutir el trade-off entre **ahorro en CAPEX** y **pérdida potencial
-de cuota** e ingresos, especialmente en mercados maduros.
-"""
-    )
-
-# ------------------ Escenario 5: Fusión y HHI ------------------ #
+# ------------------ Escenario 5 ------------------ #
 with tabs[4]:
     st.subheader("Escenario 5 – Fusión o joint-venture (cambio en HHI)")
 
     st.markdown(
         """
-Simula una **fusión entre dos operadores** (o joint-venture) sumando sus ingresos
-en un operador combinado y recalculando el HHI.
+Permite simular **futuras fusiones adicionales** (por ejemplo MASORANGE+Vodafone),
+sumando ingresos y recalculando el HHI.
 """
     )
 
-    op_f1 = st.selectbox(
-        "Operador A",
-        operadores,
-        key="esc5_op1",
-    )
+    ops_pref = sorted(snapshot_base[GROUP_COL].unique().tolist())
+    op_f1 = st.selectbox("Operador A", ops_pref, key="esc5_op1")
     op_f2 = st.selectbox(
         "Operador B",
-        [op for op in operadores if op != op_f1],
+        [op for op in ops_pref if op != op_f1],
         key="esc5_op2",
     )
-    delta_sinergias = st.slider(
+
+    delta_sin = st.slider(
         "Sinergias en ingresos combinados (%)",
         min_value=-20,
         max_value=40,
@@ -899,66 +973,46 @@ en un operador combinado y recalculando el HHI.
         key="esc5_sin",
     ) / 100.0
 
-    scen_df5 = latest.copy()
-    scen_pred5 = baseline_pred.copy()
+    base_ops = snapshot_base[GROUP_COL].tolist()
+    base_ing = snapshot_base["ingresos_base"].tolist()
 
-    # fusionamos
-    idx1 = scen_df5[GROUP_COL] == op_f1
-    idx2 = scen_df5[GROUP_COL] == op_f2
+    scen_ing_dict = {}
+    for op, y in zip(base_ops, base_ing):
+        if op in (op_f1, op_f2):
+            continue
+        scen_ing_dict[op] = y
 
-    if idx1.any() and idx2.any():
-        y1 = scen_pred5[idx1][0]
-        y2 = scen_pred5[idx2][0]
-        y_fusion = (y1 + y2) * (1.0 + delta_sinergias)
+    y1 = float(snapshot_base.loc[snapshot_base[GROUP_COL] == op_f1, "ingresos_base"])
+    y2 = float(snapshot_base.loc[snapshot_base[GROUP_COL] == op_f2, "ingresos_base"])
+    y_fus = (y1 + y2) * (1.0 + delta_sin)
+    op_fus = f"{op_f1}+{op_f2}"
+    scen_ing_dict[op_fus] = y_fus
 
-        # creamos nuevo operador "Fusionado A+B"
-        nuevo_nombre = f"{op_f1}+{op_f2}"
-        nueva_fila = scen_df5[idx1].copy()
-        nueva_fila[GROUP_COL] = nuevo_nombre
+    scen_ops = list(scen_ing_dict.keys())
+    scen_ing = np.array(list(scen_ing_dict.values()))
+    scen_total5 = scen_ing.sum()
+    scen_shares5 = scen_ing / scen_total5
+    scen_hhi5 = compute_hhi(scen_shares5)
 
-        # reemplazamos predicciones
-        nuevas_pred = []
-        nuevos_ops = []
-        for op, y in zip(scen_df5[GROUP_COL], scen_pred5):
-            if op in (op_f1, op_f2):
-                continue
-            nuevos_ops.append(op)
-            nuevas_pred.append(y)
-        nuevos_ops.append(nuevo_nombre)
-        nuevas_pred.append(y_fusion)
+    scen_table5 = pd.DataFrame({
+        "operador": scen_ops,
+        "ingresos_escenario": scen_ing,
+        "cuota_escenario": scen_shares5,
+    }).sort_values("ingresos_escenario", ascending=False)
 
-        scen_pred5_arr = np.array(nuevas_pred)
-        scen_total5 = scen_pred5_arr.sum()
-        scen_shares5 = scen_pred5_arr / scen_total5
-        scen_hhi5 = compute_hhi(scen_shares5)
+    st.metric("HHI base (post-fusión actual)", f"{baseline_hhi:,.0f}")
+    st.metric("HHI tras nueva fusión", f"{scen_hhi5:,.0f}")
+    st.dataframe(scen_table5, use_container_width=True)
 
-        resumen = pd.DataFrame({
-            "operador": nuevos_ops,
-            "ingresos_base_aprox": nuevos_ops,  # placeholder para no dejar vacío
-        })
-        # como base estamos usando baseline_pred original; para el texto del TFM basta con HHI
-        st.metric("HHI base", f"{baseline_hhi:,.0f}")
-        st.metric("HHI post-fusión", f"{scen_hhi5:,.0f}")
-        st.write(f"Operador fusionado: **{nuevo_nombre}** (sinergias {delta_sinergias*100:.0f}%).")
-    else:
-        st.warning("No se han podido localizar ambos operadores en la última foto de mercado.")
-
-    st.markdown(
-        """
-Escenario útil para analizar cómo una fusión altera la **concentración del mercado (HHI)**,
-algo muy relevante en el contexto de la CNMC y la regulación de competencia.
-"""
-    )
-
-# ------------------ Escenario 6: Shock macro del mercado ------------------ #
+# ------------------ Escenario 6 ------------------ #
 with tabs[5]:
     st.subheader("Escenario 6 – Shock macro / regulación (tamaño de mercado)")
 
     st.markdown(
         """
-Simula un **shock macroeconómico o regulatorio** que afecta al tamaño total del
-mercado (`tri_ingresos_total_trimestre`), manteniendo la estructura relativa
-de los operadores.
+Simula un **shock global** (crisis, regulación de precios, etc.) que cambia el
+tamaño total del mercado (`tri_ingresos_total_trimestre`). El modelo global reparte
+ese ajuste entre operadores.
 """
     )
 
@@ -971,51 +1025,20 @@ de los operadores.
         key="esc6_macro",
     ) / 100.0
 
-    scen_df6 = latest.copy()
+    scen_feat6 = snapshot_features.copy()
+    if "tri_ingresos_total_trimestre" in scen_feat6.columns:
+        scen_feat6["tri_ingresos_total_trimestre"] *= (1.0 + delta_macro)
 
-    if "tri_ingresos_total_trimestre" in scen_df6.columns:
-        scen_df6["tri_ingresos_total_trimestre"] *= (1.0 + delta_macro)
-
-    scen_pred6 = rf_global.predict(scen_df6[exog_cols_global].values)
+    scen_pred6 = global_model.predict(scen_feat6.values)
     scen_total6 = scen_pred6.sum()
     scen_shares6 = scen_pred6 / scen_total6
     scen_hhi6 = compute_hhi(scen_shares6)
 
-    scen_table6 = scen_df6[[GROUP_COL, YEAR_COL, DATE_COL]].copy()
-    scen_table6["ingresos_base"] = baseline_pred
+    scen_table6 = snapshot_base.copy()
     scen_table6["ingresos_escenario"] = scen_pred6
-    scen_table6["cuota_base"] = baseline_shares
     scen_table6["cuota_escenario"] = scen_shares6
     scen_table6 = scen_table6.sort_values("ingresos_escenario", ascending=False)
 
-    st.dataframe(
-        scen_table6,
-        use_container_width=True,
-    )
-
+    st.dataframe(scen_table6, use_container_width=True)
     st.metric("HHI base", f"{baseline_hhi:,.0f}")
     st.metric("HHI escenario", f"{scen_hhi6:,.0f}")
-
-    st.markdown(
-        """
-Este escenario permite cuantificar cómo un shock global (por ejemplo, una crisis
-económica o una regulación de precios) puede reducir el tamaño del mercado y cuál
-es el impacto relativo para cada operador.
-"""
-    )
-
-st.markdown(
-    """
-Con todo esto, el módulo de IA del DSS integra:
-
-1. **Modelo ML explicable** por operador (RandomForest, scikit-learn).  
-2. **Forecast temporal** y escenario simple sobre el último trimestre.  
-3. **Forecast clásico ARIMA** con bandas de confianza.  
-4. **Detección de anomalías** en la serie histórica.  
-5. Un **simulador de escenarios de negocio** con múltiples casos de uso:
-   inversión, portabilidades, expansión low-cost, austeridad, fusiones y shocks macro.
-
-Esto encaja directamente con los objetivos de un TFM orientado a
-**soporte a la decisión** en el sector telecom a partir de datos CNMC.
-"""
-)

@@ -78,6 +78,9 @@ def build_ia_trimestral_model_input(
     # Año a partir de "2005T1" -> 2005
     base["anno"] = base["trimestre"].astype(str).str.slice(0, 4).astype(int)
 
+    # Número de trimestre (1–4) a partir de "2005T1"
+    base["num_trim"] = base["trimestre"].astype(str).str[-1].astype(int)
+
     # Ingresos totales del trimestre (suma de operadores)
     tot = (
         base.groupby("trimestre", as_index=False)["valor"]
@@ -90,6 +93,9 @@ def build_ia_trimestral_model_input(
     base["tri_cuota_ingresos_trimestre"] = (
         base["valor"] / base["tri_ingresos_total_trimestre"]
     )
+
+    # (Opcional) filtrar años muy antiguos si hiciera falta
+    # base = base[base["anno"] >= 2010].copy()
 
     # ============================================================
     # 3. INFRAESTRUCTURAS: líneas BAM, tráfico datos, estaciones, nodos
@@ -303,9 +309,10 @@ def build_ia_trimestral_model_input(
     # 8. Selección final de columnas + imputación de NaN
     # ============================================================
 
-    feature_cols = [
+    base_feature_cols = [
         "tri_ingresos_total_trimestre",
         "tri_cuota_ingresos_trimestre",
+        "num_trim",
         "inf_bam_lineas",
         "inf_bam_trafico_datos",
         "inf_estaciones_base",
@@ -324,15 +331,83 @@ def build_ia_trimestral_model_input(
         "prov_baf_pen_std",
     ]
 
-    final_cols = ["trimestre", "anno", "operador", "valor"] + feature_cols
+    final_cols = ["trimestre", "anno", "operador", "valor"] + base_feature_cols
     ia_df = base[final_cols].copy()
 
-    ia_df[feature_cols] = ia_df[feature_cols].fillna(0.0)
+    ia_df[base_feature_cols] = ia_df[base_feature_cols].fillna(0.0)
 
+    # ============================================================
+    # 9. Unificar Orange + Grupo MASMOVIL -> MASORANGE en TODO el histórico
+    # ============================================================
+
+    mask_om = ia_df["operador"].isin(["Orange", "Grupo MASMOVIL"])
+    df_om = ia_df[mask_om].copy()
+    df_rest = ia_df[~mask_om].copy()
+
+    if not df_om.empty:
+        # sumamos todas las columnas numéricas excepto 'anno' (clave)
+        num_cols = [
+            c
+            for c in df_om.select_dtypes(include=[np.number]).columns
+            if c != "anno"
+        ]
+
+        fused = (
+            df_om.groupby(["trimestre", "anno"], as_index=False)[num_cols]
+            .sum()
+        )
+        fused["operador"] = "MASORANGE"
+
+        ia_df = pd.concat([df_rest, fused], ignore_index=True)
+
+    # ============================================================
+    # 10. Features adicionales: log_valor, lags y ratios
+    # ============================================================
+
+    # Ordenar por operador y trimestre
     ia_df = ia_df.sort_values(["operador", "trimestre"]).reset_index(drop=True)
+
+    # Logaritmo de los ingresos (para posibles modelos lineales)
+    ia_df["log_valor"] = np.log1p(ia_df["valor"])
+
+    # Lags del target por operador
+    ia_df["valor_lag1"] = (
+        ia_df.groupby("operador")["valor"]
+        .shift(1)
+    )
+    ia_df["valor_lag4"] = (
+        ia_df.groupby("operador")["valor"]
+        .shift(4)
+    )
+    ia_df[["valor_lag1", "valor_lag4"]] = ia_df[["valor_lag1", "valor_lag4"]].fillna(0.0)
+
+    # Ratios: ARPU móvil anual aproximado y tráfico por línea BAM
+    denom_cli = ia_df["an_merc_mov_clientes"].replace({0: np.nan})
+    ia_df["arpu_mov_anual"] = ia_df["an_gen_ingresos_minorista"] / denom_cli
+
+    denom_bam = ia_df["inf_bam_lineas"].replace({0: np.nan})
+    ia_df["trafico_datos_por_linea_bam"] = ia_df["inf_bam_trafico_datos"] / denom_bam
+
+    ia_df[["arpu_mov_anual", "trafico_datos_por_linea_bam"]] = ia_df[
+        ["arpu_mov_anual", "trafico_datos_por_linea_bam"]
+    ].fillna(0.0)
+
+    # Actualizamos lista de features incluyendo las nuevas
+    feature_cols = base_feature_cols + [
+        "valor_lag1",
+        "valor_lag4",
+        "arpu_mov_anual",
+        "trafico_datos_por_linea_bam",
+    ]
+
+    # ============================================================
+    # 11. Guardar
+    # ============================================================
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     ia_df.to_csv(out_path, index=False)
+
+    print("Columnas de features:", ", ".join(feature_cols))
 
     return ia_df
 
