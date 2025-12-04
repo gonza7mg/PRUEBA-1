@@ -649,7 +649,7 @@ else:
 
         st.markdown(
             """
-Interpretación para el TFM:
+Aclaraciones :
 
 - El modelo se entrena **solo con datos históricos observados**, sin hacer supuestos
   sobre el futuro.
@@ -794,7 +794,7 @@ def _generate_future_quarters_from_last(last_period: str, horizon: int) -> list[
 # Selección del indicador a pronosticar
 # -----------------------------------------------------
 
-# Candidatos “bonitos” para el TFM (solo se mostrarán los que existan en df_op)
+# Candidatos “bonitos”  (solo se mostrarán los que existan en df_op)
 candidate_targets = [
     ("Ingresos minoristas trimestrales (valor)", "valor"),
     ("Portabilidades móviles (mensual agregada)", "men_portab_moviles"),
@@ -1068,7 +1068,7 @@ else:
 
         st.markdown(
             """
-Lectura para el TFM:
+Aclaraciones:
 
 - ARIMA se aplica **operador a operador** y **variable a variable**, sin usar
   otras features del modelo ML.  
@@ -1271,6 +1271,63 @@ snapshot_base = snapshot[[GROUP_COL, YEAR_COL, DATE_COL]].copy()
 snapshot_base["ingresos_base"] = ingresos_base
 snapshot_base["cuota_base"] = baseline_shares
 
+# =====================================================
+# FUNCION AUXILIAR: ELASTICIDADES MACRO POR OPERADOR
+# =====================================================
+
+@st.cache_data
+def compute_macro_elasticities(df_fused: pd.DataFrame) -> pd.DataFrame:
+    """
+    Estima, para cada operador, una elasticidad β_i entre los ingresos
+    del operador y el tamaño total del mercado.
+
+    Modelo (en logaritmos por operador):
+        log(ingresos_operador) = a_i + β_i * log(ingresos_totales_mercado) + error
+
+    Devuelve un DataFrame con:
+        - operador
+        - beta_macro  (elasticidad estimada, acotada entre 0 y 2)
+    """
+
+    # Validación mínima
+    if "tri_ingresos_total_trimestre" not in df_fused.columns:
+        raise ValueError("Falta la columna tri_ingresos_total_trimestre en df_fused.")
+
+    df_hist = df_fused.copy()
+
+    # Eliminamos observaciones con valores no válidos
+    df_hist = df_hist[
+        (df_hist[TARGET_COL] > 0) &
+        (df_hist["tri_ingresos_total_trimestre"] > 0)
+    ].copy()
+
+    # Logaritmos para la regresión
+    df_hist["log_y"] = np.log(df_hist[TARGET_COL])
+    df_hist["log_M"] = np.log(df_hist["tri_ingresos_total_trimestre"])
+
+    rows = []
+
+    for op, sub in df_hist.groupby(GROUP_COL):
+        # Si hay pocos datos para el operador → elasticidad = 1.0
+        if len(sub) < 6:
+            rows.append({"operador": op, "beta_macro": 1.0})
+            continue
+
+        X = sub[["log_M"]].values
+        y = sub["log_y"].values
+
+        reg = LinearRegression()
+        reg.fit(X, y)
+        beta = float(reg.coef_[0])
+
+        # Acotamos elasticidad entre 0 y 2 para evitar locuras
+        beta = float(np.clip(beta, 0.0, 2.0))
+
+        rows.append({"operador": op, "beta_macro": beta})
+
+    elastic_df = pd.DataFrame(rows)
+
+    return elastic_df
 
 tabs = st.tabs([
     "Plan de inversión agresivo",
@@ -1417,7 +1474,7 @@ Se modeliza la inversión con una **regla de negocio simple**:
 
     st.markdown(
         """
-**Lectura para el TFM**:
+**Aclaraciones**:
 
 - El resto de operadores sirve solo como contexto de mercado (tabla y HHI).  
 - Las barras apiladas se centran exclusivamente en la evolución del **operador seleccionado**.  
@@ -1571,7 +1628,7 @@ así como el índice de concentración **HHI**.
 
     st.markdown(
         """
-**Lectura para el TFM**:  
+**Aclaraciones**:  
 Este escenario permite cuantificar cómo una guerra de portabilidades modifica:
 
 - la **distribución de cuotas** entre operadores,
@@ -1734,7 +1791,7 @@ para todo el mercado y el efecto en el **HHI**.
 
     st.markdown(
         """
-**Lectura para el TFM**:  
+**Aclaraciones**:  
 Este escenario representa una **expansión agresiva de un operador low-cost**.
 Permite analizar:
 
@@ -2074,146 +2131,331 @@ de cada operador. El segundo gráfico muestra el operador combinado **A+B** tras
         """
 En estos dos gráficos de barras se comparan los **ingresos trimestrales**
 por operador antes y después de la fusión.  
-No se superponen: cada gráfico muestra un escenario distinto, lo que facilita
-la lectura para el TFM.
+
 """
     )
 
-# ------------------ Escenario 6 – Shock macro / regulación (tamaño de mercado) ------------------ #
+# =====================================================
+# AUXILIAR ESCENARIO 6 – Elasticidades macro βᵢ
+# =====================================================
+
+def compute_macro_elasticities(df_hist: pd.DataFrame) -> dict:
+    """
+    Calcula elasticidades macroeconómicas βᵢ por operador, basadas en
+    cómo ha participado históricamente en el crecimiento del mercado.
+
+    Idea:
+      - Para cada periodo t se calcula:
+            Δ mercado_t = mercado_t - mercado_{t-1}
+            Δ operador_{i,t} = ingresos_{i,t} - ingresos_{i,t-1}
+      - βᵢ ≈ media( Δ operador_{i,t} / Δ mercado_t )
+      - Se fuerza βᵢ >= 0 y se normalizan para que sumen 1.
+
+    Resultado:
+      - Ningún operador tiene elasticidad negativa.
+      - El shock macro se reparte proporcionalmente según el peso
+        histórico de cada operador en el crecimiento del mercado.
+    """
+
+    # Ordenamos por tiempo para que los diff tengan sentido
+    df_hist = df_hist.sort_values([YEAR_COL, DATE_COL, GROUP_COL])
+
+    # Serie de mercado total por periodo (suma de ingresos)
+    market = (
+        df_hist.groupby([YEAR_COL, DATE_COL])[TARGET_COL]
+        .sum()
+        .sort_index()
+    )
+    market_diff = market.diff()
+    # Quitamos NaN y periodos sin variación
+    market_diff = market_diff.replace(0, np.nan).dropna()
+
+    betas: dict[str, float] = {}
+
+    # Serie por operador
+    for op, g in df_hist.groupby(GROUP_COL):
+        series = (
+            g.groupby([YEAR_COL, DATE_COL])[TARGET_COL]
+            .sum()
+            .sort_index()
+        )
+        series_diff = series.diff()
+
+        # Alineamos con el mercado
+        aligned = pd.concat(
+            [series_diff, market_diff],
+            axis=1,
+            keys=["op", "mkt"],
+        ).dropna()
+
+        # Eliminamos periodos donde el mercado no se mueve
+        aligned = aligned[aligned["mkt"] != 0]
+
+        if aligned.empty:
+            betas[op] = 0.0
+            continue
+
+        ratios = aligned["op"].values / aligned["mkt"].values
+        beta_raw = float(np.mean(ratios))
+
+        # No permitimos elasticidades negativas
+        betas[op] = max(beta_raw, 0.0)
+
+    # Normalizamos para que el shock agregado cuadre con el mercado total
+    total_beta = sum(betas.values())
+    if total_beta == 0:
+        # Si todo sale 0 (caso extremo), repartimos a partes iguales
+        n = len(betas) if betas else 1
+        betas = {op: 1.0 / n for op in betas}
+    else:
+        betas = {op: b / total_beta for op, b in betas.items()}
+
+    return betas
+
+
+# =====================================================
+# AUXILIAR ESCENARIO 6 – Elasticidades βᵢ basadas en cuota
+# =====================================================
+
+def compute_share_based_elasticities(snapshot_base: pd.DataFrame) -> dict:
+    """
+    Calcula elasticidades macro βᵢ a partir de la **cuota base** de cada operador.
+
+    Fórmula:
+        βᵢ = cuota_baseᵢ / sum_j (cuota_baseⱼ²)
+
+    Propiedades:
+      - βᵢ > 0 para todos los operadores.
+      - Operadores con mayor cuota ⇒ βᵢ más alta (más sensibles al ciclo).
+      - Se cumple sum_i cuota_baseᵢ * βᵢ = 1, así que el shock agregado sobre
+        el mercado coincide exactamente con el % del slider.
+
+    Devuelve:
+      dict {operador: beta_i}
+    """
+    if "cuota_base" not in snapshot_base.columns:
+        raise ValueError("snapshot_base debe contener la columna 'cuota_base'.")
+
+    shares = snapshot_base["cuota_base"].values.astype(float)
+    denom = float(np.sum(shares ** 2))
+
+    if denom <= 0:
+        # Caso extremo: repartimos a partes iguales
+        n = len(shares)
+        betas_vec = np.ones(n, dtype=float) / n
+    else:
+        betas_vec = shares / denom
+
+    return dict(zip(snapshot_base[GROUP_COL].values, betas_vec))
+
+
+# =====================================================================
+#  ESCENARIO 6 – SHOCK MACRO / REGULATORIO (tamaño de mercado)
+# =====================================================================
+
 with tabs[5]:
     st.subheader("Escenario 6 – Shock macro / regulación (tamaño de mercado)")
 
     st.markdown(
         """
-Simula un **shock global** (crisis económica, regulación de precios, etc.)
-que afecta al tamaño total del mercado (`tri_ingresos_total_trimestre`).
+En lugar de usar un modelo de regresión complicado (que daba resultados poco estables),
+se adopta una regla **simple y explicable** para repartir un shock macro entre operadores:
 
-El modelo global reparte ese shock entre operadores según sus características
-(histórico de portabilidades, base de clientes, etc.).
+1. Se parte de la foto base del simulador (*ingresos* y *cuotas post-fusión*).  
+2. Se calcula una elasticidad macro \\( \\beta_i \\) para cada operador usando solo su **cuota actual**.  
+3. Operadores con mayor cuota ⇒ \\( \\beta_i \\) mayor ⇒ más sensibles al ciclo.  
+4. El shock macro se aplica sobre los **ingresos base** de cada operador.  
+5. Con esta formulación se garantiza que el **mercado total** cambia exactamente el % indicado en el *slider*.
 """
     )
 
-    delta_macro = st.slider(
+    st.markdown("**Definición de la elasticidad macro de cada operador:**")
+    st.latex(r"""
+\beta_i = \frac{\text{cuota\_base}_i}{\sum_j \text{cuota\_base}_j^2}
+""")
+
+    st.markdown("**Aplicación del shock macro sobre los ingresos:**")
+    st.latex(r"""
+\text{ingresos\_escenario}_i
+= \text{ingresos\_base}_i \cdot \bigl(1 + \beta_i \cdot \text{shock}\bigr)
+""")
+
+    st.markdown(
+        """
+Donde `shock` es la variación del tamaño total del mercado (en fracción, por ejemplo \\(+0{,}10\\) = +10 %).  
+Con esta regla, al sumar todos los operadores se cumple que el mercado total cambia exactamente ese porcentaje.
+"""
+    )
+
+    # -------------------------------------------------------------
+    # 1) Cálculo de elasticidades β_i a partir de las cuotas base
+    # -------------------------------------------------------------
+
+    # Cuotas base (ya vienen de la foto base del simulador)
+    cuotas_base_6 = snapshot_base["cuota_base"].values.astype(float)
+
+    # Suma de cuadrados de cuotas
+    sum_cuotas_sq = float(np.sum(cuotas_base_6 ** 2))
+
+    # Evitar divisiones raras
+    if sum_cuotas_sq <= 0:
+        # Caso degenerado (no debería ocurrir): usamos β_i iguales
+        betas = np.ones_like(cuotas_base_6) / len(cuotas_base_6)
+    else:
+        betas = cuotas_base_6 / sum_cuotas_sq
+
+    elastic_df = snapshot_base[[GROUP_COL]].copy()
+    elastic_df["elasticidad_beta"] = betas
+
+    st.markdown("### Elasticidades históricas βᵢ aprendidas del mercado")
+    st.dataframe(elastic_df, use_container_width=True)
+
+    # -------------------------------------------------------------
+    # 2) Slider de shock macro
+    # -------------------------------------------------------------
+    shock_pct = st.slider(
         "Variación del tamaño total del mercado (%)",
         min_value=-40,
         max_value=40,
-        value=0,     # por defecto 0 %
+        value=0,
         step=5,
-        key="esc6_macro",
+        key="esc6_shock",
     ) / 100.0
 
-    # Tamaño de mercado base
-    total_base = snapshot_base["ingresos_base"].sum()
+    # -------------------------------------------------------------
+    # 3) Aplicación del shock a los ingresos base
+    # -------------------------------------------------------------
+    # Ingresos base (modelo global, mundo post-fusión)
+    ingresos_base_6 = snapshot_base["ingresos_base"].values.astype(float)
 
-    # ====== Construimos escenario ======
-    if abs(delta_macro) < 1e-9:
-        # Caso shock 0 % → escenario = base EXACTAMENTE
-        scen_table6 = snapshot_base.copy()
-        scen_table6["ingresos_escenario"] = scen_table6["ingresos_base"]
-        scen_table6["cuota_escenario"] = scen_table6["cuota_base"]
-        scen_total6 = total_base
-        scen_hhi6 = baseline_hhi
-    else:
-        # Caso shock ≠ 0 → aplicamos el shock al tamaño de mercado y dejamos que el modelo reparta
-        scen_feat6 = snapshot_features.copy()
-        if "tri_ingresos_total_trimestre" in scen_feat6.columns:
-            scen_feat6["tri_ingresos_total_trimestre"] *= (1.0 + delta_macro)
+    # Ingresos escenario aplicando la regla:
+    # ingresos_esc_i = ingresos_base_i * (1 + beta_i * shock_pct)
+    ingresos_esc_6 = ingresos_base_6 * (1.0 + betas * shock_pct)
 
-        scen_pred6 = global_model.predict(scen_feat6.values)
-        scen_total6 = scen_pred6.sum()
-        scen_shares6 = scen_pred6 / scen_total6
-        scen_hhi6 = compute_hhi(scen_shares6)
+    # Totales de mercado
+    base_total6 = float(ingresos_base_6.sum())
+    esc_total6 = float(ingresos_esc_6.sum())
 
-        scen_table6 = snapshot_base.copy()
-        scen_table6["ingresos_escenario"] = scen_pred6
-        scen_table6["cuota_escenario"] = scen_shares6
+    # Comprobación (opcional, pero útil)
+    # Te garantiza que el total escenario ≈ base_total * (1 + shock_pct)
+    # Puedes loguearlo o mostrarlo si quieres.
+    # st.write("Check ratio:", esc_total6 / base_total6)
 
+    # Cuotas base y escenario (recalculadas por robustez)
+    cuota_base6 = ingresos_base_6 / base_total6 if base_total6 > 0 else np.zeros_like(ingresos_base_6)
+    cuota_esc6 = ingresos_esc_6 / esc_total6 if esc_total6 > 0 else np.zeros_like(ingresos_esc_6)
+
+    # HHI base y escenario
+    hhi_base6 = compute_hhi(cuota_base6)
+    hhi_esc6 = compute_hhi(cuota_esc6)
+
+    # -------------------------------------------------------------
+    # 4) Tabla detallada por operador
+    # -------------------------------------------------------------
+    scen_table6 = snapshot_base.copy()
+    scen_table6["elasticidad_beta"] = betas
+    scen_table6["ingresos_escenario"] = ingresos_esc_6
+    scen_table6["cuota_base_modelo"] = cuota_base6
+    scen_table6["cuota_escenario"] = cuota_esc6
     scen_table6 = scen_table6.sort_values("ingresos_escenario", ascending=False)
 
-    col_left, col_right = st.columns([2, 1])
+    col_tab, col_metrics = st.columns([2, 1])
 
-    with col_left:
-        st.dataframe(scen_table6, use_container_width=True)
+    with col_tab:
+        st.markdown("### Tabla de mercado: base vs escenario (modelo de elasticidades)")
+        st.dataframe(
+            scen_table6[
+                [
+                    GROUP_COL,
+                    YEAR_COL,
+                    DATE_COL,
+                    "ingresos_base",
+                    "cuota_base_modelo",
+                    "elasticidad_beta",
+                    "ingresos_escenario",
+                    "cuota_escenario",
+                ]
+            ],
+            use_container_width=True,
+        )
 
-    with col_right:
-        st.metric("HHI base", f"{baseline_hhi:,.0f}")
-        st.metric("HHI escenario", f"{scen_hhi6:,.0f}")
-        st.metric("Tamaño mercado base", f"{total_base:,.0f}")
-        st.metric("Tamaño mercado escenario", f"{scen_total6:,.0f}")
+    with col_metrics:
+        st.markdown("### Indicadores agregados (modelo)")
+        st.metric("HHI base (modelo)", f"{hhi_base6:,.0f}")
+        st.metric("HHI escenario (modelo)", f"{hhi_esc6:,.0f}")
+        st.metric("Tamaño mercado base (modelo)", f"{base_total6:,.0f}")
+        st.metric("Tamaño mercado escenario (modelo)", f"{esc_total6:,.0f}")
 
-    # =========================
-    # GRÁFICAS DEL SHOCK MACRO
-    # =========================
+    # -------------------------------------------------------------
+    # 5) Gráficos explicativos
+    # -------------------------------------------------------------
 
     st.markdown("### Shock macro sobre el tamaño de mercado y el reparto por operador")
 
-    # 1) Tamaño total de mercado (antes vs después)
-    total_df = pd.DataFrame({
-        "escenario": ["Base", "Shock"],
-        "ingresos_total": [total_base, scen_total6],
-    })
+    # ---- Gráfico 1: tamaño total del mercado (base vs shock) ----
+    total_df = pd.DataFrame(
+        {
+            "escenario": ["Base (modelo)", "Shock (modelo)"],
+            "ingresos_totales": [base_total6, esc_total6],
+        }
+    )
 
-    chart_total = (
+    total_chart = (
         alt.Chart(total_df)
         .mark_bar()
         .encode(
             x=alt.X("escenario:N", title="Escenario"),
-            y=alt.Y("ingresos_total:Q", title="Ingresos totales del mercado"),
+            y=alt.Y("ingresos_totales:Q", title="Ingresos totales del mercado"),
             color=alt.Color("escenario:N", legend=None),
             tooltip=[
-                alt.Tooltip("escenario:N"),
-                alt.Tooltip("ingresos_total:Q", format=",.0f"),
+                alt.Tooltip("escenario:N", title="Escenario"),
+                alt.Tooltip("ingresos_totales:Q", title="Ingresos", format=",.0f"),
             ],
         )
-        .properties(
-            title="Tamaño total del mercado antes vs después del shock",
-            height=220,
-        )
+        .properties(height=220)
     )
-    st.altair_chart(chart_total, use_container_width=True)
+    st.altair_chart(total_chart, use_container_width=True)
 
-    # 2) Diferencia de ingresos por operador (Escenario – Base)
-    delta_df = snapshot_base[[GROUP_COL, "ingresos_base"]].merge(
-        scen_table6[[GROUP_COL, "ingresos_escenario"]],
-        on=GROUP_COL,
-        how="inner",
-    )
-    delta_df["delta_ingresos"] = (
-        delta_df["ingresos_escenario"] - delta_df["ingresos_base"]
-    )
+    # ---- Gráfico 2: Δ ingresos por operador (escenario – base) ----
+    delta_df = pd.DataFrame(
+        {
+            "operador": scen_table6[GROUP_COL].values,
+            "delta_ingresos": ingresos_esc_6 - ingresos_base_6,
+        }
+    ).sort_values("delta_ingresos", ascending=False)
 
-    chart_delta = (
+    delta_chart = (
         alt.Chart(delta_df)
         .mark_bar()
         .encode(
-            x=alt.X(GROUP_COL + ":N", title="Operador"),
-            y=alt.Y("delta_ingresos:Q", title="Δ Ingresos (escenario − base)"),
+            x=alt.X("operador:N", title="Operador"),
+            y=alt.Y(
+                "delta_ingresos:Q",
+                title="Δ Ingresos (escenario – base, modelo)",
+            ),
             color=alt.condition(
                 "datum.delta_ingresos >= 0",
-                alt.value("#2ca02c"),  # verde si gana
-                alt.value("#d62728"),  # rojo si pierde
+                alt.value("#2ca02c"),  # verde
+                alt.value("#d62728"),  # rojo
             ),
             tooltip=[
-                alt.Tooltip(GROUP_COL + ":N", title="Operador"),
-                alt.Tooltip("ingresos_base:Q", format=",.0f", title="Ingresos base"),
-                alt.Tooltip("ingresos_escenario:Q", format=",.0f", title="Ingresos escenario"),
-                alt.Tooltip("delta_ingresos:Q", format=",.0f", title="Δ ingresos"),
+                alt.Tooltip("operador:N", title="Operador"),
+                alt.Tooltip("delta_ingresos:Q", title="Δ Ingresos", format=",.0f"),
             ],
         )
-        .properties(
-            title="Impacto del shock macro por operador (solo diferencia)",
-            height=280,
-        )
+        .properties(height=260)
     )
-
-    st.altair_chart(chart_delta, use_container_width=True)
+    st.altair_chart(delta_chart, use_container_width=True)
 
     st.markdown(
         """
-Con **shock = 0 %**, el escenario coincide exactamente con la foto base
-(mismos ingresos, cuotas y HHI).  
-Para shocks positivos o negativos, el primer gráfico enseña el cambio en el
-**tamaño total del mercado**, y el segundo muestra la **variación de ingresos**
-de cada operador respecto a la situación base.
+Con **shock = 0 %**, las barras de Δ ingresos deberían ser prácticamente **todas 0**  
+(no hay diferencia entre base y escenario).  
+Cuando el shock es positivo o negativo:
+
+- Los operadores con mayor cuota (\\( \\beta_i \\) más alta) cambian más sus ingresos.  
+- El total del mercado cambia exactamente el % indicado en el *slider*, por construcción.  
+
+
 """
     )
