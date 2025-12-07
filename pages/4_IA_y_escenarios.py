@@ -2136,7 +2136,7 @@ por operador antes y después de la fusión.
     )
 
 # =====================================================
-# AUXILIAR ESCENARIO 6 – Elasticidades macro βᵢ
+# AUXILIAR ESCENARIO 6 – Elasticidades macro βᵢ (históricas)
 # =====================================================
 
 def compute_macro_elasticities(df_hist: pd.DataFrame) -> dict:
@@ -2290,24 +2290,14 @@ Con esta regla, al sumar todos los operadores se cumple que el mercado total cam
     # -------------------------------------------------------------
     # 1) Cálculo de elasticidades β_i a partir de las cuotas base
     # -------------------------------------------------------------
-
-    # Cuotas base (ya vienen de la foto base del simulador)
-    cuotas_base_6 = snapshot_base["cuota_base"].values.astype(float)
-
-    # Suma de cuadrados de cuotas
-    sum_cuotas_sq = float(np.sum(cuotas_base_6 ** 2))
-
-    # Evitar divisiones raras
-    if sum_cuotas_sq <= 0:
-        # Caso degenerado (no debería ocurrir): usamos β_i iguales
-        betas = np.ones_like(cuotas_base_6) / len(cuotas_base_6)
-    else:
-        betas = cuotas_base_6 / sum_cuotas_sq
+    betas_dict = compute_share_based_elasticities(snapshot_base)
+    # Vector de betas en el mismo orden que snapshot_base
+    betas = snapshot_base[GROUP_COL].map(betas_dict).values.astype(float)
 
     elastic_df = snapshot_base[[GROUP_COL]].copy()
     elastic_df["elasticidad_beta"] = betas
 
-    st.markdown("### Elasticidades históricas βᵢ aprendidas del mercado")
+    st.markdown("### Elasticidades macro βᵢ derivadas de la cuota base")
     st.dataframe(elastic_df, use_container_width=True)
 
     # -------------------------------------------------------------
@@ -2336,11 +2326,6 @@ Con esta regla, al sumar todos los operadores se cumple que el mercado total cam
     base_total6 = float(ingresos_base_6.sum())
     esc_total6 = float(ingresos_esc_6.sum())
 
-    # Comprobación (opcional, pero útil)
-    # Te garantiza que el total escenario ≈ base_total * (1 + shock_pct)
-    # Puedes loguearlo o mostrarlo si quieres.
-    # st.write("Check ratio:", esc_total6 / base_total6)
-
     # Cuotas base y escenario (recalculadas por robustez)
     cuota_base6 = ingresos_base_6 / base_total6 if base_total6 > 0 else np.zeros_like(ingresos_base_6)
     cuota_esc6 = ingresos_esc_6 / esc_total6 if esc_total6 > 0 else np.zeros_like(ingresos_esc_6)
@@ -2357,6 +2342,8 @@ Con esta regla, al sumar todos los operadores se cumple que el mercado total cam
     scen_table6["ingresos_escenario"] = ingresos_esc_6
     scen_table6["cuota_base_modelo"] = cuota_base6
     scen_table6["cuota_escenario"] = cuota_esc6
+
+    # Ordenamos solo PARA MOSTRAR, pero mantenemos coherencia fila a fila
     scen_table6 = scen_table6.sort_values("ingresos_escenario", ascending=False)
 
     col_tab, col_metrics = st.columns([2, 1])
@@ -2417,12 +2404,12 @@ Con esta regla, al sumar todos los operadores se cumple que el mercado total cam
     st.altair_chart(total_chart, use_container_width=True)
 
     # ---- Gráfico 2: Δ ingresos por operador (escenario – base) ----
-    delta_df = pd.DataFrame(
-        {
-            "operador": scen_table6[GROUP_COL].values,
-            "delta_ingresos": ingresos_esc_6 - ingresos_base_6,
-        }
-    ).sort_values("delta_ingresos", ascending=False)
+    # IMPORTANTE: calculamos el delta usando la propia scen_table6,
+    # de forma que operador y diferencia estén siempre alineados.
+    delta_df = scen_table6[[GROUP_COL, "ingresos_base", "ingresos_escenario"]].copy()
+    delta_df["delta_ingresos"] = delta_df["ingresos_escenario"] - delta_df["ingresos_base"]
+    delta_df = delta_df[[GROUP_COL, "delta_ingresos"]].rename(columns={GROUP_COL: "operador"})
+    delta_df = delta_df.sort_values("delta_ingresos", ascending=False)
 
     delta_chart = (
         alt.Chart(delta_df)
@@ -2451,11 +2438,10 @@ Con esta regla, al sumar todos los operadores se cumple que el mercado total cam
         """
 Con **shock = 0 %**, las barras de Δ ingresos deberían ser prácticamente **todas 0**  
 (no hay diferencia entre base y escenario).  
+
 Cuando el shock es positivo o negativo:
 
 - Los operadores con mayor cuota (\\( \\beta_i \\) más alta) cambian más sus ingresos.  
-- El total del mercado cambia exactamente el % indicado en el *slider*, por construcción.  
-
-
+- El total del mercado cambia exactamente el % indicado en el *slider*, por construcción.
 """
     )
