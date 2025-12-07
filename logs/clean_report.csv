@@ -1,0 +1,7 @@
+file,status,rows_in,rows_out,notes
+anual_datos_generales.csv,OK,1281,454,→ data/clean/anual_datos_generales_clean.csv
+anual_mercados.csv,OK,14055,514,→ data/clean/anual_mercados_clean.csv
+mensual.csv,OK,14175,40,→ data/clean/mensual_clean.csv
+provinciales.csv,OK,28175,18613,→ data/clean/provinciales_clean.csv
+trimestrales.csv,OK,3199,12,→ data/clean/trimestrales_clean.csv
+infraestructuras.csv,OK,584,6,→ data/clean/infraestructuras_clean.csv

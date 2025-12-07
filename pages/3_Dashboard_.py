@@ -68,6 +68,7 @@ GEO_PROV_PATH = Path("data/geo/provincias_es.geojson")
 
 # Mapeo de nombres entre CNMC y tu geojson (properties.provincia)
 PROV_NAME_MAP = {
+    # Formatos "raros" típicos del INE / shapefile
     "Coruña. A": "La Coruña",
     "Balears. Illes": "Islas Baleares",
     "Rioja. La": "La Rioja",
@@ -78,7 +79,13 @@ PROV_NAME_MAP = {
     "Castellón/Castelló": "Castellón",
     "Valencia/València": "Valencia",
     "Girona": "Gerona",
+
+    # ⚠️ Nuevos casos que te estaban dando guerra
+    "Alicante/Alacant": "Alicante",
+    "Ourense": "Orense",
+    "gerona": "Gerona",  # mismo sitio que "Girona" pero en minúsculas
 }
+
 
 # =====================================================================
 # CARGA DE DATOS
@@ -502,26 +509,64 @@ if prov.empty:
 else:
     df_prov = prov.copy()
 
+    # Aseguramos columna de año homogénea
     if "anio" not in df_prov.columns and "anno" in df_prov.columns:
         df_prov["anio"] = df_prov["anno"]
 
+    # Comprobamos que haya provincias
     if "provincia" not in df_prov.columns or df_prov["provincia"].isna().all():
         st.warning("La columna 'provincia' está vacía en el dataset provincial.")
     else:
-        df_prov["provincia_key"] = df_prov["provincia"].replace(PROV_NAME_MAP)
+        # Normalizamos los nombres de provincia para que encajen con el GeoJSON
+        df_prov["provincia_key"] = (
+            df_prov["provincia"]
+            .replace(PROV_NAME_MAP)
+            .astype(str)
+            .str.strip()
+        )
 
+        # Cargamos el GeoJSON una sola vez
+        geojson_prov = None
+        if GEO_PROV_PATH.exists():
+            with open(GEO_PROV_PATH, "r", encoding="utf-8") as f:
+                geojson_prov = json.load(f)
+
+        # Bloque opcional de depuración: ver si quedan provincias desalineadas
+        if geojson_prov is not None:
+            provincias_geo = sorted(
+                {feat["properties"]["provincia"] for feat in geojson_prov["features"]}
+            )
+            provincias_data = sorted(df_prov["provincia_key"].dropna().unique())
+            en_datos_no_geo = sorted(set(provincias_data) - set(provincias_geo))
+            en_geo_no_datos = sorted(set(provincias_geo) - set(provincias_data))
+
+            with st.expander("Depuración (provincias GeoJSON vs datos)", expanded=False):
+                st.write("Provincias en GeoJSON:", provincias_geo)
+                st.write("Provincias en datos (provincia_key):", provincias_data)
+                st.write("En datos pero NO en GeoJSON:", en_datos_no_geo)
+                st.write("En GeoJSON pero NO en datos:", en_geo_no_datos)
+
+        # Selector de año para los mapas
         if "anio" in df_prov.columns:
-            years_prov = sorted(df_prov["anio"].dropna().astype(int).unique())
-            selected_year = st.selectbox(
-                "Año a mostrar en los mapas provinciales",
-                years_prov,
-                index=len(years_prov) - 1,
-                key="prov_map_year",
-            ) if years_prov else None
+            years_prov = sorted(
+                df_prov["anio"].dropna().astype(int).unique()
+            )
+            selected_year = (
+                st.selectbox(
+                    "Año a mostrar en los mapas provinciales",
+                    years_prov,
+                    index=len(years_prov) - 1 if years_prov else 0,
+                    key="prov_map_year",
+                )
+                if years_prov
+                else None
+            )
         else:
             selected_year = None
 
-        # --- 3.1 Mapa de tasa de penetración ---
+        # -------------------------------------------------------------
+        # 3.1 Mapa de tasa de penetración por provincia
+        # -------------------------------------------------------------
         if "tasa_de_penetracion" not in df_prov.columns:
             st.warning("El dataset provincial no contiene 'tasa_de_penetracion'.")
         else:
@@ -535,14 +580,13 @@ else:
                 st.info("No hay datos de tasa de penetración para el año seleccionado.")
             else:
                 pen_grp = (
-                    df_pen.groupby(["provincia", "provincia_key"], as_index=False)["tasa_de_penetracion"]
+                    df_pen.groupby(["provincia", "provincia_key"], as_index=False)[
+                        "tasa_de_penetracion"
+                    ]
                     .mean()
                 )
 
-                if GEO_PROV_PATH.exists():
-                    with open(GEO_PROV_PATH, "r", encoding="utf-8") as f:
-                        geojson_prov = json.load(f)
-
+                if geojson_prov is not None:
                     fig_map_pen = px.choropleth(
                         pen_grp,
                         geojson=geojson_prov,
@@ -556,8 +600,8 @@ else:
                         },
                         title=(
                             f"Tasa de penetración por provincia – {selected_year}"
-                            if selected_year else
-                            "Tasa de penetración por provincia"
+                            if selected_year
+                            else "Tasa de penetración por provincia"
                         ),
                     )
                     fig_map_pen.update_geos(fitbounds="locations", visible=False)
@@ -578,74 +622,51 @@ else:
                             "provincia": "Provincia",
                             "tasa_de_penetracion": "Tasa de penetración (líneas / 100 hab.)",
                         },
-                        title=(
-                            f"Tasa de penetración por provincia – {selected_year}"
-                            if selected_year else
-                            "Tasa de penetración por provincia"
-                        ),
+                        title="Tasa de penetración por provincia",
                     )
-                    fig_pen_bar.update_xaxes(tickangle=60)
                     st.plotly_chart(fig_pen_bar, use_container_width=True)
 
-                st.markdown("**Top 5 provincias por penetración**")
-                st.dataframe(
-                    pen_grp.sort_values("tasa_de_penetracion", ascending=False)
-                    .head(5)[["provincia", "tasa_de_penetracion"]],
-                    use_container_width=True,
-                )
-
-        # --- 3.2 Mapa de volumen global (no tasas) ---
-        st.subheader("3.2 Mapa de volumen total por provincia (no tasa)")
-
-        df_vol = df_prov.copy()
-        if selected_year is not None and "anio" in df_vol.columns:
-            df_vol = df_vol[df_vol["anio"] == selected_year]
-
-        if df_vol.empty:
-            st.info("No hay datos provinciales para el año seleccionado.")
+        # -------------------------------------------------------------
+        # 3.2 Mapa de volumen total por provincia (no tasa)
+        # -------------------------------------------------------------
+        if "lineas_o_accesos" not in df_prov.columns:
+            st.warning(
+                "El dataset provincial no contiene la columna 'lineas_o_accesos' "
+                "necesaria para el mapa de volumen."
+            )
         else:
-            cand_vol_cols = [
-                "lineas_o_accesos",
-                "unidades",
-                "estaciones_base",
-            ]
-            vol_col = None
-            for c in cand_vol_cols:
-                if c in df_vol.columns and df_vol[c].notna().sum() > 0:
-                    vol_col = c
-                    break
-            if vol_col is None:
-                num_cols = [
-                    c for c in df_vol.columns
-                    if df_vol[c].dtype != "object"
-                    and c not in ["anio", "tasa_de_penetracion", "id", "anno"]
-                ]
-                vol_col = num_cols[0] if num_cols else None
+            st.subheader("3.2 Mapa de volumen total por provincia (no tasa)")
 
-            if vol_col is None:
-                st.info("No se ha encontrado ningún indicador numérico de volumen para el mapa.")
+            df_vol = df_prov[df_prov["lineas_o_accesos"].notna()].copy()
+            if selected_year is not None:
+                df_vol = df_vol[df_vol["anio"] == selected_year]
+
+            if df_vol.empty:
+                st.info("No hay datos de volumen para el año seleccionado.")
             else:
                 vol_grp = (
-                    df_vol.groupby(["provincia", "provincia_key"], as_index=False)[vol_col]
+                    df_vol.groupby(["provincia", "provincia_key"], as_index=False)[
+                        "lineas_o_accesos"
+                    ]
                     .sum()
                 )
-                if GEO_PROV_PATH.exists():
-                    with open(GEO_PROV_PATH, "r", encoding="utf-8") as f:
-                        geojson_prov = json.load(f)
 
+                if geojson_prov is not None:
                     fig_map_vol = px.choropleth(
                         vol_grp,
                         geojson=geojson_prov,
                         locations="provincia_key",
                         featureidkey="properties.provincia",
-                        color=vol_col,
+                        color="lineas_o_accesos",
                         hover_name="provincia",
                         color_continuous_scale="Blues",
-                        labels={vol_col: vol_col.replace("_", " ").title()},
+                        labels={
+                            "lineas_o_accesos": "Líneas o accesos",
+                        },
                         title=(
-                            f"Volumen total por provincia – {vol_col.replace('_',' ').title()} ({selected_year})"
-                            if selected_year else
-                            f"Volumen total por provincia – {vol_col.replace('_',' ').title()}"
+                            f"Volumen total por provincia – Líneas o Accesos ({selected_year})"
+                            if selected_year
+                            else "Volumen total por provincia – Líneas o Accesos"
                         ),
                     )
                     fig_map_vol.update_geos(fitbounds="locations", visible=False)
@@ -655,65 +676,67 @@ else:
                         "No se ha encontrado `data/geo/provincias_es.geojson`. "
                         "Se muestra ranking en barras en lugar de mapa."
                     )
-                    vol_sorted = vol_grp.sort_values(vol_col, ascending=False)
+                    vol_sorted = vol_grp.sort_values(
+                        "lineas_o_accesos", ascending=False
+                    )
                     fig_vol_bar = px.bar(
                         vol_sorted,
                         x="provincia",
-                        y=vol_col,
+                        y="lineas_o_accesos",
                         labels={
                             "provincia": "Provincia",
-                            vol_col: vol_col.replace("_", " ").title(),
+                            "lineas_o_accesos": "Líneas o accesos",
                         },
-                        title=(
-                            f"Volumen total por provincia – {vol_col.replace('_',' ').title()} ({selected_year})"
-                            if selected_year else
-                            f"Volumen total por provincia – {vol_col.replace('_',' ').title()}"
-                        ),
+                        title="Volumen total por provincia – Líneas o Accesos",
                     )
-                    fig_vol_bar.update_xaxes(tickangle=60)
                     st.plotly_chart(fig_vol_bar, use_container_width=True)
 
+                # Top 5 provincias por volumen (tabla)
+                top5 = vol_grp.sort_values(
+                    "lineas_o_accesos", ascending=False
+                ).head(5)
                 st.markdown("**Top 5 provincias por volumen**")
-                st.dataframe(
-                    vol_grp.sort_values(vol_col, ascending=False)
-                    .head(5)[["provincia", vol_col]],
-                    use_container_width=True,
-                )
+                st.dataframe(top5, use_container_width=True)
 
-        # --- 3.3 Heatmap histórico de penetración por provincia ---
-        st.subheader("3.3 Evolución histórica de la penetración por provincia")
-
+        # -------------------------------------------------------------
+        # 3.3 Mapa de calor: evolución histórica de la penetración
+        # -------------------------------------------------------------
         if "tasa_de_penetracion" in df_prov.columns and "anio" in df_prov.columns:
-            df_pen2 = df_prov[df_prov["tasa_de_penetracion"].notna()].copy()
-            if not df_pen2.empty:
-                tabla = df_pen2.pivot_table(
-                    index="provincia",
-                    columns="anio",
-                    values="tasa_de_penetracion",
-                    aggfunc="mean",
-                )
-                tabla = tabla.sort_index(axis=1)
+            st.subheader("3.3 Evolución histórica de la penetración por provincia")
 
-                fig_heat = px.imshow(
-                    tabla,
-                    aspect="auto",
+            df_heat = df_prov[df_prov["tasa_de_penetracion"].notna()].copy()
+
+            heat_grp = (
+                df_heat.groupby(["provincia", "anio"], as_index=False)[
+                    "tasa_de_penetracion"
+                ]
+                .mean()
+            )
+
+            if heat_grp.empty:
+                st.info("No hay datos suficientes para construir el mapa de calor.")
+            else:
+                fig_heat = px.density_heatmap(
+                    heat_grp,
+                    x="anio",
+                    y="provincia",
+                    z="tasa_de_penetracion",
+                    color_continuous_scale="Blues",
+                    nbinsx=len(heat_grp["anio"].unique()),
                     labels={
-                        "x": "Año",
-                        "y": "Provincia",
-                        "color": "Tasa de penetración (líneas / 100 hab.)",
+                        "anio": "Año",
+                        "provincia": "Provincia",
+                        "tasa_de_penetracion": "Tasa de penetración (líneas / 100 hab.)",
                     },
                     title="Mapa de calor de penetración por provincia y año",
                 )
+                fig_heat.update_yaxes(categoryorder="category ascending")
                 st.plotly_chart(fig_heat, use_container_width=True)
-
-                st.markdown(
-                    "Cada fila es una provincia y cada columna un año, con su tasa media de penetración."
-                )
-            else:
-                st.info("No hay datos suficientes para construir el heatmap provincial.")
         else:
-            st.info("Faltan columnas 'tasa_de_penetracion' o 'anio' para el heatmap.")
-
+            st.info(
+                "No se ha podido construir el mapa de calor histórico porque faltan "
+                "las columnas 'anio' o 'tasa_de_penetracion'."
+            )
 
 # =====================================================================
 # 4. Visión táctica mensual y trimestral por servicio (USANDO RAW)
