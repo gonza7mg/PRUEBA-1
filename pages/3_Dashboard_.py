@@ -531,21 +531,6 @@ else:
             with open(GEO_PROV_PATH, "r", encoding="utf-8") as f:
                 geojson_prov = json.load(f)
 
-        # Bloque opcional de depuración: ver si quedan provincias desalineadas
-        if geojson_prov is not None:
-            provincias_geo = sorted(
-                {feat["properties"]["provincia"] for feat in geojson_prov["features"]}
-            )
-            provincias_data = sorted(df_prov["provincia_key"].dropna().unique())
-            en_datos_no_geo = sorted(set(provincias_data) - set(provincias_geo))
-            en_geo_no_datos = sorted(set(provincias_geo) - set(provincias_data))
-
-            with st.expander("Depuración (provincias GeoJSON vs datos)", expanded=False):
-                st.write("Provincias en GeoJSON:", provincias_geo)
-                st.write("Provincias en datos (provincia_key):", provincias_data)
-                st.write("En datos pero NO en GeoJSON:", en_datos_no_geo)
-                st.write("En GeoJSON pero NO en datos:", en_geo_no_datos)
-
         # Selector de año para los mapas
         if "anio" in df_prov.columns:
             years_prov = sorted(
@@ -565,7 +550,7 @@ else:
             selected_year = None
 
         # -------------------------------------------------------------
-        # 3.1 Mapa de tasa de penetración por provincia
+        # 3.1 Mapa de tasa de penetración por provincia + Top 5
         # -------------------------------------------------------------
         if "tasa_de_penetracion" not in df_prov.columns:
             st.warning("El dataset provincial no contiene 'tasa_de_penetracion'.")
@@ -585,6 +570,11 @@ else:
                     ]
                     .mean()
                 )
+
+                # Top 5 provincias por tasa de penetración
+                pen_top5 = pen_grp.sort_values(
+                    "tasa_de_penetracion", ascending=False
+                ).head(5)
 
                 if geojson_prov is not None:
                     fig_map_pen = px.choropleth(
@@ -626,8 +616,19 @@ else:
                     )
                     st.plotly_chart(fig_pen_bar, use_container_width=True)
 
+                # Tabla Top 5 siempre debajo del gráfico
+                st.markdown("**Top 5 provincias por penetración**")
+                st.dataframe(
+                    pen_top5.rename(
+                        columns={
+                            "tasa_de_penetracion": "tasa_de_penetracion",
+                        }
+                    ),
+                    use_container_width=True,
+                )
+
         # -------------------------------------------------------------
-        # 3.2 Mapa de volumen total por provincia (no tasa)
+        # 3.2 Mapa de volumen total por provincia (no tasa) + Top 5
         # -------------------------------------------------------------
         if "lineas_o_accesos" not in df_prov.columns:
             st.warning(
@@ -650,6 +651,11 @@ else:
                     ]
                     .sum()
                 )
+
+                # Top 5 provincias por volumen
+                top5 = vol_grp.sort_values(
+                    "lineas_o_accesos", ascending=False
+                ).head(5)
 
                 if geojson_prov is not None:
                     fig_map_vol = px.choropleth(
@@ -691,10 +697,7 @@ else:
                     )
                     st.plotly_chart(fig_vol_bar, use_container_width=True)
 
-                # Top 5 provincias por volumen (tabla)
-                top5 = vol_grp.sort_values(
-                    "lineas_o_accesos", ascending=False
-                ).head(5)
+                # Tabla Top 5 siempre debajo del gráfico
                 st.markdown("**Top 5 provincias por volumen**")
                 st.dataframe(top5, use_container_width=True)
 

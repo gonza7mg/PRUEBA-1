@@ -305,7 +305,7 @@ def detect_anomalies(residuals: np.ndarray, contamination: float = 0.15):
 
 
 # =====================================================
-# MODELO GLOBAL PARA SIMULADOR (MUNDO POST-FUSIÓN)
+# MODELO GLOBAL PARA SIMULADOR 
 # =====================================================
 
 def get_snapshot_prefusion(df: pd.DataFrame, year_max: int = 2023) -> pd.DataFrame:
